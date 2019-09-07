@@ -16,7 +16,9 @@
 </head>
 <body>
 <div id="app" class="search">
-    <el-input style="width:50%" v-model.trim="keyword"></el-input>
+    <div v-on:keyup.enter="toSearch">
+        <el-input  style="width: 500px;"autofocus v-model.trim="keyword"></el-input>
+    </div>
     <el-button @click="toSearch">{{message}}</el-button>
 </div>
 </body>
@@ -32,7 +34,7 @@
         methods: {
             toSearch: function () {
                 $.ajax({
-                    url: "/search", data: {keyword:store.keyword}, success: function () {
+                    url: "/search", data: {keyword: store.keyword}, success: function () {
                     }
                 });
             }
