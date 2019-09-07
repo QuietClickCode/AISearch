@@ -1,0 +1,19 @@
+#left_div{
+    width:90px;
+    float: left;
+}
+
+#right_div{
+    float: left;
+}
+#right_div2{
+    margin-top:0px;
+    width:200px;
+    height:3350px;
+    overflow-y: hidden;
+}
+#right_table2{
+    width: 230px;
+    max-width: 880px;
+    white-space:nowrap;
+}

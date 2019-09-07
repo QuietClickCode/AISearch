@@ -1,0 +1,63 @@
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+td {
+    border: 1px solid #ebeef5;
+    word-break: break-all;
+    text-align: center;
+}
+
+.body tr {
+    height: 80px;
+}
+
+.body table {
+    width: 1000px;
+}
+
+.body {
+    width: 370px;
+    overflow: scroll;
+    border: 1px solid #ebeef5;
+}
+
+.header table {
+    width: 1000px;
+}
+
+.header {
+    width: 370px;
+    overflow: scroll;
+    border: 1px solid #ebeef5;
+}
+
+/*固定列*/
+.custom-table--body-wrapper.is-fixed {
+    overflow-y: hidden;
+}
+
+.custom-table--fixed-wrapper {
+    /*border:solid 1px;*/
+    box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    left: 8px;
+    top: 338px;
+    bottom: 0;
+    width: 200px;
+    background-color: #fff;
+}
+
+.custom-table td, .custom-table th {
+    white-space: nowrap;
+    overflow: hidden;
+    height: 42px;
+    padding: 2px !important;
+}
+
+
+
+
+

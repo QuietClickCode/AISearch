@@ -1,7 +1,36 @@
 <!DOCTYPE html>
 <html>
-<body>
-我是首页
-</body>
+<head>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/css/element-ui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <style>
+        .search {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
+    </style>
+</head>
+<body>
+<div id="app" class="search">
+    <el-input style="width:50%"></el-input>
+    <el-button>{{message}}</el-button>
+</div>
+</body>
+<script src="/js/jquery-1.9.1.min.js"></script>
+<script src="/js/vue.min.js" type="text/javascript"></script>
+<script src="/js/element-ui.min.js" type="text/javascript"></script>
+
+<script>
+    var store = {visible: false, message: 'hello world'};
+    var app = new Vue({
+        el: '#app',
+        data: store
+
+    })
+
+</script>
 </html>
