@@ -1,5 +1,6 @@
 package com.zjj.aisearch.service;
 
+import com.zjj.aisearch.model.SearchRecord;
 import com.zjj.aisearch.model.User;
 
 /**
@@ -10,4 +11,5 @@ import com.zjj.aisearch.model.User;
  **/
 public interface IndexService {
     User index();
+    int insertSearchRecord(SearchRecord searchRecord);
 }

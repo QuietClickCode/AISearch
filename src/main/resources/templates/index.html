@@ -16,8 +16,8 @@
 </head>
 <body>
 <div id="app" class="search">
-    <el-input style="width:50%"></el-input>
-    <el-button>{{message}}</el-button>
+    <el-input style="width:50%" v-model.trim="keyword"></el-input>
+    <el-button @click="toSearch">{{message}}</el-button>
 </div>
 </body>
 <script src="/js/jquery-1.9.1.min.js"></script>
@@ -25,10 +25,18 @@
 <script src="/js/element-ui.min.js" type="text/javascript"></script>
 
 <script>
-    var store = {visible: false, message: 'hello world'};
+    var store = {visible: false, message: 'hello world', keyword: ""};
     var app = new Vue({
         el: '#app',
-        data: store
+        data: store,
+        methods: {
+            toSearch: function () {
+                $.ajax({
+                    url: "/search", data: {keyword:store.keyword}, success: function () {
+                    }
+                });
+            }
+        }
 
     })
 

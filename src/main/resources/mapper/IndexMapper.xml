@@ -6,6 +6,10 @@
     <select id="index" resultType="com.zjj.aisearch.model.User">
         select * from users where username = 'zjj'
     </select>
+    
+    <insert id="insertSearchRecord" parameterType="com.zjj.aisearch.model.SearchRecord">
+         insert into searchrecord(keyword,searchtime) values(#{keyword},#{searchTime})
+    </insert>
 
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.zjj.aisearch.service.impl;
 
 import com.zjj.aisearch.mapper.IndexMapper;
+import com.zjj.aisearch.model.SearchRecord;
 import com.zjj.aisearch.model.User;
 import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,10 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public User index() {
         return indexMapper.index();
+    }
+
+    @Override
+    public int insertSearchRecord(SearchRecord searchRecord) {
+        return indexMapper.insertSearchRecord(searchRecord);
     }
 }
