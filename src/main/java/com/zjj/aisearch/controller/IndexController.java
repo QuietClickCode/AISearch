@@ -37,4 +37,6 @@ public class IndexController {
         int i = indexService.insertSearchRecord(searchRecord);
         System.out.println(i);
     }
+
+
 }
