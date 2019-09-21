@@ -12,8 +12,5 @@
     </insert>
 
 
-    <insert id="insertArticle" parameterType="com.zjj.aisearch.model.Article">
-        insert into article(title, content, create_time) values(#{title},#{content},#{createTime})
-    </insert>
 
 </mapper>
