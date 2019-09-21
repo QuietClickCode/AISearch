@@ -33,8 +33,28 @@ public class IndexController {
     @RequestMapping("/searchItem")
     @ResponseBody
     public List<Item> searchItem(String keyword) {
-        List<Item> items = indexServiceImpl.searchItem(keyword);
-        return items;
+        if (!keyword.isEmpty()) {
+            List<Item> items = indexServiceImpl.searchItem(keyword);
+            return items;
+        }
+        return null;
+
+    }
+
+    @RequestMapping("/detail")
+    @ResponseBody
+    public String detail(String keyword) {
+        if (!keyword.isEmpty()) {
+            List<Item> items = indexServiceImpl.searchItem(keyword);
+            StringBuilder str = new StringBuilder();
+            for (Item item : items) {
+                str.append(item.toString() + "<br>");
+            }
+            System.out.println(str.toString());
+            return str.toString();
+        }
+
+        return null;
 
     }
 
