@@ -4,6 +4,7 @@
     <!-- 引入样式 -->
     <link rel="stylesheet" href="/css/element-ui.min.css">
     <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/my-select.css">
     <style>
         .search {
             height: 100vh;
@@ -16,18 +17,34 @@
 </head>
 <body>
 <div id="app" class="search" style="display: none">
-    <div v-on:keyup.enter="toSearch">
-        <el-input style="width: 500px;" autofocus v-model.trim="keyword"></el-input>
+    <div @keyup.enter="searchItem(store.keyword)">
+        <el-input style="width: 500px;" placeholder="搜你想要" v-model="store.keyword">
+        </el-input>
+
+    <ul>
+        <li v-for="item in store.article">{{item.label}}</li>
+    </ul>
     </div>
-    <el-button @click="toSearch">{{message}}</el-button>
+
+    <el-button @click="searchItem(store.keyword)">{{message}}</el-button>
+
+    <!-- <my-select v-model="store.keyword">
+         <my-option value="1" label="苹果"></my-option>
+         <my-option value="2" label="香蕉"></my-option>
+         <my-option value="3" label="榴莲"></my-option>
+         <my-option value="4" label="西瓜"></my-option>
+         <my-option value="5" label="桔子"></my-option>
+         <my-option value="6" label="葡萄"></my-option>
+     </my-select>-->
 </div>
 </body>
 <script src="/js/jquery-1.9.1.min.js"></script>
 <script src="/js/vue.min.js" type="text/javascript"></script>
 <script src="/js/element-ui.min.js" type="text/javascript"></script>
+<script src="/js/my-select.js" type="text/javascript"></script>
 
 <script>
-    var store = {visible: false, message: 'AISearch', keyword: ""};
+    var store = {visible: false, message: 'AISearch', keyword: "", article: []};
     var app = new Vue({
         el: '#app',
         data: store,
@@ -36,12 +53,47 @@
         },
 
         methods: {
-            toSearch: function () {
+            search: function (keyword) {
                 $.ajax({
-                    url: "/search", data: {keyword: store.keyword}, success: function () {
-                    }
+                    url: "/search", data: {keyword: keyword}, success: function (data) {
+                        var temp = {label: "", value: ""}
+                        for (var i = 0; i < data.length; i++) {
+                            temp.label = data[i].content
+                            temp.value = data[i].id
+                            store.article.push(temp);
+                        }
+
+                    },
+
                 });
-            }
+            },
+            searchItem: function (keyword) {
+                $.ajax({
+                    url: "/searchItem", data: {keyword: keyword}, success: function (data) {
+                        var temp = {label: "", value: ""}
+                        for (var i = 0; i < data.length; i++) {
+                            temp.label = data[i].title;
+                            temp.value = data[i].id
+                            store.article.push(temp);
+                        }
+
+                    },
+
+                });
+            },
+            /* toSearch: function () {
+                 $.ajax({
+                     url: "/search", data: {keyword: store.keyword}, success: function (data) {
+                         alert(JSON.stringify(data[0]));
+                         var temp = {label: "", value: ""}
+                         temp.label = data[0].content
+                         temp.value = data[0].id
+                         store.article = temp;
+                         alert(JSON.stringify(store.article));
+                     },
+
+                 });
+             }*/
         }
 
     })
