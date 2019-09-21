@@ -15,9 +15,9 @@
     </style>
 </head>
 <body>
-<div id="app" class="search">
+<div id="app" class="search" style="display: none">
     <div v-on:keyup.enter="toSearch">
-        <el-input  style="width: 500px;" autofocus v-model.trim="keyword"></el-input>
+        <el-input style="width: 500px;" autofocus v-model.trim="keyword"></el-input>
     </div>
     <el-button @click="toSearch">{{message}}</el-button>
 </div>
@@ -31,6 +31,9 @@
     var app = new Vue({
         el: '#app',
         data: store,
+        created: function () {
+            $("#app").show()
+        },
         methods: {
             toSearch: function () {
                 $.ajax({
