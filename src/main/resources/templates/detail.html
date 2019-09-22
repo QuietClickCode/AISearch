@@ -47,13 +47,14 @@
         el: '#app',
         data: store,
         created: function () {
-            $("#app").show();
+
             this.width = $("#el-input").width();
             $.ajax({
                 type: "GET",
                 url: "json",
                 dataType: "json",
                 success: function (data) {
+                    $("#app").show();
                     store.items = data;
                 }
             })

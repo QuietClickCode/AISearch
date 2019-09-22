@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,6 +23,8 @@ public class IndexController {
 
     @Autowired
     private IndexService indexServiceImpl;
+
+    private HashMap<String,String> map = new HashMap<>();
 
     @RequestMapping("/search")
     @ResponseBody
@@ -45,8 +48,8 @@ public class IndexController {
     @RequestMapping("/todetail")
     public String toDetail(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
-            List<Item> items = indexServiceImpl.searchItem(keyword);
-            /*attributes.addFlashAttribute("items", items);*/
+            System.out.println(keyword);
+            map.put("keyword", keyword);
             return "redirect:detail";
         }
         return null;
@@ -60,7 +63,7 @@ public class IndexController {
     @RequestMapping("/json")
     @ResponseBody
     public List<Item> json() {
-        List<Item> items = indexServiceImpl.searchItem("s");
+        List<Item> items = indexServiceImpl.searchItem(map.get("keyword"));
         return items;
     }
 
