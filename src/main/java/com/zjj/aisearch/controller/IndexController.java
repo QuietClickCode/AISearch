@@ -5,12 +5,17 @@ import com.zjj.aisearch.model.Item;
 import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: AISearch
@@ -24,7 +29,7 @@ public class IndexController {
     @Autowired
     private IndexService indexServiceImpl;
 
-    private HashMap<String,String> map = new HashMap<>();
+    private HashMap<String, Object> map = new HashMap<>();
 
     @RequestMapping("/search")
     @ResponseBody
@@ -48,25 +53,58 @@ public class IndexController {
     @RequestMapping("/todetail")
     public String toDetail(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
-            System.out.println(keyword);
             map.put("keyword", keyword);
             return "redirect:detail";
         }
         return null;
     }
 
-    @RequestMapping("/detail")
-    public String detail() {
-        return "detail";
+    @RequestMapping("/todetail2")
+    public String toDetail2(String keyword, RedirectAttributes attributes) {
+        if (!keyword.isEmpty()) {
+            List<Item> items = indexServiceImpl.searchItem(keyword);
+            attributes.addFlashAttribute("items", items);
+            return "redirect:detail2";
+        }
+        return null;
+    }
+
+
+    @RequestMapping("/detail2")
+    public ModelAndView json(HttpServletRequest request, ModelAndView modelAndView) {
+        Map<String,?> maps = RequestContextUtils.getInputFlashMap(request);
+        List<Item> list = null;
+        if (maps != null) {
+            list = (List<Item>) maps.get("items");
+        }
+
+        modelAndView.setViewName("detail2");
+
+        if (list != null) {
+            map.put("items", list);
+            modelAndView.addObject("items", list);
+            return modelAndView;
+        } else {
+            List<Item> lists = (List<Item>)map.get("items");
+            modelAndView.addObject("items", lists);
+            return modelAndView;
+        }
+
+
     }
 
     @RequestMapping("/json")
     @ResponseBody
     public List<Item> json() {
-        List<Item> items = indexServiceImpl.searchItem(map.get("keyword"));
+        List<Item> items = indexServiceImpl.searchItem((String)map.get("keyword"));
         return items;
     }
 
+
+    @RequestMapping(value = "{path}")
+    public String del(@PathVariable("path") String path) {
+        return path;
+    }
 
 
 }
