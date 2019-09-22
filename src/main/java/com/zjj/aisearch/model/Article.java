@@ -57,4 +57,5 @@ public class Article {
                 ", create_time='" + create_time + '\'' +
                 '}';
     }
+    
 }
