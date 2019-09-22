@@ -5,7 +5,6 @@ import com.zjj.aisearch.model.Item;
 import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -47,15 +46,24 @@ public class IndexController {
     public String toDetail(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
-            attributes.addFlashAttribute("items", items);
+            /*attributes.addFlashAttribute("items", items);*/
             return "redirect:detail";
         }
         return null;
     }
 
     @RequestMapping("/detail")
-    public String detail(@ModelAttribute("items") List<Item> items) {
+    public String detail() {
         return "detail";
     }
+
+    @RequestMapping("/json")
+    @ResponseBody
+    public List<Item> json() {
+        List<Item> items = indexServiceImpl.searchItem("s");
+        return items;
+    }
+
+
 
 }
