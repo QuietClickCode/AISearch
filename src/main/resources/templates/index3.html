@@ -17,7 +17,7 @@
 </head>
 <body>
 <div id="app" class="search" style="display: none">
-    <div  @click="toggle" @keyup.enter="toDetail(store.keyword)">
+    <div  @click="toggle" @keyup.enter="toDetail3(store.keyword)">
         <el-input  id="el-input" style="width: 500px;" @input="searchItem(store.keyword)" placeholder="搜你想要"
                   v-model="store.keyword">
         </el-input>
@@ -30,7 +30,7 @@
         </ul>
     </div>
 
-    <el-button @click="toDetail(store.keyword)">{{message}}</el-button>
+    <el-button @click="toDetail3(store.keyword)">{{message}}</el-button>
 
 </div>
 </body>
@@ -56,7 +56,7 @@
             blur: function () {
                 this.isShow = false;
             },
-            toDetail: function (keyword) {
+            toDetail3: function (keyword) {
                 if (keyword != "") {
                     window.location.href = "todetail3?keyword=" + keyword;
                 }

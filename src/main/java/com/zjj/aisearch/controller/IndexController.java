@@ -80,28 +80,7 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/detail2")
-    public ModelAndView detail2(HttpServletRequest request, ModelAndView modelAndView) {
-        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
-        List<Item> list = null;
-        if (maps != null) {
-            list = (List<Item>) maps.get("items2");
-        }
 
-        modelAndView.setViewName("detail2");
-
-        if (list != null) {
-            map.put("items2", list);
-            modelAndView.addObject("items", list);
-            return modelAndView;
-        } else {
-            List<Item> lists = (List<Item>) map.get("items2");
-            modelAndView.addObject("items", lists);
-            return modelAndView;
-        }
-
-
-    }
 
     @RequestMapping("/detail")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView) {
@@ -128,9 +107,32 @@ public class IndexController {
 
     }
 
-    @RequestMapping("/json")
+    @RequestMapping("/detail2")
+    public ModelAndView detail2(HttpServletRequest request, ModelAndView modelAndView) {
+        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
+        List<Item> list = null;
+        if (maps != null) {
+            list = (List<Item>) maps.get("items2");
+        }
+
+        modelAndView.setViewName("detail2");
+
+        if (list != null) {
+            map.put("items2", list);
+            modelAndView.addObject("items", list);
+            return modelAndView;
+        } else {
+            List<Item> lists = (List<Item>) map.get("items2");
+            modelAndView.addObject("items", lists);
+            return modelAndView;
+        }
+
+
+    }
+
+    @RequestMapping("/detail3json")
     @ResponseBody
-    public List<Item> json() {
+    public List<Item> detail3() {
         if (map.get("items3") == null) {
             List<Item> items = indexServiceImpl.searchItem((String) map.get("keyword"));
             map.put("items3", items);
