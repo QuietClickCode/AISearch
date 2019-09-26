@@ -69,6 +69,7 @@ public class IndexController {
         }
         return null;
     }
+
     @RequestMapping("/todetail3")
     public String toDetai3(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
@@ -81,7 +82,7 @@ public class IndexController {
 
     @RequestMapping("/detail2")
     public ModelAndView detail2(HttpServletRequest request, ModelAndView modelAndView) {
-        Map<String,?> maps = RequestContextUtils.getInputFlashMap(request);
+        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
         if (maps != null) {
             list = (List<Item>) maps.get("items2");
@@ -94,7 +95,7 @@ public class IndexController {
             modelAndView.addObject("items", list);
             return modelAndView;
         } else {
-            List<Item> lists = (List<Item>)map.get("items2");
+            List<Item> lists = (List<Item>) map.get("items2");
             modelAndView.addObject("items", lists);
             return modelAndView;
         }
@@ -105,7 +106,7 @@ public class IndexController {
     @RequestMapping("/detail")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView) {
 
-        Map<String,?> maps = RequestContextUtils.getInputFlashMap(request);
+        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
         if (maps != null) {
             list = (List<Item>) maps.get("items1");
@@ -118,7 +119,7 @@ public class IndexController {
             modelAndView.addObject("items", list);
             return modelAndView;
         } else {
-            List<Item> lists = (List<Item>)map.get("items1");
+            List<Item> lists = (List<Item>) map.get("items1");
             modelAndView.addObject("items", lists);
             return modelAndView;
 
@@ -130,8 +131,14 @@ public class IndexController {
     @RequestMapping("/json")
     @ResponseBody
     public List<Item> json() {
-        List<Item> items = indexServiceImpl.searchItem((String)map.get("keyword"));
-        return items;
+        if (map.get("items3") == null) {
+            List<Item> items = indexServiceImpl.searchItem((String) map.get("keyword"));
+            map.put("items3", items);
+            return items;
+        } else {
+
+            return (List<Item>) map.get("items3");
+        }
     }
 
 
