@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/css/my-select.css">
 </head>
 <body>
+<script type="text/javascript" th:inline="javascript">
+    var dealMeasureEnum = [[${items}]];
+</script>
 <div id="app" class="search" style="display: none">
     <el-table
             :data="items"
@@ -37,7 +40,7 @@
         visible: false,
         width: 0,
         title: "",
-        items: [],
+        items: dealMeasureEnum,
         message: 'AISearch',
         keyword: "",
         isShow: true,
@@ -47,7 +50,6 @@
         el: '#app',
         data: store,
         created: function () {
-
             this.width = $("#el-input").width();
             $.ajax({
                 type: "GET",

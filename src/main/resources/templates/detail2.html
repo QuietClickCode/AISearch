@@ -5,20 +5,33 @@
     <link rel="stylesheet" href="/css/element-ui.min.css">
     <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/my-select.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 <body>
+<script type="text/javascript" th:inline="javascript">
+    var dealMeasureEnum = [[${items}]];
+</script>
 <div id="app" class="search" style="display: none">
-    <div th:each="item:${items}">
-        标题：<input th:value="${item.title}"/>
-        卖点：<input th:value="${item.sellPoint}"/>
-        价格：<input th:value="${item.price}"/>
-    </div>
+    <table class="table">
+        <tr th:each="item:${items}">
+            <td> 标题：
+                <div th:text="${item.title}"></div>
+            </td>
+            <td>卖点：
+                <div th:text="${item.sellPoint}"></div>
+            </td>
+            <td>价格：
+                <div th:text="${item.price}"></div>
+            </td>
+        </tr>
+    </table>
 </div>
 </body>
 <script src="/js/jquery-1.9.1.min.js"></script>
 <script src="/js/vue.min.js" type="text/javascript"></script>
 <script src="/js/element-ui.min.js" type="text/javascript"></script>
 <script src="/js/my-select.js" type="text/javascript"></script>
+<script src="/js/bootstrap.min.js" type="text/javascript"></script>
 
 <script>
     var store = {
@@ -36,12 +49,14 @@
         data: store,
         created: function () {
             $("#app").show();
+            /*alert(JSON.stringify(dealMeasureEnum));*/
 
             this.width = $("#el-input").width();
         },
         methods: {}
 
     })
+    
 
 </script>
 </html>
