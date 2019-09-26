@@ -6,11 +6,8 @@
     <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/my-select.css">
 </head>
+<!--纯vue-->
 <body>
-<!--结合thymeleaf和vue-->
-<script type="text/javascript" th:inline="javascript">
-    var dealMeasureEnum = [[${items}]];
-</script>
 <div id="app" class="search" style="display: none">
     <el-table
             :data="items"
@@ -41,7 +38,7 @@
         visible: false,
         width: 0,
         title: "",
-        items: dealMeasureEnum,
+        items: [],
         message: 'AISearch',
         keyword: "",
         isShow: true,
@@ -52,16 +49,16 @@
         data: store,
         created: function () {
             this.width = $("#el-input").width();
-            $("#app").show();
-          /*  $.ajax({
+
+            $.ajax({
                 type: "GET",
                 url: "json",
                 dataType: "json",
                 success: function (data) {
-
+                    $("#app").show();
                     store.items = data;
                 }
-            })*/
+            })
         },
         methods: {}
 

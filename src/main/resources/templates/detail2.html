@@ -7,10 +7,8 @@
     <link rel="stylesheet" href="/css/my-select.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
+<!--纯Thymeleaf-->
 <body>
-<script type="text/javascript" th:inline="javascript">
-    var dealMeasureEnum = [[${items}]];
-</script>
 <div id="app" class="search" style="display: none">
     <table class="table">
         <tr th:each="item:${items}">
@@ -56,7 +54,7 @@
         methods: {}
 
     })
-    
+
 
 </script>
 </html>

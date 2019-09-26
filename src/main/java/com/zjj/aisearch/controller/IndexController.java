@@ -53,7 +53,8 @@ public class IndexController {
     @RequestMapping("/todetail")
     public String toDetail(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
-            map.put("keyword", keyword);
+            List<Item> items = indexServiceImpl.searchItem(keyword);
+            attributes.addFlashAttribute("items1", items);
             return "redirect:detail";
         }
         return null;
@@ -63,31 +64,64 @@ public class IndexController {
     public String toDetail2(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
-            attributes.addFlashAttribute("items", items);
+            attributes.addFlashAttribute("items2", items);
             return "redirect:detail2";
+        }
+        return null;
+    }
+    @RequestMapping("/todetail3")
+    public String toDetai3(String keyword, RedirectAttributes attributes) {
+        if (!keyword.isEmpty()) {
+            map.put("keyword", keyword);
+            return "redirect:detail3";
         }
         return null;
     }
 
 
     @RequestMapping("/detail2")
-    public ModelAndView json(HttpServletRequest request, ModelAndView modelAndView) {
+    public ModelAndView detail2(HttpServletRequest request, ModelAndView modelAndView) {
         Map<String,?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
         if (maps != null) {
-            list = (List<Item>) maps.get("items");
+            list = (List<Item>) maps.get("items2");
         }
 
         modelAndView.setViewName("detail2");
 
         if (list != null) {
-            map.put("items", list);
+            map.put("items2", list);
             modelAndView.addObject("items", list);
             return modelAndView;
         } else {
-            List<Item> lists = (List<Item>)map.get("items");
+            List<Item> lists = (List<Item>)map.get("items2");
             modelAndView.addObject("items", lists);
             return modelAndView;
+        }
+
+
+    }
+
+    @RequestMapping("/detail")
+    public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView) {
+
+        Map<String,?> maps = RequestContextUtils.getInputFlashMap(request);
+        List<Item> list = null;
+        if (maps != null) {
+            list = (List<Item>) maps.get("items1");
+        }
+
+        modelAndView.setViewName("detail");
+
+        if (list != null) {
+            map.put("items1", list);
+            modelAndView.addObject("items", list);
+            return modelAndView;
+        } else {
+            List<Item> lists = (List<Item>)map.get("items1");
+            modelAndView.addObject("items", lists);
+            return modelAndView;
+
         }
 
 
