@@ -21,4 +21,5 @@ public class Location {
     private String location;
     private String X;
     private String Y;
+    private String keyword;
 }

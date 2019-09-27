@@ -8,6 +8,19 @@
         <result property="price" column="price"/>
     </resultMap>
 
+    <resultMap id="searchRecordLocation" type="SearchRecordLocation">
+        <id property="id" column="id"></id>
+        <result property="keyword" column="keyword"></result>
+        <result property="searchTime" column="searchtime"></result>
+        <association property="location" javaType="Location">
+            <result property="X" column="X"></result>
+            <result property="Y" column="Y"></result>
+            <result property="location" column="location"></result>
+            <result property="ip" column="ip"></result>
+            <result property="keyword" column="keyword2"></result>
+        </association>
+    </resultMap>
+
     <select id="index" resultType="User">
         select * from users where username = 'zjj'
     </select>
@@ -29,7 +42,7 @@
         insert into location(location_id, ip, location, X, Y) values(#{locationId},#{ip},#{location},#{X},#{Y})
     </insert>
 
-    <select id="search" resultType="Article">
+    <select id="search" resultType="searchRecordLocation">
         select * from article where content =  #{keyword}
     </select>
 
@@ -37,8 +50,8 @@
         select * from tb_item where title like "%"#{name}"%"
     </select>
 
-    <select id="selectSearchRecordLocation" resultType="SearchRecordLocation">
-        select s.id,s.keyword,l.keyword,s.searchtime,l.ip,l.location,l.X,l.Y from `searchrecord` s
+    <select id="selectSearchRecordLocation" resultMap="searchRecordLocation">
+        select s.id,s.keyword,s.searchtime,l.ip,l.location,l.X,l.Y,l.keyword keyword2 from `searchrecord` s
 
         left JOIN `location` l ON s.location_id = l.location_id
     </select>

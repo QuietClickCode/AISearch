@@ -15,29 +15,36 @@
             :data="items"
             style="width: 100%">
         <el-table-column
-                prop="keyword"
-                label="关键字"
-        >
-        </el-table-column>
+                prop="id"
+                label="Id"
+        ></el-table-column>
         <el-table-column
-                prop="ip"
+                prop="keyword"
+        label="关键字"
+        ></el-table-column>
+        <el-table-column
+                prop="location.ip"
                 label="IP地址">
         </el-table-column>
         <el-table-column
-                prop="location"
+                prop="location.location"
                 label="位置">
         </el-table-column>
         <el-table-column
-                prop="x"
+                prop="location.x"
                 label="经度">
         </el-table-column>
         <el-table-column
-                prop="y"
+                prop="location.y"
                 label="纬度">
         </el-table-column>
         <el-table-column
                 prop="searchTime"
                 label="搜索时间">
+        </el-table-column>
+        <el-table-column
+                prop="location.keyword"
+                label="关键字2">
         </el-table-column>
     </el-table>
 </div>
@@ -63,7 +70,9 @@
         data: store,
         created: function () {
             this.width = $("#el-input").width();
+
             $("#app").show();
+            console.log(JSON.stringify(dealMeasureEnum));
         },
         methods: {}
 
