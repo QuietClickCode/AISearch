@@ -57,9 +57,9 @@ public class IndexController {
         if (!info.getKeyword().isEmpty()) {
             /*125.84.181.44,重庆市重庆市,29.56471,106.55073
                     windows,chrome,74.0.3729.131*/
-            System.out.println(info + "------------");
             String[] locationArr = info.getLocation();
             String[] browserInfoArr = info.getBrowserInfo();
+            String pcOrPhone = info.getPcOrPhone();
             BrowserInfo bi = new BrowserInfo();
             Location lo = new Location();
             bi.setSystem(browserInfoArr[0]);
@@ -69,7 +69,7 @@ public class IndexController {
             lo.setLocation(locationArr[1]);
             lo.setX(locationArr[2]);
             lo.setY(locationArr[3]);
-
+            lo.setKeyword(pcOrPhone);
             indexServiceImpl.insertBrowserInfo(bi);
             indexServiceImpl.insertLocation(lo);
             SearchRecord searchRecord = new SearchRecord();

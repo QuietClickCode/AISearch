@@ -17,7 +17,12 @@
             <result property="Y" column="Y"></result>
             <result property="location" column="location"></result>
             <result property="ip" column="ip"></result>
-            <result property="keyword" column="keyword2"></result>
+            <result property="keyword" column="pcOrPhone"></result>
+        </association>
+        <association property="browserInfo" javaType="BrowserInfo">
+            <result property="system" column="system"></result>
+            <result property="browserType" column="browser_type"></result>
+            <result property="browserVersion" column="browser_version"></result>
         </association>
     </resultMap>
 
@@ -39,7 +44,7 @@
         <selectKey keyProperty="locationId" resultType="String" order="BEFORE">
             select uuid()
         </selectKey>
-        insert into location(location_id, ip, location, X, Y) values(#{locationId},#{ip},#{location},#{X},#{Y})
+        insert into location(location_id, ip, location, X, Y,keyword) values(#{locationId},#{ip},#{location},#{X},#{Y},#{keyword})
     </insert>
 
     <select id="search" resultType="searchRecordLocation">
@@ -51,9 +56,9 @@
     </select>
 
     <select id="selectSearchRecordLocation" resultMap="searchRecordLocation">
-        select s.id,s.keyword,s.searchtime,l.ip,l.location,l.X,l.Y,l.keyword keyword2 from `searchrecord` s
+        select s.id,s.keyword,s.searchtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone, b.system,b.browser_type,b.browser_version from `searchrecord` s
 
-        left JOIN `location` l ON s.location_id = l.location_id
+        left JOIN `location` l ON s.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = s.browser_info_id
     </select>
 
 </mapper>

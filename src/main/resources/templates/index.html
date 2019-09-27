@@ -122,6 +122,9 @@
     }
 
 
+
+
+
     function getLocation(cb) {
         var data = {key: "4MIBZ-LJMCF-6RKJA-NGKN4-JJZFF-2JBMJ"};//ip缺省时会自动获取请求端的公网IP,
         var url = "https://apis.map.qq.com/ws/location/v1/ip";
@@ -145,13 +148,18 @@
             }
         });
     }
-
-
     function cb(result) {
         app.toDetail(store.keyword, result)
     }
 
 
+    function pcOrPhone() {
+        if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            return "移动端"
+        } else {
+            return "pc端"
+        }
+    }
     var store = {visible: false, width: 0, message: 'AISearch', keyword: "", isShow: false, article: []};
     var app = new Vue({
         el: '#app',
@@ -174,6 +182,7 @@
             },
             toDetail: function (keyword, location) {
                 if (keyword != "") {
+
                     $.ajax({
                         type: "post",
                         contentType: "application/json;charset=utf-8",
@@ -181,7 +190,8 @@
                         data: JSON.stringify({
                             "keyword": keyword,
                             "location": location,
-                            "browserInfo": getBrowserInfo()
+                            "browserInfo": getBrowserInfo(),
+                            "pcOrPhone":pcOrPhone()
                         }),
                         success: function (data) {
                             window.location.href = "detail";

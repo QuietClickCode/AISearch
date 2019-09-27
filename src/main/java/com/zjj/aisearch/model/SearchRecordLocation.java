@@ -17,4 +17,5 @@ import lombok.ToString;
 @ToString
 public class SearchRecordLocation extends SearchRecord{
     private Location location;
+    private BrowserInfo browserInfo;
 }

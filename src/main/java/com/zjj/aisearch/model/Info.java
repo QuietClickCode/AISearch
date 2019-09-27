@@ -19,4 +19,5 @@ public class Info {
     private String keyword;
     private String[] location;
     private String[] browserInfo;
+    private String pcOrPhone;
 }
