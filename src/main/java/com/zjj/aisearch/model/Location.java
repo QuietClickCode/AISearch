@@ -22,4 +22,5 @@ public class Location {
     private String X;
     private String Y;
     private String keyword;
+    private String localIp;
 }

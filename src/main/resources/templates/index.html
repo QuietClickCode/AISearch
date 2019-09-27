@@ -122,9 +122,6 @@
     }
 
 
-
-
-
     function getLocation(cb) {
         var data = {key: "4MIBZ-LJMCF-6RKJA-NGKN4-JJZFF-2JBMJ"};//ip缺省时会自动获取请求端的公网IP,
         var url = "https://apis.map.qq.com/ws/location/v1/ip";
@@ -148,18 +145,62 @@
             }
         });
     }
+
     function cb(result) {
-        app.toDetail(store.keyword, result)
+        getUserIP(function (localIp) {
+            app.toDetail(store.keyword, result,localIp)
+        })
+    }
+
+
+    function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+        //compatibility for firefox and chrome
+        var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+        var pc = new myPeerConnection({
+                iceServers: []
+            }),
+            noop = function () {
+            },
+            localIPs = {},
+            ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+            key;
+
+        function iterateIP(ip) {
+            if (!localIPs[ip]) onNewIP(ip);
+            localIPs[ip] = true;
+        }
+
+        //create a bogus data channel
+        pc.createDataChannel("");
+
+        // create offer and set local description
+        pc.createOffer().then(function (sdp) {
+            sdp.sdp.split('\n').forEach(function (line) {
+                if (line.indexOf('candidate') < 0) return;
+                line.match(ipRegex).forEach(iterateIP);
+            });
+
+            pc.setLocalDescription(sdp, noop, noop);
+        }).catch(function (reason) {
+            // An error occurred, so handle the failure to connect
+        });
+
+        //sten for candidate events
+        pc.onicecandidate = function (ice) {
+            if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+            ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+        };
     }
 
 
     function pcOrPhone() {
-        if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
             return "移动端"
         } else {
             return "pc端"
         }
     }
+
     var store = {visible: false, width: 0, message: 'AISearch', keyword: "", isShow: false, article: []};
     var app = new Vue({
         el: '#app',
@@ -180,7 +221,7 @@
             blur: function () {
                 this.isShow = false;
             },
-            toDetail: function (keyword, location) {
+            toDetail: function (keyword, location,localIp) {
                 if (keyword != "") {
 
                     $.ajax({
@@ -191,7 +232,8 @@
                             "keyword": keyword,
                             "location": location,
                             "browserInfo": getBrowserInfo(),
-                            "pcOrPhone":pcOrPhone()
+                            "pcOrPhone": pcOrPhone(),
+                            "localIp":localIp
                         }),
                         success: function (data) {
                             window.location.href = "detail";

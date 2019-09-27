@@ -20,4 +20,5 @@ public class Info {
     private String[] location;
     private String[] browserInfo;
     private String pcOrPhone;
+    private String localIp;
 }

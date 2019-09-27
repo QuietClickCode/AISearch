@@ -70,6 +70,7 @@ public class IndexController {
             lo.setX(locationArr[2]);
             lo.setY(locationArr[3]);
             lo.setKeyword(pcOrPhone);
+            lo.setLocalIp(info.getLocalIp());
             indexServiceImpl.insertBrowserInfo(bi);
             indexServiceImpl.insertLocation(lo);
             SearchRecord searchRecord = new SearchRecord();
