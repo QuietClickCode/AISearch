@@ -20,4 +20,7 @@ public interface IndexService {
     int insertBrowserInfo(BrowserInfo browserInfo);
 
     int insertLocation(Location location);
+
+
+    List<SearchRecordLocation> selectSearchRecordLocation();
 }

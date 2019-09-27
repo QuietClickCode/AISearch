@@ -37,4 +37,10 @@
         select * from tb_item where title like "%"#{name}"%"
     </select>
 
+    <select id="selectSearchRecordLocation" resultType="SearchRecordLocation">
+        select s.id,s.keyword,s.searchtime,l.ip,l.location,l.X,l.Y from `searchrecord` s
+
+        left JOIN `location` l ON s.location_id = l.location_id
+    </select>
+
 </mapper>

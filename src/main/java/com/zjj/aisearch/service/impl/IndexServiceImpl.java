@@ -52,4 +52,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.insertLocation(location);
     }
 
+    @Override
+    public List<SearchRecordLocation> selectSearchRecordLocation() {
+        return indexMapper.selectSearchRecordLocation();
+    }
+
 }

@@ -16,4 +16,6 @@ public interface IndexMapper  {
 
     int insertLocation(Location location);
 
+    List<SearchRecordLocation> selectSearchRecordLocation();
+
 }

@@ -4,6 +4,7 @@ import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,7 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @program: AISearch
@@ -175,5 +179,14 @@ public class IndexController {
         return path;
     }
 
+    @RequestMapping("/list")
+    public String list(Model model) {
+
+        List<SearchRecordLocation> searchRecordLocation = indexServiceImpl.selectSearchRecordLocation();
+
+        model.addAttribute("items", searchRecordLocation);
+
+        return "list";
+    }
 
 }
