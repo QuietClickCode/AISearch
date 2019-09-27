@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="/css/element-ui.min.css">
@@ -11,6 +11,9 @@
     var dealMeasureEnum = [[${items}]];
 </script>
 <div id="app" style="display: none">
+    <div style="text-align: center">
+        <el-link type="primary" style="font-size: large">搜索记录详情</el-link>
+    </div>
     <el-table
             :data="items"
             style="width: 100%">
@@ -20,7 +23,7 @@
         ></el-table-column>
         <el-table-column
                 prop="keyword"
-        label="关键字"
+                label="关键字"
         ></el-table-column>
         <el-table-column
                 prop="location.ip"

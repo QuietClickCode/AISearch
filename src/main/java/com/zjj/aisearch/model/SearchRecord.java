@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @program: AISearch
  * @description: 搜索记录
@@ -26,5 +30,18 @@ public class SearchRecord {
     private String locationId;
 
     private String browserInfoId;
+
+    public void setSearchTime(String searchTime)  {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date dd = null;
+        try {
+            dd = sdf.parse(searchTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String d = sdf.format(dd);
+        this.searchTime = d;
+    }
+
 
 }

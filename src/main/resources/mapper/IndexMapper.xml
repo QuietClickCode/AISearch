@@ -47,7 +47,7 @@
     </select>
 
     <select id="searchItem" resultMap="itemMap">
-        select * from tb_item where title like "%"#{name}"%"
+        select * from tb_item where title like "%"#{keyword}"%"
     </select>
 
     <select id="selectSearchRecordLocation" resultMap="searchRecordLocation">
