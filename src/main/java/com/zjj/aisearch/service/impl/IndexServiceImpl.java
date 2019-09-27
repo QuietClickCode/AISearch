@@ -1,10 +1,7 @@
 package com.zjj.aisearch.service.impl;
 
 import com.zjj.aisearch.mapper.IndexMapper;
-import com.zjj.aisearch.model.Article;
-import com.zjj.aisearch.model.Item;
-import com.zjj.aisearch.model.SearchRecord;
-import com.zjj.aisearch.model.User;
+import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +40,16 @@ public class IndexServiceImpl implements IndexService {
     public List<Item> searchItem(String keyword) {
 
         return indexMapper.searchItem(keyword);
+    }
+
+    @Override
+    public int insertBrowserInfo(BrowserInfo browserInfo) {
+        return indexMapper.insertBrowserInfo(browserInfo);
+    }
+
+    @Override
+    public int insertLocation(Location location) {
+        return indexMapper.insertLocation(location);
     }
 
 }

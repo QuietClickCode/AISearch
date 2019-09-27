@@ -7,24 +7,17 @@ import lombok.ToString;
 
 /**
  * @program: AISearch
- * @description: 搜索记录
+ * @description: 用户浏览器信息
  * @author: zjj
- * @create: 2019-09-07 23:19:11
+ * @create: 2019-09-27 10:24:59
  **/
 @Data
 @Getter
 @Setter
 @ToString
-public class SearchRecord {
-
-    private Integer id;
-
-    private String keyword;
-
-    private String searchTime;
-
-    private String locationId;
-
+public class BrowserInfo {
     private String browserInfoId;
-
+    private String system;
+    private String browserType;
+    private String browserVersion;
 }

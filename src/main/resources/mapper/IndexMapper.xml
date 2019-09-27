@@ -1,26 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-    <mapper namespace="com.zjj.aisearch.mapper.IndexMapper">
+<mapper namespace="com.zjj.aisearch.mapper.IndexMapper">
     <resultMap id="itemMap" type="Item">
-        <id property="id" column="id" />
-        <result  property="title" column="title" />
-        <result  property="sellPoint" column="sell_point" />
-        <result  property="price" column="price" />
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="sellPoint" column="sell_point"/>
+        <result property="price" column="price"/>
     </resultMap>
 
     <select id="index" resultType="User">
         select * from users where username = 'zjj'
     </select>
-    
+
     <insert id="insertSearchRecord" parameterType="SearchRecord">
-         insert into searchrecord(keyword,searchtime) values(#{keyword},#{searchTime})
+         insert into searchrecord(keyword,searchtime,location_id,browser_info_id) values(#{keyword},#{searchTime},#{locationId},#{browserInfoId})
+    </insert>
+    <insert id="insertBrowserInfo" parameterType="BrowserInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey keyProperty="browserInfoId" resultType="String" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into browser_info(browser_info_id, system, browser_type, browser_version)
+        values(#{browserInfoId},#{system},#{browserType},#{browserVersion})
+    </insert>
+    <insert id="insertLocation" parameterType="Location" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey keyProperty="locationId" resultType="String" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into location(location_id, ip, location, X, Y) values(#{locationId},#{ip},#{location},#{X},#{Y})
     </insert>
 
-    <select id="search" resultType="Article" >
+    <select id="search" resultType="Article">
         select * from article where content =  #{keyword}
     </select>
 
-    <select id="searchItem" resultMap="itemMap" >
+    <select id="searchItem" resultMap="itemMap">
         select * from tb_item where title like "%"#{name}"%"
     </select>
 

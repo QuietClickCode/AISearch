@@ -1,10 +1,7 @@
 package com.zjj.aisearch.mapper;
 
 
-import com.zjj.aisearch.model.Article;
-import com.zjj.aisearch.model.Item;
-import com.zjj.aisearch.model.SearchRecord;
-import com.zjj.aisearch.model.User;
+import com.zjj.aisearch.model.*;
 
 import java.util.List;
 
@@ -14,4 +11,9 @@ public interface IndexMapper  {
 
     List<Article> search(String keyword);
     List<Item> searchItem(String keyword);
+
+    int insertBrowserInfo(BrowserInfo browserInfo);
+
+    int insertLocation(Location location);
+
 }

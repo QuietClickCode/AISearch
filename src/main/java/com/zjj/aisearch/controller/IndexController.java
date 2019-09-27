@@ -1,8 +1,6 @@
 package com.zjj.aisearch.controller;
 
-import com.zjj.aisearch.model.Article;
-import com.zjj.aisearch.model.Item;
-import com.zjj.aisearch.model.SearchRecord;
+import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: AISearch
@@ -53,9 +48,27 @@ public class IndexController {
     }
 
     @RequestMapping("/todetail")
-    public String toDetail(String keyword, RedirectAttributes attributes) {
+    public String toDetail(String keyword, String location, String browserInfo, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
+            /*125.84.181.44,重庆市重庆市,29.56471,106.55073
+                    windows,chrome,74.0.3729.131*/
+            String[] locationArr = location.split(",");
+            String[] browserInfoArr = browserInfo.split(",");
+            BrowserInfo bi = new BrowserInfo();
+            Location lo = new Location();
+            bi.setSystem(browserInfoArr[0]);
+            bi.setBrowserType(browserInfoArr[1]);
+            bi.setBrowserVersion(browserInfoArr[2]);
+            lo.setIp(locationArr[0]);
+            lo.setLocation(locationArr[1]);
+            lo.setX(locationArr[2]);
+            lo.setY(locationArr[3]);
+
+            indexServiceImpl.insertBrowserInfo(bi);
+            indexServiceImpl.insertLocation(lo);
             SearchRecord searchRecord = new SearchRecord();
+            searchRecord.setBrowserInfoId(bi.getBrowserInfoId());
+            searchRecord.setLocationId(lo.getLocationId());
             searchRecord.setSearchTime(new Date().toLocaleString());
             searchRecord.setKeyword(keyword);
             indexServiceImpl.insertSearchRecord(searchRecord);
