@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,21 +53,18 @@ public class IndexController {
     }
 
     @RequestMapping("/todetail")
-    public String toDetail(String keyword, String location, String browserInfo, RedirectAttributes attributes) {
-        if (!keyword.isEmpty()) {
+    public String toDetail(@RequestBody Info info, RedirectAttributes attributes) {
+        if (!info.getKeyword().isEmpty()) {
             /*125.84.181.44,重庆市重庆市,29.56471,106.55073
                     windows,chrome,74.0.3729.131*/
-            System.out.println(location);
-            String[] locationArr = location.split(",");
-            String[] browserInfoArr = browserInfo.split(",");
+            System.out.println(info + "------------");
+            String[] locationArr = info.getLocation();
+            String[] browserInfoArr = info.getBrowserInfo();
             BrowserInfo bi = new BrowserInfo();
             Location lo = new Location();
             bi.setSystem(browserInfoArr[0]);
             bi.setBrowserType(browserInfoArr[1]);
             bi.setBrowserVersion(browserInfoArr[2]);
-            System.out.println(locationArr.toString());
-            System.out.println(locationArr[0].toString());
-            System.out.println(locationArr[1].toString());
             lo.setIp(locationArr[0]);
             lo.setLocation(locationArr[1]);
             lo.setX(locationArr[2]);
@@ -78,10 +76,11 @@ public class IndexController {
             searchRecord.setBrowserInfoId(bi.getBrowserInfoId());
             searchRecord.setLocationId(lo.getLocationId());
             searchRecord.setSearchTime(new Date().toLocaleString());
-            searchRecord.setKeyword(keyword);
+            searchRecord.setKeyword(info.getKeyword());
             indexServiceImpl.insertSearchRecord(searchRecord);
-            List<Item> items = indexServiceImpl.searchItem(keyword);
+            List<Item> items = indexServiceImpl.searchItem(info.getKeyword());
             attributes.addFlashAttribute("items1", items);
+            /*这里不是很懂,不重定向会报错,重定向,前端页面不主动+window.location跳转也不生效,这儿必须前后端配合,缺一不可*/
             return "redirect:detail";
         }
         return null;
@@ -114,6 +113,7 @@ public class IndexController {
 
     @RequestMapping("/detail")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView) {
+
 
         Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
@@ -188,7 +188,6 @@ public class IndexController {
 
         List<SearchRecordLocation> searchRecordLocation = indexServiceImpl.selectSearchRecordLocation();
 
-        System.out.println(searchRecordLocation);
         model.addAttribute("items", searchRecordLocation);
 
         return "list";
