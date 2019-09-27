@@ -2,6 +2,7 @@ package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.Article;
 import com.zjj.aisearch.model.Item;
+import com.zjj.aisearch.model.SearchRecord;
 import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,10 @@ public class IndexController {
     @RequestMapping("/todetail")
     public String toDetail(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
+            SearchRecord searchRecord = new SearchRecord();
+            searchRecord.setSearchTime(new Date().toLocaleString());
+            searchRecord.setKeyword(keyword);
+            indexServiceImpl.insertSearchRecord(searchRecord);
             List<Item> items = indexServiceImpl.searchItem(keyword);
             attributes.addFlashAttribute("items1", items);
             return "redirect:detail";
@@ -63,7 +69,12 @@ public class IndexController {
     @RequestMapping("/todetail2")
     public String toDetail2(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
+            SearchRecord searchRecord = new SearchRecord();
+            searchRecord.setSearchTime(new Date().toLocaleString());
+            searchRecord.setKeyword(keyword);
+            indexServiceImpl.insertSearchRecord(searchRecord);
             List<Item> items = indexServiceImpl.searchItem(keyword);
+
             attributes.addFlashAttribute("items2", items);
             return "redirect:detail2";
         }
@@ -78,8 +89,6 @@ public class IndexController {
         }
         return null;
     }
-
-
 
 
     @RequestMapping("/detail")
@@ -134,6 +143,10 @@ public class IndexController {
     @ResponseBody
     public List<Item> detail3() {
         if (map.get("items3") == null) {
+            SearchRecord searchRecord = new SearchRecord();
+            searchRecord.setSearchTime(new Date().toLocaleString());
+            searchRecord.setKeyword((String) map.get("keyword"));
+            indexServiceImpl.insertSearchRecord(searchRecord);
             List<Item> items = indexServiceImpl.searchItem((String) map.get("keyword"));
             map.put("items3", items);
             return items;
