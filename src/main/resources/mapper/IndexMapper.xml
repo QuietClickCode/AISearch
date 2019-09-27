@@ -12,13 +12,8 @@
         <id property="id" column="id"></id>
         <result property="keyword" column="keyword"></result>
         <result property="searchTime" column="searchtime"></result>
-        <association property="location" javaType="Location">
-            <result property="X" column="X"></result>
-            <result property="Y" column="Y"></result>
-            <result property="location" column="location"></result>
-            <result property="ip" column="ip"></result>
-            <result property="keyword" column="keyword2"></result>
-        </association>
+        <result property="keyword2" column="keyword2"></result>
+
     </resultMap>
 
     <select id="index" resultType="User">

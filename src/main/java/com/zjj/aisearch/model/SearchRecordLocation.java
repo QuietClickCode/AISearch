@@ -16,5 +16,5 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SearchRecordLocation extends SearchRecord{
-    private Location location;
+    private String keyword2;
 }
