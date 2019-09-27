@@ -20,4 +20,5 @@ public class SearchRecordLocation extends SearchRecord{
     private String location;
     private String X;
     private String Y;
+    private String keyword;
 }

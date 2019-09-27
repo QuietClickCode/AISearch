@@ -184,6 +184,7 @@ public class IndexController {
 
         List<SearchRecordLocation> searchRecordLocation = indexServiceImpl.selectSearchRecordLocation();
 
+        System.out.println(searchRecordLocation);
         model.addAttribute("items", searchRecordLocation);
 
         return "list";
