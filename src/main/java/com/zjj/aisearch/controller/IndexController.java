@@ -45,9 +45,7 @@ public class IndexController {
             List<Item> items = indexServiceImpl.searchItem(keyword);
             return items;
         }
-
         return null;
-
     }
 
     @RequestMapping("/todetail")
