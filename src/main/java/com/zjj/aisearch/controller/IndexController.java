@@ -55,10 +55,8 @@ public class IndexController {
         String id = httpServletRequest.getSession().getId();
 
         if (info.getKeyword().equals(":article")) {
-            System.out.println("========================");
             return "redirect:article";
         }
-        System.out.println("-------------------");
         if (!info.getKeyword().isEmpty()) {
             /*125.84.181.44,重庆市重庆市,29.56471,106.55073
                     windows,chrome,74.0.3729.131*/
