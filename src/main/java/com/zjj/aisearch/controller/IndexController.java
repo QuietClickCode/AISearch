@@ -30,6 +30,7 @@ public class IndexController {
     @Autowired
     private IndexService indexServiceImpl;
 
+    /*这样用可能有缺陷,内存泄漏*/
     private HashMap<String, Object> map = new HashMap<>();
 
 
