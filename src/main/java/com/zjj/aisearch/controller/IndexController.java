@@ -89,6 +89,7 @@ public class IndexController {
         return null;
     }
 
+    
     @RequestMapping("/todetail2")
     public String toDetail2(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
