@@ -55,54 +55,55 @@
 
     <el-table height="440"
               :data="items"
-              style="width: 100%">
+            >
         <el-table-column
                 prop="id"
-                label="Id"
+                label="Id" fixed
         ></el-table-column>
-        <el-table-column
+        <el-table-column  width="400px"
                 prop="keyword"
                 label="关键字"
         ></el-table-column>
-        <el-table-column
+        <el-table-column width="120px"
                 prop="location.ip"
                 label="外网IP">
         </el-table-column>
-        <el-table-column
+        <el-table-column  width="120px"
                 prop="location.localIp"
                 label="局域网IP">
         </el-table-column>
-        <el-table-column
+        <el-table-column  width="150px"
                 prop="location.location"
                 label="位置">
         </el-table-column>
-        <el-table-column
+        <el-table-column  width="100px"
                 prop="location.x"
                 label="经度">
         </el-table-column>
-        <el-table-column
+        <el-table-column  width="100px"
                 prop="location.y"
                 label="纬度">
         </el-table-column>
-        <el-table-column
-                prop="searchTime"
-                label="搜索时间">
-        </el-table-column>
-        <el-table-column
+
+        <el-table-column  width="100px"
                 prop="browserInfo.system"
                 label="操作系统">
         </el-table-column>
-        <el-table-column
+        <el-table-column  width="100px"
                 prop="browserInfo.browserType"
                 label="浏览器类型">
         </el-table-column>
-        <el-table-column
+        <el-table-column  width="120px"
                 prop="browserInfo.browserVersion"
                 label="浏览器版本">
         </el-table-column>
-        <el-table-column
+        <el-table-column  width="100px"
                 prop="location.keyword"
                 label="设备">
+        </el-table-column>
+        <el-table-column  fixed="right" width="200px"
+                          prop="searchTime"
+                          label="搜索时间">
         </el-table-column>
     </el-table>
     <div style="display: flex; justify-content:center">

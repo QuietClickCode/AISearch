@@ -12,6 +12,9 @@
             justify-content: center;
             align-items: center;
         }
+        .li {
+            white-space: nowrap;overflow: hidden;
+        }
 
     </style>
 </head>
@@ -24,7 +27,7 @@
 
         <ul style="position: absolute;" v-show="isShow">
             <li @click="upScreen(item.title)" v-for="item in store.article" :value="item.id"
-                :style="{width : width +'px'}">
+                :style="{width : width +'px',height:height +'px'}" th:class="li">
                 {{item.title}}
             </li>
         </ul>
@@ -201,7 +204,7 @@
         }
     }
 
-    var store = {visible: false, width: 0, message: 'AISearch', keyword: "", isShow: false, article: []};
+    var store = {visible: false, width: 0, height: 40,message: 'AISearch', keyword: "", isShow: false, article: []};
     var app = new Vue({
         el: '#app',
         data: store,
