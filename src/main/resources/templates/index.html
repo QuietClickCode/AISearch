@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/my-select.css">
     <style>
+        html, body {
+
+            height: 100%;
+            margin: 0;
+        }
         .search {
             height: 100vh;
             display: flex;
@@ -18,14 +23,14 @@
 
     </style>
 </head>
-<body>
+<body >
 <div id="app" class="search" style="display: none">
     <div @click="toggle" @keyup.enter="toDetails(store.keyword)">
         <el-input id="el-input" style="width: 500px;" @input="searchItem(store.keyword)" placeholder="搜你想要"
                   v-model="store.keyword">
         </el-input>
 
-        <ul style="position: absolute;" v-show="isShow">
+        <ul style="position: absolute;overflow-y: auto;overflow-x: hidden;width:500px;height:250px;" v-show="isShow">
             <li @click="upScreen(item.title)" v-for="item in store.article" :value="item.id"
                 :style="{width : width +'px',height:height +'px'}" th:class="li">
                 {{item.title}}

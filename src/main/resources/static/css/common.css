@@ -2,5 +2,5 @@
 .query-area {padding:3px 0;}
 .query-row {display:flex;}
 .query-title {width:80px; line-height:48px; padding-right:5px; text-align:right}
-.query-input {width:300px; display:flex; align-items:center;}
+.query-input {width:360px; display:flex; align-items:center;}
 
