@@ -114,6 +114,7 @@ public class IndexController {
     }
 
 
+    
     @RequestMapping("/detail")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView,HttpServletRequest httpServletRequest) {
         String id = httpServletRequest.getSession().getId();
