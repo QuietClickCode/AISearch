@@ -53,7 +53,9 @@ public class IndexController {
     }
 
     @RequestMapping("/todetail")
-    public String toDetail(@RequestBody Info info, RedirectAttributes attributes) {
+    public String toDetail(@RequestBody Info info, RedirectAttributes attributes, HttpServletRequest httpServletRequest) {
+        String id = httpServletRequest.getSession().getId();
+
         if (!info.getKeyword().isEmpty()) {
             /*125.84.181.44,重庆市重庆市,29.56471,106.55073
                     windows,chrome,74.0.3729.131*/
@@ -80,7 +82,7 @@ public class IndexController {
             searchRecord.setKeyword(info.getKeyword());
             indexServiceImpl.insertSearchRecord(searchRecord);
             List<Item> items = indexServiceImpl.searchItem(info.getKeyword());
-            attributes.addFlashAttribute("items1", items);
+            attributes.addFlashAttribute(id + "-" + "items1", items);
             /*这里不是很懂,不重定向会报错,重定向,前端页面不主动+window.location跳转也不生效,这儿必须前后端配合,缺一不可*/
             return "redirect:detail";
         }
@@ -113,23 +115,24 @@ public class IndexController {
 
 
     @RequestMapping("/detail")
-    public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView) {
+    public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView,HttpServletRequest httpServletRequest) {
+        String id = httpServletRequest.getSession().getId();
 
 
         Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
         if (maps != null) {
-            list = (List<Item>) maps.get("items1");
+            list = (List<Item>) maps.get(id + "-" + "items1");
         }
 
         modelAndView.setViewName("detail");
 
         if (list != null) {
-            map.put("items1", list);
+            map.put(id + "-" + "items1", list);
             modelAndView.addObject("items", list);
             return modelAndView;
         } else {
-            List<Item> lists = (List<Item>) map.get("items1");
+            List<Item> lists = (List<Item>) map.get(id + "-" + "items1");
             modelAndView.addObject("items", lists);
             return modelAndView;
 
