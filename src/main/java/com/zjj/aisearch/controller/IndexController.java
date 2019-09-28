@@ -33,6 +33,7 @@ public class IndexController {
     /*这样用可能有缺陷,内存泄漏*/
     private HashMap<String, Object> map = new HashMap<>();
 
+    
 
     @RequestMapping("/searchItem")
     @ResponseBody
