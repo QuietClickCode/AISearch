@@ -48,8 +48,8 @@
         insert into location(location_id, ip, location, X, Y,keyword,local_ip) values(#{locationId},#{ip},#{location},#{X},#{Y},#{keyword},#{localIp})
     </insert>
 
-    <select id="search" resultType="searchRecordLocation">
-        select * from article where content =  #{keyword}
+    <select id="search" resultType="Article">
+        select * from article where id =  #{id}
     </select>
 
     <select id="searchItem" resultMap="itemMap">

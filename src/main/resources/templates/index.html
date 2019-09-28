@@ -11,19 +11,22 @@
             height: 100%;
             margin: 0;
         }
+
         .search {
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         .li {
-            white-space: nowrap;overflow: hidden;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
     </style>
 </head>
-<body >
+<body>
 <div id="app" class="search" style="display: none">
     <div @click="toggle" @keyup.enter="toDetails(store.keyword)">
         <el-input id="el-input" style="width: 500px;" @input="searchItem(store.keyword)" placeholder="搜你想要"
@@ -156,7 +159,7 @@
 
     function cb(result) {
         getUserIP(function (localIp) {
-            app.toDetail(store.keyword, result,localIp)
+            app.toDetail(store.keyword, result, localIp)
         })
     }
 
@@ -209,7 +212,7 @@
         }
     }
 
-    var store = {visible: false, width: 0, height: 40,message: 'AISearch', keyword: "", isShow: false, article: []};
+    var store = {visible: false, width: 0, height: 40, message: 'AISearch', keyword: "", isShow: false, article: []};
     var app = new Vue({
         el: '#app',
         data: store,
@@ -229,28 +232,30 @@
             blur: function () {
                 this.isShow = false;
             },
-            toDetail: function (keyword, location,localIp) {
+            toDetail: function (keyword, location, localIp) {
                 if (keyword != "") {
 
-                    $.ajax({
-                        type: "post",
-                        contentType: "application/json;charset=utf-8",
-                        url: "/todetail",
-                        data: JSON.stringify({
-                            "keyword": keyword,
-                            "location": location,
-                            "browserInfo": getBrowserInfo(),
-                            "pcOrPhone": pcOrPhone(),
-                            "localIp":localIp
-                        }),
-                        success: function (data) {
-                            window.location.href = "detail";
-                        }
-                    });
+                    if (keyword == ":article") {
+                        window.location.href = "article";
+                    } else {
+                        $.ajax({
+                            type: "post",
+                            contentType: "application/json;charset=utf-8",
+                            url: "/todetail",
+                            data: JSON.stringify({
+                                "keyword": keyword,
+                                "location": location,
+                                "browserInfo": getBrowserInfo(),
+                                "pcOrPhone": pcOrPhone(),
+                                "localIp": localIp
+                            }),
+                            success: function (data) {
+                                window.location.href = "detail";
+                            }
+                        });
+                    }
                     /*  window.location.href = "todetail?keyword=" + keyword + "&location=" + location
                       +"&browserInfo=" + getBrowserInfo()*/
-
-
                 }
 
             },

@@ -32,7 +32,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<Article> search(String keyword) {
+    public Article search(int keyword) {
         return indexMapper.search(keyword);
     }
 

@@ -9,7 +9,7 @@ public interface IndexMapper  {
     User index();
     int insertSearchRecord(SearchRecord searchRecord);
 
-    List<Article> search(String keyword);
+    Article search(int keyword);
     List<Item> searchItem(String keyword);
 
     int insertBrowserInfo(BrowserInfo browserInfo);

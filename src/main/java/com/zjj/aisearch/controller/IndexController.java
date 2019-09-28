@@ -14,10 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @program: AISearch
@@ -33,29 +32,31 @@ public class IndexController {
 
     private HashMap<String, Object> map = new HashMap<>();
 
-    @RequestMapping("/search")
-    @ResponseBody
-    public List<Article> search(String keyword) {
-        List<Article> articles = indexServiceImpl.search(keyword);
-        return articles;
-
-    }
 
     @RequestMapping("/searchItem")
     @ResponseBody
-    public List<Item> searchItem(String keyword) {
+    public Object searchItem(String keyword, HttpServletResponse res) throws IOException {
+        if (keyword.equals(":article")) {
+            return null;
+        }
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
             return items;
         }
+
         return null;
 
     }
 
     @RequestMapping("/todetail")
-    public String toDetail(@RequestBody Info info, RedirectAttributes attributes, HttpServletRequest httpServletRequest) {
+    public String toDetail(@RequestBody Info info, RedirectAttributes attributes, HttpServletRequest httpServletRequest, HttpServletResponse res) throws IOException {
         String id = httpServletRequest.getSession().getId();
 
+        if (info.getKeyword().equals(":article")) {
+            System.out.println("========================");
+            return "redirect:article";
+        }
+        System.out.println("-------------------");
         if (!info.getKeyword().isEmpty()) {
             /*125.84.181.44,重庆市重庆市,29.56471,106.55073
                     windows,chrome,74.0.3729.131*/
@@ -87,6 +88,7 @@ public class IndexController {
             return "redirect:detail";
         }
         return null;
+
     }
 
 
@@ -114,13 +116,28 @@ public class IndexController {
         return null;
     }
 
+    @RequestMapping("/article")
+    public ModelAndView article(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
+            httpServletRequest, HttpServletResponse res) throws IOException {
+        Article article = new Article();
+        for (; ; ) {
+            Random r = new Random();
+            int id = r.nextInt(101268) + 1;
+            article = indexServiceImpl.search(id);
+            if (article != null) {
+                break;
+            }
+        }
 
+        modelAndView.setViewName("article");
+        modelAndView.addObject("article", article);
+        return modelAndView;
+    }
 
     @RequestMapping("/detail")
-    public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView,HttpServletRequest httpServletRequest) {
+    public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
+            httpServletRequest, HttpServletResponse res) throws IOException {
         String id = httpServletRequest.getSession().getId();
-
-
         Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
         if (maps != null) {
@@ -139,11 +156,9 @@ public class IndexController {
             return modelAndView;
 
         }
-
-
     }
 
-    
+
     @RequestMapping("/detail2")
     public ModelAndView detail2(HttpServletRequest request, ModelAndView modelAndView) {
         Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
