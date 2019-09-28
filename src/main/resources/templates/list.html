@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/my-select.css">
     <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 <body>
 <script type="text/javascript" th:inline="javascript">
@@ -17,7 +18,7 @@
     </div>
 
 
-    <div class="query-area" >
+    <div class="query-area">
         <div class="query-row">
             <div class="query-title">关键字</div>
             <div class="query-input">
@@ -30,6 +31,8 @@
             <div class="query-title">搜索时间</div>
             <div class="query-input">
                 <el-input></el-input>
+                至
+                <el-input></el-input>
             </div>
 
         </div>
@@ -38,7 +41,7 @@
             <div class="query-input">
                 <el-input></el-input>
             </div>
-            <div class="query-title">浏览器类型</div>
+            <div class="query-title">浏览器</div>
             <div class="query-input">
                 <el-input></el-input>
             </div>
@@ -50,9 +53,9 @@
     </div>
 
 
-    <el-table
-            :data="items"
-            style="width: 100%">
+    <el-table height="440"
+              :data="items"
+              style="width: 100%">
         <el-table-column
                 prop="id"
                 label="Id"
@@ -102,12 +105,35 @@
                 label="设备">
         </el-table-column>
     </el-table>
+    <div style="display: flex; justify-content:center">
+            <div aria-label="Page navigation">
+                <ul class="pagination" style="width:300px;">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script src="/js/jquery-1.9.1.min.js"></script>
 <script src="/js/vue.min.js" type="text/javascript"></script>
 <script src="/js/element-ui.min.js" type="text/javascript"></script>
 <script src="/js/my-select.js" type="text/javascript"></script>
+<script src="/js/bootstrap.min.js" type="text/javascript"></script>
 
 <script>
     var store = {
