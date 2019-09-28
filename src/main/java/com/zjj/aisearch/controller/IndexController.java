@@ -89,7 +89,7 @@ public class IndexController {
         return null;
     }
 
-    
+
     @RequestMapping("/todetail2")
     public String toDetail2(String keyword, RedirectAttributes attributes) {
         if (!keyword.isEmpty()) {
@@ -143,6 +143,7 @@ public class IndexController {
 
     }
 
+    
     @RequestMapping("/detail2")
     public ModelAndView detail2(HttpServletRequest request, ModelAndView modelAndView) {
         Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
