@@ -35,11 +35,6 @@ public class IndexController implements PageProcessor {
         return "index";
     }
 
-    @RequestMapping("jianshu")
-    @ResponseBody
-    public void jianshu(String keyword) {
-        Spider.create(this).addUrl("https://www.jianshu.com").thread(3).run();
-    }
 
     @RequestMapping("zhihu")
     @ResponseBody
