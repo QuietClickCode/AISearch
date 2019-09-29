@@ -4,6 +4,7 @@ import com.zjj.aisearch.mapper.IndexMapper;
 import com.zjj.aisearch.model.Article;
 import com.zjj.aisearch.model.SearchRecord;
 import com.zjj.aisearch.model.User;
+import com.zjj.aisearch.model.ZhihuArticle;
 import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,10 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public int insertArticle(Article article) {
         return indexMapper.insertArticle(article);
+    }
+
+    @Override
+    public int insertZhihuArticle(ZhihuArticle article) {
+        return indexMapper.insertZhihuArticle(article);
     }
 }

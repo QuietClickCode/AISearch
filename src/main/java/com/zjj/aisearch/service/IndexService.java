@@ -3,6 +3,7 @@ package com.zjj.aisearch.service;
 import com.zjj.aisearch.model.Article;
 import com.zjj.aisearch.model.SearchRecord;
 import com.zjj.aisearch.model.User;
+import com.zjj.aisearch.model.ZhihuArticle;
 
 /**
  * @program: aisearch
@@ -14,4 +15,5 @@ public interface IndexService {
     User index();
     int insertSearchRecord(SearchRecord searchRecord);
     int insertArticle(Article article);
+    int insertZhihuArticle(ZhihuArticle article);
 }
