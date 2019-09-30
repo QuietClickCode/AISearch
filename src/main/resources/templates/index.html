@@ -245,7 +245,7 @@
         methods: {
             //enter或者button激发,用于记录用户上下文
             toDetails: function (keyword) {
-                var end = keyword.lastIndexOf("");
+                var end = keyword.lastIndexOf(":end");
                 if (keyword.substring(0, 5) == ":note") {
                 } else {
                     getLocation(cb);//toDetail()
@@ -275,20 +275,22 @@
             toDetail: function (keyword, location, localIp) {
 
                 if (keyword != "") {
-                    if (keyword.substring(0, 1) == ":") {
+                    if (keyword.substring(0, 5) == ":note") {
                         $.ajax({
                             type: "post",
                             contentType: "application/json",
-                            url: "/command",
+                            url: "/note",
                             data: JSON.stringify({
-                                "keyword": keyword.substring(1),
+                                "keyword": keyword.substring(6),
                                 "location": JSON.stringify(location),
                                 "browserInfo": JSON.stringify(getBrowserInfo()),
                                 "pcOrPhone": pcOrPhone(),
                                 "localIp": localIp
                             }),
                             success: function (data) {
-                                window.location.href = keyword.substring(1);
+                                store.note += data;
+
+                                store.keyword = "";
                             }
                         });
                     } else {
