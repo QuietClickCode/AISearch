@@ -35,9 +35,13 @@
 <body>
 <div id="app" class="search" style="display: none">
     <div @click="toggle" @keyup.enter="toDetails(store.keyword)">
-        <el-input type="textarea" :placeholder="store.notePlaceholder" :rows="10" class="textarea" v-model="store.note":style="{display:isSee}"
+        <!--notePlaceholder考虑动态变化,比如,小知识,小技巧,温馨的话,历史事件之类的,不要固定死-->
+        <el-input type="textarea" :placeholder="store.notePlaceholder" :rows="10" class="textarea" v-model="store.note"
+                  :style="{display:isSee}"
         ></el-input>
-        <el-input type="textarea" autosize id="el-input" style="width: 500px;" @input="searchItem(store.keyword)" placeholder="搜你想要"
+        <!--notePlaceholder考虑动态变化,比如,小知识,小技巧,温馨的话,历史事件之类的,不要固定死,输入框也考虑动态加点东西,根据用户习惯,几秒滚动哈,用placeholder实现-->
+        <el-input type="textarea" autosize id="el-input" style="width: 500px;" @input="searchItem(store.keyword)"
+                  placeholder="搜你想要"
                   v-model="store.keyword">
         </el-input>
         <ul style="position: absolute;overflow-y: auto;overflow-x: hidden;width:500px;height:250px;" v-show="isShow">
@@ -218,8 +222,8 @@
     }
 
     var store = {
-        notePlaceholder:"写点什么吧～～",
-        note:"",
+        notePlaceholder: "写点什么吧～～",
+        note: "",
         isSee: 'none',
         visible: false,
         width: 0,
@@ -241,7 +245,7 @@
         methods: {
             //enter或者button激发,用于记录用户上下文
             toDetails: function (keyword) {
-                if (keyword.substring(0,5) == ":note") {
+                if (keyword.substring(0, 5) == ":note") {
                 } else {
                     getLocation(cb);//toDetail()
                 }
