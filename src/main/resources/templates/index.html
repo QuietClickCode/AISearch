@@ -245,8 +245,12 @@
         methods: {
             //enter或者button激发,用于记录用户上下文
             toDetails: function (keyword) {
+                var end = keyword.lastIndexOf("");
                 if (keyword.substring(0, 5) == ":note") {
                 } else {
+                    getLocation(cb);//toDetail()
+                }
+                if (keyword.substring(end) == ":end\n") {
                     getLocation(cb);//toDetail()
                 }
             },
