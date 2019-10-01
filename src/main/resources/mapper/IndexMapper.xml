@@ -51,6 +51,10 @@
     <insert id="insertSearchRecord" parameterType="SearchRecord">
          insert into searchrecord(keyword,searchtime,location_id,browser_info_id) values(#{keyword},#{searchTime},#{locationId},#{browserInfoId})
     </insert>
+    <!--注册用户-->
+    <insert id="insert" parameterType="SearchRecord">
+         insert into searchrecord(keyword,searchtime,location_id,browser_info_id) values(#{keyword},#{searchTime},#{locationId},#{browserInfoId})
+    </insert>
     <!--插入便签记录-->
     <insert id="insertAiNote" parameterType="AiNote">
          insert into ai_note(content,createtime,location_id,browser_info_id) values(#{content},#{createtime},#{locationId},#{browserInfoId})

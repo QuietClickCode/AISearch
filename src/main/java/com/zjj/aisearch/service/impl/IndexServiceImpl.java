@@ -72,4 +72,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.selectUserByUserName(username);
     }
 
+    @Override
+    public int insertUser(User user) {
+        return indexMapper.insertUser(user);
+    }
+
 }

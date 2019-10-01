@@ -29,4 +29,6 @@ public interface IndexService {
     List<AiNoteLocation> selectAiNoteLocation();
 
     User selectUserByUserName(String username);
+
+    int insertUser(User user);
 }

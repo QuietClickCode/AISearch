@@ -55,8 +55,9 @@ public class IndexController {
     @RequestMapping("/toregist")
     @ResponseBody
     public String toregist(@RequestBody User user, HttpServletRequest request) {
-        String username = user.getUsername();
-        indexServiceImpl.insertUser();
+        int i = indexServiceImpl.insertUser(user);
+        System.out.println(i+"---------------");
+        return null;
     }
 
     @RequestMapping("/login")
