@@ -112,6 +112,8 @@ public class IndexController {
             lo.setLocalIp(info.getLocalIp());
             indexServiceImpl.insertBrowserInfo(bi);
             indexServiceImpl.insertLocation(lo);
+
+
             SearchRecord searchRecord = new SearchRecord();
             searchRecord.setBrowserInfoId(bi.getBrowserInfoId());
             searchRecord.setLocationId(lo.getLocationId());
