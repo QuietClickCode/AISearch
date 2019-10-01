@@ -261,7 +261,7 @@
                     var isNote = keyword.startsWith('\"');
                     var isEnd = keyword.endsWith('\"\n');
                     var end = keyword.lastIndexOf('\"\n');
-                    if(isNote) {
+                    if (isNote) {
                         store.isSee = "block";
                     }
                     if (isNote && isEnd) {
@@ -270,14 +270,18 @@
                             contentType: "application/json",
                             url: "/note",
                             data: JSON.stringify({
-                                "keyword": keyword.substring(1,end),
+                                "keyword": keyword.substring(1, end),
                                 "location": JSON.stringify(location),
                                 "browserInfo": JSON.stringify(getBrowserInfo()),
                                 "pcOrPhone": pcOrPhone(),
                                 "localIp": localIp
                             }),
                             success: function (data) {
-                                store.note += "\n".concat(data);
+                                if (store.note == "") {
+                                    store.note = '"'.concat(data).concat('"');
+                                } else {
+                                    store.note += "\n".concat('"').concat(data).concat('"');
+                                }
                                 store.keyword = "";
                             }
                         });
