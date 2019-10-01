@@ -27,12 +27,12 @@
     var dealMeasureEnum = [[${items}]];
 </script>
 <div id="app" style="display: none">
-    <div class="search">
+    <div class="search" @keyup.enter="logins()">
         <el-form :label-position="labelPosition" label-width="80px" :model="store.login">
             <el-form-item label="用户名">
                 <el-input style="width:300px;" v-model="login.username"></el-input>
             </el-form-item>
-            <el-form-item label="密码">
+            <el-form-item  label="密码">
                 <el-input style="width:300px;" v-model="login.password" type="password"></el-input>
             </el-form-item>
         </el-form>
@@ -64,7 +64,11 @@
         created: function () {
             $("#app").show();
         },
-        methods: {}
+        methods: {
+            logins:function () {
+                alert("dd")
+            }
+        }
 
     })
 
