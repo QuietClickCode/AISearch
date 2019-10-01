@@ -92,4 +92,14 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.selectLoginLogLocation();
     }
 
+    @Override
+    public int insertLogoutLog(LogoutLog logoutLog) {
+        return indexMapper.insertLogoutLog(logoutLog);
+    }
+
+    @Override
+    public List<LogoutLogLocation> selectLogoutLocation() {
+        return indexMapper.selectLogoutLogLocation();
+    }
+
 }

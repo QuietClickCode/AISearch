@@ -37,4 +37,8 @@ public interface IndexService {
     int insertLoginLog(LoginLog loginLog);
 
     List<LoginLogLocation> selectLoginLocation();
+
+    int insertLogoutLog(LogoutLog logoutLog);
+
+    List<LogoutLogLocation> selectLogoutLocation();
 }

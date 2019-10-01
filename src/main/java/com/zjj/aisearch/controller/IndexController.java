@@ -145,9 +145,35 @@ public class IndexController {
     @RequestMapping("/command")
     @ResponseBody
     public String command(@RequestBody Info info, HttpServletRequest request) throws IOException {
+        String[] locationArr = info.getLocation();
+        String[] browserInfoArr = info.getBrowserInfo();
+        String pcOrPhone = info.getPcOrPhone();
+        BrowserInfo bi = new BrowserInfo();
+        Location lo = new Location();
+        bi.setSystem(browserInfoArr[0]);
+        bi.setBrowserType(browserInfoArr[1]);
+        bi.setBrowserVersion(browserInfoArr[2]);
+        lo.setIp(locationArr[0]);
+        lo.setLocation(locationArr[1]);
+        lo.setX(locationArr[2]);
+        lo.setY(locationArr[3]);
+        lo.setKeyword(pcOrPhone);
+        lo.setLocalIp(info.getLocalIp());
+        indexServiceImpl.insertBrowserInfo(bi);
+        indexServiceImpl.insertLocation(lo);
+        String browserInfoId = bi.getBrowserInfoId();
+        String locationId = lo.getLocationId();
+
+        User user = (User) request.getSession().getAttribute("user");
         if (info.getKeyword().equals("logout")) {
+            LogoutLog logoutLog = new LogoutLog();
+            logoutLog.setCreatetime(new Date().toLocaleString());
+            logoutLog.setBrowserInfoId(browserInfoId);
+            logoutLog.setLocationId(locationId);
+            logoutLog.setUserId(user.getId());
+            indexServiceImpl.insertLogoutLog(logoutLog);
             request.getSession().invalidate();
-            return "退出成功";
+            return "login";
         }
         return "其他操作";
     }
@@ -358,6 +384,12 @@ public class IndexController {
         List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
         model.addAttribute("items", loginLogLocation);
         return "loginloglist";
+    }
+    @RequestMapping("/logoutloglist")
+    public String logoutLogList(Model model) {
+        List<LogoutLogLocation> logoutLogLocation = indexServiceImpl.selectLogoutLocation();
+        model.addAttribute("items", logoutLogLocation);
+        return "logoutloglist";
     }
 
 }
