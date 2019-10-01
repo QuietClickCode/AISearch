@@ -31,4 +31,6 @@ public interface IndexService {
     User selectUserByUserName(String username);
 
     int insertUser(User user);
+
+    List<UserLocation> selectUserLocation();
 }

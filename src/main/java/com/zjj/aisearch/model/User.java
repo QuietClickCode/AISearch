@@ -25,6 +25,8 @@ public class User {
     private String username;
     private String password;
     private String createtime;
+    private String browserInfoId;
+    private String locationId;
 
     public void setCreatetime(String createtime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

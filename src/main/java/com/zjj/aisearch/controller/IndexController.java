@@ -60,9 +60,27 @@ public class IndexController {
 
     @RequestMapping("/toregist")
     @ResponseBody
-    public String toregist(@RequestBody UserLocation userLocation, HttpServletRequest request) {
-        userLocation.setCreatetime(new Date().toLocaleString());
-        int i = indexServiceImpl.insertUser(userLocation);
+    public String toregist(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+        BrowserInfo browserInfo = new BrowserInfo();
+        browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
+        browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
+        browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
+        indexServiceImpl.insertBrowserInfo(browserInfo);
+        String browserInfoId = browserInfo.getBrowserInfoId();
+        Location location = new Location();
+        location.setIp(userInfo.getLocation()[0]);
+        location.setLocation(userInfo.getLocation()[1]);
+        location.setLocalIp(userInfo.getLocalIp());
+        location.setX(userInfo.getLocation()[2]);
+        location.setY(userInfo.getLocation()[3]);
+        location.setKeyword(userInfo.getPcOrPhone());
+        indexServiceImpl.insertLocation(location);
+        String locationId = location.getLocationId();
+        User user = userInfo.getUser();
+        user.setCreatetime(new Date().toLocaleString());
+        user.setBrowserInfoId(browserInfoId);
+        user.setLocationId(locationId);
+        int i = indexServiceImpl.insertUser(user);
         if (i == 1) {
             return "success";
         }
@@ -307,6 +325,13 @@ public class IndexController {
         List<AiNoteLocation> aiNoteLocation = indexServiceImpl.selectAiNoteLocation();
         model.addAttribute("items", aiNoteLocation);
         return "aiNoteList";
+    }
+
+    @RequestMapping("/userlist")
+    public String userList(Model model) {
+        List<UserLocation> userLocations = indexServiceImpl.selectUserLocation();
+        model.addAttribute("items", userLocations);
+        return "userlist";
     }
 
 }

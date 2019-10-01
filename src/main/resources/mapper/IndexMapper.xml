@@ -47,6 +47,26 @@
         </association>
     </resultMap>
 
+    <resultMap id="userLocation" type="UserLocation">
+        <id property="id" column="id"></id>
+        <result property="username" column="user"></result>
+        <result property="password" column="password"></result>
+        <result property="createtime" column="createtime"></result>
+        <association property="location" javaType="Location">
+            <result property="X" column="X"></result>
+            <result property="Y" column="Y"></result>
+            <result property="location" column="location"></result>
+            <result property="ip" column="ip"></result>
+            <result property="keyword" column="pcOrPhone"></result>
+            <result property="localIp" column="local_ip"></result>
+        </association>
+        <association property="browserInfo" javaType="BrowserInfo">
+            <result property="system" column="system"></result>
+            <result property="browserType" column="browser_type"></result>
+            <result property="browserVersion" column="browser_version"></result>
+        </association>
+    </resultMap>
+
 
 
 
@@ -59,7 +79,7 @@
          insert into searchrecord(keyword,searchtime,location_id,browser_info_id) values(#{keyword},#{searchTime},#{locationId},#{browserInfoId})
     </insert>
     <!--注册用户-->
-    <insert id="insertUser" parameterType="UserLocation">
+    <insert id="insertUser" parameterType="User">
          insert into user(username,password,createtime,location_id,browser_info_id) values(#{username},#{password},#{createtime},#{locationId},#{browserInfoId})
     </insert>
     <!--插入便签记录-->
@@ -104,6 +124,12 @@
     <select id="selectAiNoteLocation" resultMap="aiNoteLocation">
         select n.id,n.content,n.createtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `ai_note` n
         left JOIN `location` l ON n.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = n.browser_info_id
+    </select>
+
+    <!--查询注册用户详情-->
+    <select id="selectUserLocation" resultMap="userLocation">
+        select u.id,u.username,u.password,u.createtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `user` u
+        left JOIN `location` l ON u.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = u.browser_info_id
     </select>
 
 </mapper>

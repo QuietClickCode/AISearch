@@ -77,4 +77,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.insertUser(user);
     }
 
+    @Override
+    public List<UserLocation> selectUserLocation() {
+        return indexMapper.selectUserLocation();
+    }
+
 }

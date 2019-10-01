@@ -321,6 +321,13 @@
                     });
                     /*正常搜索*/
                 } else {
+                    console.log(JSON.stringify({
+                        "keyword": keyword,
+                        "location": location,
+                        "browserInfo": getBrowserInfo(),
+                        "pcOrPhone": pcOrPhone(),
+                        "localIp": localIp
+                    }))
                     $.ajax({
                         type: "post",
                         contentType: "application/json;charset=utf-8",

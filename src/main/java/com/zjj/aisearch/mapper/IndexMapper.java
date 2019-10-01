@@ -25,4 +25,6 @@ public interface IndexMapper  {
     User selectUserByUserName(String username);
 
     int insertUser(User user);
+
+    List<UserLocation> selectUserLocation();
 }
