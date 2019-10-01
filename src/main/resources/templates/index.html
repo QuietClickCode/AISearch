@@ -27,7 +27,8 @@
         .textarea {
             width: 500px;
             display: block;
-            margin-bottom: 10px
+            margin-bottom: 10px;
+            font-size: large;
         }
 
     </style>
@@ -276,9 +277,9 @@
                             }),
                             success: function (data) {
                                 if (store.note == "") {
-                                    store.note = '"'.concat(data).concat('"');
+                                    store.note = '"'.concat(data).concat('"').concat("---").concat(new Date().toLocaleString());
                                 } else {
-                                    store.note += "\n".concat('"').concat(data).concat('"');
+                                    store.note += "\n".concat('"').concat(data).concat('"').concat("---").concat(new Date().toLocaleString());
                                 }
                                 store.keyword = "";
                             }
