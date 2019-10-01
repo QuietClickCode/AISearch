@@ -78,8 +78,11 @@ public class IndexController {
                 loginLog.setUserId(userId);
                 /**写入登录日志*/
                 indexServiceImpl.insertLoginLog(loginLog);
-                request.getSession().setAttribute("user", isExistUser);
 
+                //获取本次登录日志id
+                Integer loginLogId = loginLog.getId();
+                request.getSession().setAttribute("user", isExistUser);
+                request.getSession().setAttribute("loginLogId", loginLogId);
                 return "success";
             } else {
                 return "密码错误";
@@ -122,12 +125,13 @@ public class IndexController {
     }
 
     /**
-     * 进入首页
+     * 进入首页的唯一入口
      */
     @RequestMapping("/index")
     public String index(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             model.addAttribute("msg", "你好," + user.getUsername());
             return "index";
         } else {
@@ -138,7 +142,7 @@ public class IndexController {
     }
 
     /**
-     * 进入首页
+     * 重定向进入首页
      */
     @RequestMapping("/")
     public String index() {
