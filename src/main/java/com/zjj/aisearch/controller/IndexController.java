@@ -35,28 +35,44 @@ public class IndexController {
 
 
     @RequestMapping("/tologin")
-    public String tologin(@RequestBody User user, RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public String tologin(@RequestBody User user, HttpServletRequest request) {
         String username = user.getUsername();
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
-
         if (isExistUser != null) {
             boolean isEqual = user.getPassword().equals(isExistUser.getPassword());
             if (isEqual) {
-                redirectAttributes.addFlashAttribute("user", isExistUser);
-                return "redirect:index";
+                request.getSession().setAttribute("user", isExistUser);
+                return "success";
             } else {
-                redirectAttributes.addFlashAttribute("msg", "密码错误");
-                return "redirect:login";
+                return "密码错误";
             }
         } else {
-            redirectAttributes.addFlashAttribute("msg", "用户不存在");
-            return "redirect:login";
+            return "用户不存在";
         }
     }
 
     @RequestMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @RequestMapping("/index")
+    public String index(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        Object user = request.getSession().getAttribute("user");
+        if (user != null) {
+            return "index";
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "请登录");
+            return "redirect:login";
+        }
+
+    }
+
+    @RequestMapping("/")
+    public String index() {
+        return "redirect:index";
+
     }
 
     @RequestMapping("/searchItem")
