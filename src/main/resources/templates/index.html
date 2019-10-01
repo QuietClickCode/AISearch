@@ -244,8 +244,11 @@
         methods: {
             //enter或者button激发,用于记录用户上下文
             toDetails: function (keyword) {
-                var end = keyword.lastIndexOf(":end");
-                if (keyword.substring(0, 5) == ":note") {
+                var isNote = keyword.startsWith('\"');
+                var isEnd = keyword.endsWith('\"\n');
+                if (isNote && !isEnd) {
+                } else if (isNote && isEnd) {
+                    getLocation(cb)
                 } else {
                     getLocation(cb);//toDetail()
                 }
@@ -253,41 +256,28 @@
                     getLocation(cb);//toDetail()
                 }
             },
-            searchItem: function (keyword) {
-                this.isShow = true;
-                if (keyword == ":note") {
-                    this.isSee = 'block';
-                } else if (keyword == "") {
-                    this.isSee = 'none';
-                } else {
-                    $.ajax({
-                        url: "/searchItem", data: {keyword: keyword}, success: function (data) {
-                            store.article = [];
-                            for (var i = 0; i < data.length; i++) {
-                                store.article.push(data[i]);
-                            }
-                        }
-                    });
-                }
-            }
-            ,
             toDetail: function (keyword, location, localIp) {
                 if (keyword != "") {
-                    if (keyword.substring(0, 5) == ":note") {
+                    var isNote = keyword.startsWith('\"');
+                    var isEnd = keyword.endsWith('\"\n');
+                    var end = keyword.lastIndexOf('\"\n');
+                    if(isNote) {
+                        store.isSee = "block";
+                    }
+                    if (isNote && isEnd) {
                         $.ajax({
                             type: "post",
                             contentType: "application/json",
                             url: "/note",
                             data: JSON.stringify({
-                                "keyword": keyword.substring(6),
+                                "keyword": keyword.substring(1,end),
                                 "location": JSON.stringify(location),
                                 "browserInfo": JSON.stringify(getBrowserInfo()),
                                 "pcOrPhone": pcOrPhone(),
                                 "localIp": localIp
                             }),
                             success: function (data) {
-                                store.note += data;
-
+                                store.note += "\n".concat(data);
                                 store.keyword = "";
                             }
                         });
@@ -308,10 +298,25 @@
                             }
                         });
                     }
-                    /*  window.location.href = "todetail?keyword=" + keyword + "&location=" + location
-                      +"&browserInfo=" + getBrowserInfo()*/
                 }
-
+            },
+            searchItem: function (keyword) {
+                this.isShow = true;
+                var isNote = keyword.startsWith('\"');
+                if (isNote) {
+                    this.isSee = 'block';
+                } else if (keyword == "") {
+                    this.isSee = 'none';
+                } else {
+                    $.ajax({
+                        url: "/searchItem", data: {keyword: keyword}, success: function (data) {
+                            store.article = [];
+                            for (var i = 0; i < data.length; i++) {
+                                store.article.push(data[i]);
+                            }
+                        }
+                    });
+                }
             },
             toggle: function () {
                 this.isShow = !this.isShow;

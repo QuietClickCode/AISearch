@@ -56,7 +56,7 @@ public class IndexController {
     @RequestMapping("/note")
     @ResponseBody
     public String note(@RequestBody Map<String, String> map) {
-        String substring = map.get("keyword").substring(0, map.get("keyword").lastIndexOf(":end"));
+        String substring = map.get("keyword");
         return substring;
     }
 
