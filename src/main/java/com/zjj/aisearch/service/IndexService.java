@@ -33,4 +33,8 @@ public interface IndexService {
     int insertUser(User user);
 
     List<UserLocation> selectUserLocation();
+
+    int insertLoginLog(LoginLog loginLog);
+
+    List<LoginLogLocation> selectLoginLocation();
 }

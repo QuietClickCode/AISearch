@@ -10,23 +10,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @program: aisearch
- * @description:
+ * @program: AISearch
+ * @description: 搜索记录
  * @author: zjj
- * @create: 2019-09-07 17:37:20
+ * @create: 2019-09-07 23:19:11
  **/
+@Data
 @Getter
 @Setter
 @ToString
-@Data
-public class User {
+public class LoginLog {
 
     private Integer id;
-    private String username;
-    private String password;
+    private Integer userId ;
     private String createtime;
-    private String browserInfoId;
     private String locationId;
+    private String browserInfoId;
 
     public void setCreatetime(String createtime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -39,4 +38,6 @@ public class User {
         String d = sdf.format(dd);
         this.createtime = d;
     }
+
+
 }

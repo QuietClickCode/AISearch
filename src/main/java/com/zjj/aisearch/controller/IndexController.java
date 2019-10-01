@@ -42,13 +42,37 @@ public class IndexController {
 
     @RequestMapping("/tologin")
     @ResponseBody
-    public String tologin(@RequestBody User user, HttpServletRequest request) {
-        String username = user.getUsername();
+    public String tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+        String username = userInfo.getUser().getUsername();
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
         if (isExistUser != null) {
-            boolean isEqual = user.getPassword().equals(isExistUser.getPassword());
+            boolean isEqual = userInfo.getUser().getPassword().equals(isExistUser.getPassword());
             if (isEqual) {
+                BrowserInfo browserInfo = new BrowserInfo();
+                browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
+                browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
+                browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
+                indexServiceImpl.insertBrowserInfo(browserInfo);
+                String browserInfoId = browserInfo.getBrowserInfoId();
+                Location location = new Location();
+                location.setIp(userInfo.getLocation()[0]);
+                location.setLocation(userInfo.getLocation()[1]);
+                location.setLocalIp(userInfo.getLocalIp());
+                location.setX(userInfo.getLocation()[2]);
+                location.setY(userInfo.getLocation()[3]);
+                location.setKeyword(userInfo.getPcOrPhone());
+                indexServiceImpl.insertLocation(location);
+                String locationId = location.getLocationId();
+                Integer userId = isExistUser.getId();
+                LoginLog loginLog = new LoginLog();
+                loginLog.setCreatetime(new Date().toLocaleString());
+                loginLog.setBrowserInfoId(browserInfoId);
+                loginLog.setLocationId(locationId);
+                loginLog.setUserId(userId);
+                /*写入登录日志*/
+                indexServiceImpl.insertLoginLog(loginLog);
                 request.getSession().setAttribute("user", isExistUser);
+
                 return "success";
             } else {
                 return "密码错误";
@@ -307,8 +331,6 @@ public class IndexController {
     }
 
 
-
-
     /*搜索记录详情列表*/
     @RequestMapping("/list")
     public String list(Model model) {
@@ -330,6 +352,12 @@ public class IndexController {
         List<UserLocation> userLocations = indexServiceImpl.selectUserLocation();
         model.addAttribute("items", userLocations);
         return "userlist";
+    }
+    @RequestMapping("/loginloglist")
+    public String loginLogList(Model model) {
+        List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
+        model.addAttribute("items", loginLogLocation);
+        return "loginloglist";
     }
 
 }

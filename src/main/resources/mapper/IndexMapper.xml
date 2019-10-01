@@ -46,7 +46,31 @@
             <result property="browserVersion" column="browser_version"></result>
         </association>
     </resultMap>
+    <!--登录日志-->
 
+    <resultMap id="loginLogLocation" type="LoginLogLocation">
+        <id property="id" column="id"></id>
+        <result property="createtime" column="createtime"></result>
+        <association property="location" javaType="Location">
+            <result property="X" column="X"></result>
+            <result property="Y" column="Y"></result>
+            <result property="location" column="location"></result>
+            <result property="ip" column="ip"></result>
+            <result property="keyword" column="pcOrPhone"></result>
+            <result property="localIp" column="local_ip"></result>
+        </association>
+        <association property="browserInfo" javaType="BrowserInfo">
+            <result property="system" column="system"></result>
+            <result property="browserType" column="browser_type"></result>
+            <result property="browserVersion" column="browser_version"></result>
+        </association>
+        <association property="user" javaType="User">
+            <result property="id" column="uid"></result>
+            <result property="username" column="username"></result>
+            <result property="password" column="password"></result>
+        </association>
+    </resultMap>
+    <!--注册用户详情-->
     <resultMap id="userLocation" type="UserLocation">
         <id property="id" column="id"></id>
         <result property="username" column="user"></result>
@@ -86,6 +110,7 @@
     <insert id="insertAiNote" parameterType="AiNote">
          insert into ai_note(content,createtime,location_id,browser_info_id) values(#{content},#{createtime},#{locationId},#{browserInfoId})
     </insert>
+    <!--插入浏览器相关信息-->
     <insert id="insertBrowserInfo" parameterType="BrowserInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         <selectKey keyProperty="browserInfoId" resultType="String" order="BEFORE">
             select uuid()
@@ -93,11 +118,16 @@
         insert into browser_info(browser_info_id, system, browser_type, browser_version)
         values(#{browserInfoId},#{system},#{browserType},#{browserVersion})
     </insert>
+    <!--插入位置信息+设备信息-->
     <insert id="insertLocation" parameterType="Location" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         <selectKey keyProperty="locationId" resultType="String" order="BEFORE">
             select uuid()
         </selectKey>
         insert into location(location_id, ip, location, X, Y,keyword,local_ip) values(#{locationId},#{ip},#{location},#{X},#{Y},#{keyword},#{localIp})
+    </insert>
+    <!--插入登录日志-->
+    <insert id="insertLoginLog" parameterType="LoginLog">
+         insert into login_log(user_id,createtime,location_id,browser_info_id) values(#{userId},#{createtime},#{locationId},#{browserInfoId})
     </insert>
 
 
@@ -130,6 +160,12 @@
     <select id="selectUserLocation" resultMap="userLocation">
         select u.id,u.username,u.password,u.createtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `user` u
         left JOIN `location` l ON u.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = u.browser_info_id
+    </select>
+    <!--查询系统日志详情-->
+    <select id="selectLoginLogLocation" resultMap="loginLogLocation">
+        select ll.id,ll.createtime,u.username,u.id uid,u.password,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `login_log` ll
+        left JOIN `location` l ON ll.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = ll.browser_info_id
+        LEFT JOIN  `user` u on u.id = ll.user_id
     </select>
 
 </mapper>

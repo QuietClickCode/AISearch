@@ -27,4 +27,8 @@ public interface IndexMapper  {
     int insertUser(User user);
 
     List<UserLocation> selectUserLocation();
+
+    int insertLoginLog(LoginLog loginLog);
+
+    List<LoginLogLocation> selectLoginLogLocation();
 }
