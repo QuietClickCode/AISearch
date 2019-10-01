@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zjj.aisearch.mapper.IndexMapper">
+    <!--结果集-->
     <resultMap id="itemMap" type="Item">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
@@ -47,13 +48,19 @@
     </resultMap>
 
 
+
+
+
+
+
+    <!--插入-->
     <!--插入搜索记录-->
     <insert id="insertSearchRecord" parameterType="SearchRecord">
          insert into searchrecord(keyword,searchtime,location_id,browser_info_id) values(#{keyword},#{searchTime},#{locationId},#{browserInfoId})
     </insert>
     <!--注册用户-->
-    <insert id="insertUser" parameterType="User">
-         insert into user(username,password,createtime) values(#{username},#{password},#{createtime})
+    <insert id="insertUser" parameterType="UserLocation">
+         insert into user(username,password,createtime,location_id,browser_info_id) values(#{username},#{password},#{createtime},#{locationId},#{browserInfoId})
     </insert>
     <!--插入便签记录-->
     <insert id="insertAiNote" parameterType="AiNote">
@@ -73,6 +80,8 @@
         insert into location(location_id, ip, location, X, Y,keyword,local_ip) values(#{locationId},#{ip},#{location},#{X},#{Y},#{keyword},#{localIp})
     </insert>
 
+
+    <!--查询-->
     <select id="search" resultType="Article">
         select * from article where id =  #{id}
     </select>

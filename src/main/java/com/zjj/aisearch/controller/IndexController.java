@@ -33,6 +33,12 @@ public class IndexController {
     /*这样用可能有缺陷,内存泄漏*/
     private HashMap<String, Object> map = new HashMap<>();
 
+    /*实现转发模式,/index */
+    @RequestMapping(value = "{path}")
+    public String del(@PathVariable("path") String path) {
+        return path;
+    }
+
 
     @RequestMapping("/tologin")
     @ResponseBody
@@ -54,9 +60,9 @@ public class IndexController {
 
     @RequestMapping("/toregist")
     @ResponseBody
-    public String toregist(@RequestBody User user, HttpServletRequest request) {
-        user.setCreatetime(new Date().toLocaleString());
-        int i = indexServiceImpl.insertUser(user);
+    public String toregist(@RequestBody UserLocation userLocation, HttpServletRequest request) {
+        userLocation.setCreatetime(new Date().toLocaleString());
+        int i = indexServiceImpl.insertUser(userLocation);
         if (i == 1) {
             return "success";
         }
@@ -285,10 +291,7 @@ public class IndexController {
     }
 
 
-    @RequestMapping(value = "{path}")
-    public String del(@PathVariable("path") String path) {
-        return path;
-    }
+
 
     /*搜索记录详情列表*/
     @RequestMapping("/list")
