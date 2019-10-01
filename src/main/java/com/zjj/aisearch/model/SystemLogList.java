@@ -17,5 +17,7 @@ import lombok.ToString;
 @ToString
 public class SystemLogList extends SystemLog{
 
-    private LoginLog loginLog;
+    private BrowserInfo browserInfo;
+    private Location location;
+    private User user;
 }

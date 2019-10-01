@@ -459,7 +459,7 @@ public class IndexController {
         Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
         SystemLog systemLog = new SystemLog();
         systemLog.setCreatetime(new Date().toLocaleString());
-        systemLog.setOperation("logoutloglist");
+        systemLog.setOperation("systemloglist");
         systemLog.setLoginLogId(loginLogId);
         indexServiceImpl.insertSystemLog(systemLog);
         List<SystemLogList> systemLogList = indexServiceImpl.selectSystemLogList();

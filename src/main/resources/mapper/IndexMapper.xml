@@ -114,6 +114,30 @@
             <result property="browserVersion" column="browser_version"></result>
         </association>
     </resultMap>
+    <!--系统操作日志详情-->
+    <resultMap id="systemLogList" type="SystemLogList">
+        <id property="id" column="id"></id>
+        <result property="operation" column="operation"></result>
+        <result property="createtime" column="createtime"></result>
+        <association property="location" javaType="Location">
+            <result property="X" column="X"></result>
+            <result property="Y" column="Y"></result>
+            <result property="location" column="location"></result>
+            <result property="ip" column="ip"></result>
+            <result property="keyword" column="pcOrPhone"></result>
+            <result property="localIp" column="local_ip"></result>
+        </association>
+        <association property="browserInfo" javaType="BrowserInfo">
+            <result property="system" column="system"></result>
+            <result property="browserType" column="browser_type"></result>
+            <result property="browserVersion" column="browser_version"></result>
+        </association>
+        <association property="user" javaType="User">
+            <result property="id" column="uid"></result>
+            <result property="username" column="username"></result>
+            <result property="password" column="password"></result>
+        </association>
+    </resultMap>
 
 
     <!--插入-->
@@ -206,7 +230,7 @@
         LEFT JOIN  `user` u on u.id = ll.user_id
 
     </select>
-    <!--查询系统日志详情-->
+    <!--查询系统操作日志详情-->
     <select id="selectSystemLogList" resultMap="systemLogList">
   SELECT
 	u.id uid,
