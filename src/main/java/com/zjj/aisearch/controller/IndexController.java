@@ -227,6 +227,7 @@ public class IndexController {
         return null;
     }
 
+    /*随机csdn文章功能*/
     @RequestMapping("/article")
     public ModelAndView article(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest, HttpServletResponse res) throws IOException {
@@ -276,9 +277,7 @@ public class IndexController {
         if (maps != null) {
             list = (List<Item>) maps.get("items2");
         }
-
         modelAndView.setViewName("detail2");
-
         if (list != null) {
             map.put("items2", list);
             modelAndView.addObject("items", list);
