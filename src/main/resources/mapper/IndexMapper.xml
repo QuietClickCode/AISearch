@@ -27,12 +27,36 @@
         </association>
     </resultMap>
 
+    <resultMap id="aiNoteLocation" type="AiNoteLocation">
+        <id property="id" column="id"></id>
+        <result property="content" column="content"></result>
+        <result property="createtime" column="createtime"></result>
+        <association property="location" javaType="Location">
+            <result property="X" column="X"></result>
+            <result property="Y" column="Y"></result>
+            <result property="location" column="location"></result>
+            <result property="ip" column="ip"></result>
+            <result property="keyword" column="pcOrPhone"></result>
+            <result property="localIp" column="local_ip"></result>
+        </association>
+        <association property="browserInfo" javaType="BrowserInfo">
+            <result property="system" column="system"></result>
+            <result property="browserType" column="browser_type"></result>
+            <result property="browserVersion" column="browser_version"></result>
+        </association>
+    </resultMap>
+
+
     <select id="index" resultType="User">
         select * from users where username = 'zjj'
     </select>
-
+    <!--插入搜索记录-->
     <insert id="insertSearchRecord" parameterType="SearchRecord">
          insert into searchrecord(keyword,searchtime,location_id,browser_info_id) values(#{keyword},#{searchTime},#{locationId},#{browserInfoId})
+    </insert>
+    <!--插入便签记录-->
+    <insert id="insertAiNote" parameterType="AiNote">
+         insert into ai_note(content,createtime,location_id,browser_info_id) values(#{content},#{createtime},#{locationId},#{browserInfoId})
     </insert>
     <insert id="insertBrowserInfo" parameterType="BrowserInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         <selectKey keyProperty="browserInfoId" resultType="String" order="BEFORE">
@@ -56,10 +80,15 @@
         select * from tb_item where title like "%"#{name}"%"
     </select>
 
+    <!--查询搜索记录详情-->
     <select id="selectSearchRecordLocation" resultMap="searchRecordLocation">
         select s.id,s.keyword,s.searchtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `searchrecord` s
-
         left JOIN `location` l ON s.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = s.browser_info_id
+    </select>
+    <!--查询便签记录详情-->
+    <select id="selectAiNoteLocation" resultMap="aiNoteLocation">
+        select n.id,n.content,n.createtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `ai_note` n
+        left JOIN `location` l ON n.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = n.browser_info_id
     </select>
 
 </mapper>

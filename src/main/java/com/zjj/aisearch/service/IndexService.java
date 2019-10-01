@@ -23,4 +23,8 @@ public interface IndexService {
 
 
     List<SearchRecordLocation> selectSearchRecordLocation();
+
+    int insertAiNote(AiNote aiNote);
+
+    List<AiNoteLocation> selectAiNoteLocation();
 }

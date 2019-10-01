@@ -57,4 +57,14 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.selectSearchRecordLocation();
     }
 
+    @Override
+    public int insertAiNote(AiNote aiNote) {
+        return indexMapper.insertAiNote(aiNote);
+    }
+
+    @Override
+    public List<AiNoteLocation> selectAiNoteLocation() {
+        return indexMapper.selectAiNoteLocation();
+    }
+
 }

@@ -5,7 +5,10 @@ import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -55,9 +58,31 @@ public class IndexController {
     }
     @RequestMapping("/note")
     @ResponseBody
-    public String note(@RequestBody Map<String, String> map) {
-        String substring = map.get("keyword");
-        return substring;
+    public String note(@RequestBody Info info) {
+        String[] locationArr = info.getLocation();
+        String[] browserInfoArr = info.getBrowserInfo();
+        String pcOrPhone = info.getPcOrPhone();
+        BrowserInfo bi = new BrowserInfo();
+        Location lo = new Location();
+        bi.setSystem(browserInfoArr[0]);
+        bi.setBrowserType(browserInfoArr[1]);
+        bi.setBrowserVersion(browserInfoArr[2]);
+        lo.setIp(locationArr[0]);
+        lo.setLocation(locationArr[1]);
+        lo.setX(locationArr[2]);
+        lo.setY(locationArr[3]);
+        lo.setKeyword(pcOrPhone);
+        lo.setLocalIp(info.getLocalIp());
+        indexServiceImpl.insertBrowserInfo(bi);
+        indexServiceImpl.insertLocation(lo);
+
+        AiNote aiNote = new AiNote();
+        aiNote.setContent(info.getKeyword());
+        aiNote.setBrowserInfoId(bi.getBrowserInfoId());
+        aiNote.setLocationId(lo.getLocationId());
+        aiNote.setCreatetime(new Date().toLocaleString());
+        indexServiceImpl.insertAiNote(aiNote);
+        return info.getKeyword();
     }
 
 
@@ -214,14 +239,20 @@ public class IndexController {
         return path;
     }
 
+    /*搜索记录详情列表*/
     @RequestMapping("/list")
     public String list(Model model) {
-
         List<SearchRecordLocation> searchRecordLocation = indexServiceImpl.selectSearchRecordLocation();
-
         model.addAttribute("items", searchRecordLocation);
-
         return "list";
+    }
+
+    /*便签记录详情列表*/
+    @RequestMapping("/ainote")
+    public String aiNotelist(Model model) {
+        List<AiNoteLocation> aiNoteLocation = indexServiceImpl.selectAiNoteLocation();
+        model.addAttribute("items", aiNoteLocation);
+        return "aiNoteList";
     }
 
 }

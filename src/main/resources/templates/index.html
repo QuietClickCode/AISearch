@@ -270,8 +270,8 @@
                             url: "/note",
                             data: JSON.stringify({
                                 "keyword": keyword.substring(1, end),
-                                "location": JSON.stringify(location),
-                                "browserInfo": JSON.stringify(getBrowserInfo()),
+                                "location": location,
+                                "browserInfo": getBrowserInfo(),
                                 "pcOrPhone": pcOrPhone(),
                                 "localIp": localIp
                             }),
@@ -303,7 +303,7 @@
                     }
                 }
             },
-            
+
             searchItem: function (keyword) {
                 this.isShow = true;
                 var isNote = keyword.startsWith('\"');
