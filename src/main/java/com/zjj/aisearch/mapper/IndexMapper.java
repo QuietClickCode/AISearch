@@ -21,4 +21,6 @@ public interface IndexMapper  {
     int insertAiNote(AiNote aiNote);
 
     List<AiNoteLocation> selectAiNoteLocation();
+
+    User selectUserByUserName(String username);
 }

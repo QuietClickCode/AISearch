@@ -24,16 +24,17 @@
 </head>
 <body>
 <script type="text/javascript" th:inline="javascript">
-    var dealMeasureEnum = [[${items}]];
+    var msg = [[${msg}]];
+    alert(msg);
 </script>
 <div id="app" style="display: none">
-    <div class="search" @keyup.enter="logins()">
-        <el-form :label-position="labelPosition" label-width="80px" :model="store.login">
+    <div class="search" @keyup.enter="tologin">
+        <el-form :label-position="labelPosition" label-width="80px" :model="store.user">
             <el-form-item label="用户名">
-                <el-input style="width:300px;" v-model="login.username"></el-input>
+                <el-input style="width:300px;" v-model="store.user.username"></el-input>
             </el-form-item>
-            <el-form-item  label="密码">
-                <el-input style="width:300px;" v-model="login.password" type="password"></el-input>
+            <el-form-item label="密码">
+                <el-input style="width:300px;" v-model="store.user.password" type="password"></el-input>
             </el-form-item>
         </el-form>
     </div>
@@ -47,16 +48,17 @@
 
 <script>
     var store = {
+
         labelPosition: 'right',
-        login: {username: "", password: ""},
+        user: {username: "", password: ""},
         visible: false,
         width: 0,
         title: "",
-        items: dealMeasureEnum,
         message: 'AISearch',
         keyword: "",
         isShow: true,
-        article: []
+        article: [],
+        msg:msg
     };
     var app = new Vue({
         el: '#app',
@@ -65,11 +67,19 @@
             $("#app").show();
         },
         methods: {
-            logins:function () {
-                alert("dd")
+            tologin: function () {
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json",
+                    url: "/tologin",
+                    data: JSON.stringify(store.user),
+                    success: function (data) {
+                        alert(data);
+                        alert(store.msg);
+                    }
+                })
             }
         }
-
     })
 
 </script>

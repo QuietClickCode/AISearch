@@ -41,7 +41,7 @@
                   :style="{display:isSee}"
         ></el-input>
         <!--notePlaceholder考虑动态变化,比如,小知识,小技巧,温馨的话,历史事件之类的,不要固定死,输入框也考虑动态加点东西,根据用户习惯,几秒滚动哈,用placeholder实现-->
-        <el-input autofocus type="textarea" autosize id="el-input" style="width: 500px;"
+        <el-input autofocus  id="el-input" style="width: 500px;"
                   @input="searchItem(store.keyword)"
                   placeholder="搜你想要"
                   v-model="store.keyword">
@@ -311,7 +311,15 @@
             },
 
             searchItem: function (keyword) {
-                var isNote = keyword.startsWith('\"');
+                $.ajax({
+                    url: "/searchItem", data: {keyword: keyword}, success: function (data) {
+                        store.article = [];
+                        for (var i = 0; i < data.length; i++) {
+                            store.article.push(data[i]);
+                        }
+                    }
+                })
+               /* var isNote = keyword.startsWith('\"');
                 this.isShow = true;
                 var isCommand = keyword.startsWith('/');
                 if (isCommand) {
@@ -329,7 +337,7 @@
                             }
                         }
                     })
-                }
+                }*/
             },
             toggle: function () {
                 this.isShow = !this.isShow;

@@ -34,6 +34,31 @@ public class IndexController {
     private HashMap<String, Object> map = new HashMap<>();
 
 
+    @RequestMapping("/tologin")
+    public String tologin(@RequestBody User user, RedirectAttributes redirectAttributes) {
+        String username = user.getUsername();
+        User isExistUser = indexServiceImpl.selectUserByUserName(username);
+
+        if (isExistUser != null) {
+            boolean isEqual = user.getPassword().equals(isExistUser.getPassword());
+            if (isEqual) {
+                redirectAttributes.addFlashAttribute("user", isExistUser);
+                return "redirect:index";
+            } else {
+                redirectAttributes.addFlashAttribute("msg", "密码错误");
+                return "redirect:login";
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "用户不存在");
+            return "redirect:login";
+        }
+    }
+
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @RequestMapping("/searchItem")
     @ResponseBody
     public Object searchItem(String keyword, HttpServletResponse res) throws IOException {
@@ -47,15 +72,6 @@ public class IndexController {
         return null;
     }
 
-    @RequestMapping("/command")
-    public String command(@RequestBody Map<String, String> map) {
-        System.out.println(map.get("keyword")+"------------------");
-
-        System.out.println(map.get("keyword").lastIndexOf(":end")+"000000000000000000");
-        String substring = map.get("keyword").substring(0, map.get("keyword").lastIndexOf(":end"));
-        System.out.println(substring+"=========================");
-        return "redirect:" + map.get("keyword");
-    }
     @RequestMapping("/note")
     @ResponseBody
     public String note(@RequestBody Info info) {

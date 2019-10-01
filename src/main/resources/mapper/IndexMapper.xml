@@ -47,9 +47,6 @@
     </resultMap>
 
 
-    <select id="index" resultType="User">
-        select * from users where username = 'zjj'
-    </select>
     <!--插入搜索记录-->
     <insert id="insertSearchRecord" parameterType="SearchRecord">
          insert into searchrecord(keyword,searchtime,location_id,browser_info_id) values(#{keyword},#{searchTime},#{locationId},#{browserInfoId})
@@ -74,6 +71,11 @@
 
     <select id="search" resultType="Article">
         select * from article where id =  #{id}
+    </select>
+
+    <!--查询用户通过用户名-->
+    <select id="selectUserByUserName" resultType="User">
+        select * from user where username =  #{username}
     </select>
 
     <select id="searchItem" resultMap="itemMap">

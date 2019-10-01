@@ -67,4 +67,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.selectAiNoteLocation();
     }
 
+    @Override
+    public User selectUserByUserName(String username) {
+        return indexMapper.selectUserByUserName(username);
+    }
+
 }
