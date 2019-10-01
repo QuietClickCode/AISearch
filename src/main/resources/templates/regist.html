@@ -7,20 +7,36 @@
     <link rel="stylesheet" href="/css/my-select.css">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        html, body {
+
+            height: 100%;
+            margin: 0;
+        }
+
+        .search {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
 <script type="text/javascript" th:inline="javascript">
     var dealMeasureEnum = [[${items}]];
 </script>
 <div id="app" style="display: none">
-    <el-form :label-position="labelPosition" label-width="80px" :model="store.login">
-        <el-form-item label="用户名">
-            <el-input v-model="login.username"></el-input>
-        </el-form-item>
-        <el-form-item label="密码">
-            <el-input v-model="login.password" type="password"></el-input>
-        </el-form-item>
-    </el-form>
+    <div class="search" @keyup.enter="toregist">
+        <el-form :label-position="labelPosition" label-width="80px" :model="store.user">
+            <el-form-item label="用户名">
+                <el-input placeholder="注册" style="width:300px;" v-model="store.user.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+                <el-input v-model="store.user.password" style="width:300px;" type="password"></el-input>
+            </el-form-item>
+        </el-form>
+    </div>
 </div>
 </body>
 <script src="/js/jquery-1.9.1.min.js"></script>
@@ -31,7 +47,8 @@
 
 <script>
     var store = {
-        login:{username:"",password:""},
+        labelPosition: 'right',
+        user: {username: "", password: ""},
         visible: false,
         width: 0,
         title: "",
@@ -47,7 +64,24 @@
         created: function () {
             $("#app").show();
         },
-        methods: {}
+        methods: {
+            toregist: function () {
+                var vueThis = this;
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json",
+                    url: "/toregist",
+                    data: JSON.stringify(store.user),
+                    success: function (data) {
+                        if (data=="success") {
+                            window.location.href = "/login";
+                        }else {
+                            vueThis.$message(data);
+                        }
+                    }
+                })
+            }
+        }
 
     })
 

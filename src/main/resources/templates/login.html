@@ -24,7 +24,6 @@
 <body>
 <script type="text/javascript" th:inline="javascript">
     var msg = [[${msg}]];
-
 </script>
 
 
@@ -32,7 +31,7 @@
     <div class="search" @keyup.enter="tologin">
         <el-form :label-position="labelPosition" label-width="80px" :model="store.user">
             <el-form-item label="用户名">
-                <el-input style="width:300px;" v-model="store.user.username"></el-input>
+                <el-input placeholder="登录" style="width:300px;" v-model="store.user.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
                 <el-input style="width:300px;" v-model="store.user.password" type="password"></el-input>

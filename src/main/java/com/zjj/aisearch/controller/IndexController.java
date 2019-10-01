@@ -52,15 +52,23 @@ public class IndexController {
         }
     }
 
+    @RequestMapping("/toregist")
+    @ResponseBody
+    public String toregist(@RequestBody User user, HttpServletRequest request) {
+        String username = user.getUsername();
+        indexServiceImpl.insertUser();
+    }
+
     @RequestMapping("/login")
     public String login() {
         return "login";
     }
 
     @RequestMapping("/index")
-    public String index(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        Object user = request.getSession().getAttribute("user");
+    public String index(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+        User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
+            model.addAttribute("msg", "你好," + user.getUsername());
             return "index";
         } else {
             redirectAttributes.addFlashAttribute("msg", "请登录");

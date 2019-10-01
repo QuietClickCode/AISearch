@@ -34,6 +34,9 @@
     </style>
 </head>
 <body>
+<script type="text/javascript" th:inline="javascript">
+    var msg = [[${msg}]];
+</script>
 <div id="app" class="search" style="display: none">
     <div @click="toggle" @keyup.enter="toDetails(store.keyword)">
         <!--notePlaceholder考虑动态变化,比如,小知识,小技巧,温馨的话,历史事件之类的,不要固定死-->
@@ -148,6 +151,7 @@
             app.toDetail(store.keyword, result, localIp)
         })
     }
+
     function getLocation(cb) {
         var data = {key: "4MIBZ-LJMCF-6RKJA-NGKN4-JJZFF-2JBMJ"};//ip缺省时会自动获取请求端的公网IP,
         var url = "https://apis.map.qq.com/ws/location/v1/ip";
@@ -171,7 +175,6 @@
             }
         });
     }
-
 
 
     function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
@@ -232,13 +235,18 @@
         message: 'AISearch',
         keyword: "",
         isShow: false,
-        article: []
+        article: [],
+        msg:msg
+
     };
     var app = new Vue({
         el: '#app',
         data: store,
         created: function () {
             $("#app").show();
+            if (this.msg != null) {
+                this.tips();
+            }
             this.width = $("#el-input").width();
         },
         watch: {
@@ -250,6 +258,9 @@
             }
         },
         methods: {
+            tips: function () {
+                this.$message(msg);
+            },
             //enter或者button激发,用于记录用户上下文
             toDetails: function (keyword) {
                 if (keyword != "") {
@@ -371,9 +382,7 @@
             upScreen: function (label) {
                 store.keyword = label;
             },
-
         }
-
     })
 
 </script>
