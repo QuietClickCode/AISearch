@@ -127,7 +127,7 @@
     </insert>
     <!--插入便签记录-->
     <insert id="insertAiNote" parameterType="AiNote">
-         insert into ai_note(content,createtime,location_id,browser_info_id) values(#{content},#{createtime},#{locationId},#{browserInfoId})
+         insert into ai_note(content,createtime,location_id,browser_info_id,login_log_id) values(#{content},#{createtime},#{locationId},#{browserInfoId},#{loginLogId})
     </insert>
     <!--插入浏览器相关信息-->
     <insert id="insertBrowserInfo" parameterType="BrowserInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
@@ -147,7 +147,10 @@
     </insert>
     <!--插入登录日志-->
     <insert id="insertLoginLog" parameterType="LoginLog">
-         insert into login_log(user_id,createtime,location_id,browser_info_id) values(#{userId},#{createtime},#{locationId},#{browserInfoId})
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
+        insert into login_log(user_id,createtime,location_id,browser_info_id) values(#{userId},#{createtime},#{locationId},#{browserInfoId})
     </insert>
     <!--插入退出日志-->
     <insert id="insertLogoutLog" parameterType="LogoutLog">

@@ -83,6 +83,11 @@ public class IndexController {
                 Integer loginLogId = loginLog.getId();
                 request.getSession().setAttribute("user", isExistUser);
                 request.getSession().setAttribute("loginLogId", loginLogId);
+                SystemLog systemLog = new SystemLog();
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation("login");
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
                 return "success";
             } else {
                 return "密码错误";
@@ -119,6 +124,12 @@ public class IndexController {
         user.setLocationId(locationId);
         int i = indexServiceImpl.insertUser(user);
         if (i == 1) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("regist");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
             return "success";
         }
         return null;
@@ -365,7 +376,13 @@ public class IndexController {
      * 搜索记录详情列表
      */
     @RequestMapping("/list")
-    public String list(Model model) {
+    public String list(Model model, HttpServletRequest request) {
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setOperation("list");
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
         List<SearchRecordLocation> searchRecordLocation = indexServiceImpl.selectSearchRecordLocation();
         model.addAttribute("items", searchRecordLocation);
         return "list";
@@ -375,7 +392,13 @@ public class IndexController {
      * 便签记录详情列表
      */
     @RequestMapping("/ainote")
-    public String aiNotelist(Model model) {
+    public String aiNotelist(Model model, HttpServletRequest request) {
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setOperation("ainote");
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
         List<AiNoteLocation> aiNoteLocation = indexServiceImpl.selectAiNoteLocation();
         model.addAttribute("items", aiNoteLocation);
         return "aiNoteList";
@@ -385,7 +408,13 @@ public class IndexController {
      * 注册用户列表
      */
     @RequestMapping("/userlist")
-    public String userList(Model model) {
+    public String userList(Model model, HttpServletRequest request) {
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setOperation("userlist");
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
         List<UserLocation> userLocations = indexServiceImpl.selectUserLocation();
         model.addAttribute("items", userLocations);
         return "userlist";
@@ -395,7 +424,13 @@ public class IndexController {
      * 登录日志列表
      */
     @RequestMapping("/loginloglist")
-    public String loginLogList(Model model) {
+    public String loginLogList(Model model, HttpServletRequest request) {
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setOperation("loginloglist");
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
         List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
         model.addAttribute("items", loginLogLocation);
         return "loginloglist";
@@ -405,7 +440,13 @@ public class IndexController {
      * 退出日志列表
      */
     @RequestMapping("/logoutloglist")
-    public String logoutLogList(Model model) {
+    public String logoutLogList(Model model, HttpServletRequest request) {
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setOperation("logoutloglist");
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
         List<LogoutLogLocation> logoutLogLocation = indexServiceImpl.selectLogoutLocation();
         model.addAttribute("items", logoutLogLocation);
         return "logoutloglist";
