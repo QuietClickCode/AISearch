@@ -43,4 +43,6 @@ public interface IndexService {
     List<LogoutLogLocation> selectLogoutLocation();
 
     int insertSystemLog(SystemLog systemLog);
+
+    List<SystemLogList> selectSystemLogList();
 }

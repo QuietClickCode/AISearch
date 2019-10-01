@@ -451,6 +451,21 @@ public class IndexController {
         model.addAttribute("items", logoutLogLocation);
         return "logoutloglist";
     }
+    /**
+     * 系统操作日志列表
+     */
+    @RequestMapping("/systemloglist")
+    public String systemloglist(Model model, HttpServletRequest request) {
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setOperation("logoutloglist");
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
+        List<SystemLogList> systemLogList = indexServiceImpl.selectSystemLogList();
+        model.addAttribute("items", systemLogList);
+        return "systemLogList";
+    }
 
 
     @RequestMapping("/todetail2")

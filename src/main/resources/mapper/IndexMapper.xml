@@ -150,7 +150,8 @@
         <selectKey resultType="int" keyProperty="id" order="AFTER">
             select @@IDENTITY as id
         </selectKey>
-        insert into login_log(user_id,createtime,location_id,browser_info_id) values(#{userId},#{createtime},#{locationId},#{browserInfoId})
+        insert into login_log(user_id,createtime,location_id,browser_info_id)
+        values(#{userId},#{createtime},#{locationId},#{browserInfoId})
     </insert>
     <!--插入退出日志-->
     <insert id="insertLogoutLog" parameterType="LogoutLog">
@@ -204,6 +205,31 @@
         left JOIN `location` l ON ll.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = ll.browser_info_id
         LEFT JOIN  `user` u on u.id = ll.user_id
 
+    </select>
+    <!--查询系统日志详情-->
+    <select id="selectSystemLogList" resultMap="systemLogList">
+  SELECT
+	u.id uid,
+	u.username,
+	u.`password`,
+	s.id,
+	s.operation,
+	s.createtime,
+	b.browser_type,
+	b.browser_version,
+	b.system,
+	l.ip,
+	l.keyword,
+	l.local_ip,
+	l.location,
+	l.X,
+	l.Y
+FROM
+	ai_system_log s
+LEFT JOIN login_log ll ON s.login_log_id = ll.id
+LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
+LEFT JOIN location l ON l.location_id = ll.location_id
+LEFT JOIN USER u ON u.id = ll.user_id
     </select>
 
 </mapper>

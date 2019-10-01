@@ -107,4 +107,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.insertSystemLog(systemLog);
     }
 
+    @Override
+    public List<SystemLogList> selectSystemLogList() {
+        return indexMapper.selectSystemLogList();
+    }
+
 }

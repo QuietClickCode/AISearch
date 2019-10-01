@@ -37,4 +37,6 @@ public interface IndexMapper  {
     List<LogoutLogLocation> selectLogoutLogLocation();
 
     int insertSystemLog(SystemLog systemLog);
+
+    List<SystemLogList> selectSystemLogList();
 }
