@@ -244,7 +244,7 @@
         methods: {
             //enter或者button激发,用于记录用户上下文
             toDetails: function (keyword) {
-                var isCommand = keyword.startsWith(':');
+                var isCommand = keyword.startsWith('/');
                 if (isCommand) {
                     window.location.href = keyword.substring(1);
                 } else {
@@ -311,10 +311,15 @@
             },
 
             searchItem: function (keyword) {
+                var isNote = keyword.startsWith('\"');
                 this.isShow = true;
-                var isCommand = keyword.startsWith(':');
+                var isCommand = keyword.startsWith('/');
                 if (isCommand) {
 
+                } else if (isNote) {
+                    store.isSee = "block";
+                } else if (keyword == "") {
+                    store.isSee = "none";
                 } else {
                     $.ajax({
                         url: "/searchItem", data: {keyword: keyword}, success: function (data) {
@@ -323,7 +328,7 @@
                                 store.article.push(data[i]);
                             }
                         }
-                    });
+                    })
                 }
             },
             toggle: function () {
