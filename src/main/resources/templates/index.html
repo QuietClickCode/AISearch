@@ -41,7 +41,7 @@
                   :style="{display:isSee}"
         ></el-input>
         <!--notePlaceholder考虑动态变化,比如,小知识,小技巧,温馨的话,历史事件之类的,不要固定死,输入框也考虑动态加点东西,根据用户习惯,几秒滚动哈,用placeholder实现-->
-        <el-input autofocus  id="el-input" style="width: 500px;"
+        <el-input autofocus id="el-input" style="width: 500px;"
                   @input="searchItem(store.keyword)"
                   placeholder="搜你想要"
                   v-model="store.keyword">
@@ -143,7 +143,11 @@
         }
     }
 
-
+    function cb(result) {
+        getUserIP(function (localIp) {
+            app.toDetail(store.keyword, result, localIp)
+        })
+    }
     function getLocation(cb) {
         var data = {key: "4MIBZ-LJMCF-6RKJA-NGKN4-JJZFF-2JBMJ"};//ip缺省时会自动获取请求端的公网IP,
         var url = "https://apis.map.qq.com/ws/location/v1/ip";
@@ -168,11 +172,7 @@
         });
     }
 
-    function cb(result) {
-        getUserIP(function (localIp) {
-            app.toDetail(store.keyword, result, localIp)
-        })
-    }
+
 
     function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
         //compatibility for firefox and chrome
@@ -241,94 +241,101 @@
             $("#app").show();
             this.width = $("#el-input").width();
         },
+        watch: {
+            /*用于监听关键字,如果为空,隐藏ul框*/
+            keyword: function () {
+                if (this.keyword == "") {
+                    this.isShow = false;
+                }
+            }
+        },
         methods: {
             //enter或者button激发,用于记录用户上下文
             toDetails: function (keyword) {
-                var isCommand = keyword.startsWith('/');
-                if (isCommand) {
-                    window.location.href = keyword.substring(1);
-                } else {
-                    var isNote = keyword.startsWith('\"');
-                    var isEnd = keyword.endsWith('\"\n');
-                    if (isNote && !isEnd) {
-                    } else if (isNote && isEnd) {
-                        getLocation(cb)
+                if (keyword != "") {
+                    /*如果/开头,跳转到对应页面*/
+                    var isForward = keyword.startsWith('/');
+                    /*转发*/
+                    if (isForward) {
+                        window.location.href = keyword.substring(1);
+                        /*调用下面的函数*/
                     } else {
-                        getLocation(cb);//toDetail()
-                    }
-                    if (keyword.substring(end) == ":end\n") {
-                        getLocation(cb);//toDetail()
+                        getLocation(cb);
                     }
                 }
             },
+            /*getLocation()调用下面的函数*/
             toDetail: function (keyword, location, localIp) {
-                if (keyword != "") {
-                    var isNote = keyword.startsWith('\"');
-                    var isEnd = keyword.endsWith('\"\n');
-                    var end = keyword.lastIndexOf('\"\n');
-                    if (isNote) {
-                        store.isSee = "block";
-                    }
-                    if (isNote && isEnd) {
-                        $.ajax({
-                            type: "post",
-                            contentType: "application/json",
-                            url: "/note",
-                            data: JSON.stringify({
-                                "keyword": keyword.substring(1, end),
-                                "location": location,
-                                "browserInfo": getBrowserInfo(),
-                                "pcOrPhone": pcOrPhone(),
-                                "localIp": localIp
-                            }),
-                            success: function (data) {
-                                if (store.note == "") {
-                                    store.note = '"'.concat(data).concat('"').concat("---").concat(new Date().toLocaleString());
-                                } else {
-                                    store.note += "\n".concat('"').concat(data).concat('"').concat("---").concat(new Date().toLocaleString());
-                                }
-                                store.keyword = "";
+                var isNote = keyword.startsWith('"');
+                var isCommand = keyword.startsWith(":")
+                /*便签模式*/
+                if (isNote) {
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/json",
+                        url: "/note",
+                        data: JSON.stringify({
+                            "keyword": keyword.substring(1),
+                            "location": location,
+                            "browserInfo": getBrowserInfo(),
+                            "pcOrPhone": pcOrPhone(),
+                            "localIp": localIp
+                        }),
+                        success: function (data) {
+                            if (store.note == "") {
+                                store.note = data.concat("---").concat(new Date().toLocaleString());
+                            } else {
+                                store.note += "\n".concat(data).concat("---").concat(new Date().toLocaleString());
                             }
-                        });
-                    } else {
-                        $.ajax({
-                            type: "post",
-                            contentType: "application/json;charset=utf-8",
-                            url: "/todetail",
-                            data: JSON.stringify({
-                                "keyword": keyword,
-                                "location": location,
-                                "browserInfo": getBrowserInfo(),
-                                "pcOrPhone": pcOrPhone(),
-                                "localIp": localIp
-                            }),
-                            success: function (data) {
-                                window.location.href = "detail";
-                            }
-                        });
-                    }
+                            store.keyword = "";
+                        }
+                    });
+                    /*命令模式*/
+                } else if (isCommand) {
+                    alert("命令模式")
+                    /*正常搜索*/
+                } else {
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/json;charset=utf-8",
+                        url: "/todetail",
+                        data: JSON.stringify({
+                            "keyword": keyword,
+                            "location": location,
+                            "browserInfo": getBrowserInfo(),
+                            "pcOrPhone": pcOrPhone(),
+                            "localIp": localIp
+                        }),
+                        success: function (data) {
+                            window.location.href = "detail";
+                        }
+                    });
                 }
             },
 
             searchItem: function (keyword) {
-                $.ajax({
-                    url: "/searchItem", data: {keyword: keyword}, success: function (data) {
-                        store.article = [];
-                        for (var i = 0; i < data.length; i++) {
-                            store.article.push(data[i]);
-                        }
-                    }
-                })
-               /* var isNote = keyword.startsWith('\"');
-                this.isShow = true;
-                var isCommand = keyword.startsWith('/');
-                if (isCommand) {
+                /*是否"开头*/
+                var isNote = keyword.startsWith('\"');
+                /*是否/开头*/
+                var isForward = keyword.startsWith('/');
+                /*是否:开头*/
+                var isCommand = keyword.startsWith(':');
+                /*开启转发模式,什么都不做,不向后台提交数据*/
+                if (isForward) {
 
+                    /*开启命令模式,也是啥都不做,等待enter*/
+                } else if (isCommand) {
+
+                    /*开启便签模式*/
                 } else if (isNote) {
                     store.isSee = "block";
+                    /*关闭便签模式*/
                 } else if (keyword == "") {
                     store.isSee = "none";
+                    store.article = [];
+                    /*正常模式,提交关键字到后台查询*/
                 } else {
+                    this.isShow = true;
                     $.ajax({
                         url: "/searchItem", data: {keyword: keyword}, success: function (data) {
                             store.article = [];
@@ -337,7 +344,7 @@
                             }
                         }
                     })
-                }*/
+                }
             },
             toggle: function () {
                 this.isShow = !this.isShow;
