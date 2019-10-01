@@ -239,7 +239,6 @@ public class IndexController {
                 break;
             }
         }
-
         modelAndView.setViewName("article");
         modelAndView.addObject("article", article);
         return modelAndView;
