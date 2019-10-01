@@ -55,8 +55,12 @@ public class IndexController {
     @RequestMapping("/toregist")
     @ResponseBody
     public String toregist(@RequestBody User user, HttpServletRequest request) {
-        int i = indexServiceImpl.insertUser(user);
-        System.out.println(i+"---------------");
+        User registUser = new User();
+        registUser.setCreatetime(new Date().toLocaleString());
+        int i = indexServiceImpl.insertUser(registUser);
+        if (i == 1) {
+            return "success";
+        }
         return null;
     }
 

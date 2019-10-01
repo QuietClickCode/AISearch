@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @program: aisearch
  * @description:
@@ -20,5 +24,17 @@ public class User {
     private String id;
     private String username;
     private String password;
+    private String createtime;
 
+    public void setCreatetime(String createtime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date dd = null;
+        try {
+            dd = sdf.parse(createtime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String d = sdf.format(dd);
+        this.createtime = d;
+    }
 }
