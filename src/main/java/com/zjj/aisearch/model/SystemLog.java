@@ -11,20 +11,19 @@ import java.util.Date;
 
 /**
  * @program: AISearch
- * @description: 记录所思所想的便签
+ * @description: 系统操作日志
  * @author: zjj
- * @create: 2019-09-30 21:26:21
+ * @create: 2019-10-02 00:09:12
  **/
+@Data
 @Getter
 @Setter
-@Data
 @ToString
-public class AiNote {
+public class SystemLog {
+
     private Integer id;
-    private String content;
     private String createtime;
-    private String locationId;
-    private String browserInfoId;
+    private String operation;
     private Integer loginLogId;
 
     public void setCreatetime(String createtime) {

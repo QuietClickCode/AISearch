@@ -153,6 +153,10 @@
     <insert id="insertLogoutLog" parameterType="LogoutLog">
          insert into logout_log(user_id,createtime,location_id,browser_info_id) values(#{userId},#{createtime},#{locationId},#{browserInfoId})
     </insert>
+    <!--插入系统日志-->
+    <insert id="insertSystemLog" parameterType="SystemLog">
+         insert into ai_system_log(login_log_id,createtime,operation) values(#{loginLogId},#{createtime},#{operation})
+    </insert>
 
 
     <!--查询-->

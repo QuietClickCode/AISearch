@@ -132,6 +132,11 @@ public class IndexController {
         User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("index");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
             model.addAttribute("msg", "你好," + user.getUsername());
             return "index";
         } else {
@@ -196,6 +201,12 @@ public class IndexController {
             logoutLog.setLocationId(locationId);
             logoutLog.setUserId(user.getId());
             indexServiceImpl.insertLogoutLog(logoutLog);
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("logout");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
             request.getSession().invalidate();
             return "login";
         }
@@ -239,6 +250,13 @@ public class IndexController {
             searchRecord.setSearchTime(new Date().toLocaleString());
             searchRecord.setKeyword(info.getKeyword());
             indexServiceImpl.insertSearchRecord(searchRecord);
+            Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            //这儿不光记录了操作还记录了本次查询的关键字
+            systemLog.setOperation("todetail" + "?keyword=" + info.getKeyword());
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
             List<Item> items = indexServiceImpl.searchItem(info.getKeyword());
             attributes.addFlashAttribute(id + "-" + "items1", items);
             /**这里不是很懂,不重定向会报错,重定向,前端页面不主动+window.location跳转也不生效,这儿必须前后端配合,缺一不可*/
@@ -254,6 +272,7 @@ public class IndexController {
     @RequestMapping("/detail")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest, HttpServletResponse res) throws IOException {
+
         String id = httpServletRequest.getSession().getId();
         Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
@@ -280,7 +299,7 @@ public class IndexController {
      */
     @RequestMapping("/note")
     @ResponseBody
-    public String note(@RequestBody Info info) {
+    public String note(@RequestBody Info info, HttpServletRequest request) {
         String[] locationArr = info.getLocation();
         String[] browserInfoArr = info.getBrowserInfo();
         String pcOrPhone = info.getPcOrPhone();
@@ -295,6 +314,7 @@ public class IndexController {
         lo.setY(locationArr[3]);
         lo.setKeyword(pcOrPhone);
         lo.setLocalIp(info.getLocalIp());
+
         indexServiceImpl.insertBrowserInfo(bi);
         indexServiceImpl.insertLocation(lo);
 
@@ -303,6 +323,14 @@ public class IndexController {
         aiNote.setBrowserInfoId(bi.getBrowserInfoId());
         aiNote.setLocationId(lo.getLocationId());
         aiNote.setCreatetime(new Date().toLocaleString());
+        //这儿明显冗余了,上面记录浏览器和位置,下面的登录日志id中都有了这些信息,记录两遍干啥子,后面重构的时候,处理下
+        aiNote.setLoginLogId((Integer) request.getSession().getAttribute("loginLogId"));
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setOperation("note" + "?content=" + aiNote.getContent());
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
         indexServiceImpl.insertAiNote(aiNote);
         return info.getKeyword();
     }
@@ -319,6 +347,12 @@ public class IndexController {
             int id = r.nextInt(101268) + 1;
             article = indexServiceImpl.search(id);
             if (article != null) {
+                Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+                SystemLog systemLog = new SystemLog();
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation("article" + "?id=" + article.getId());
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
                 break;
             }
         }
