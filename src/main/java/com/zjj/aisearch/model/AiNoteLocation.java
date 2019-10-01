@@ -18,4 +18,5 @@ import lombok.ToString;
 public class AiNoteLocation extends AiNote{
     private Location location;
     private BrowserInfo browserInfo;
+    private User user;
 }

@@ -55,79 +55,91 @@
 
     <el-table height="445"
               :data="items"
-            >
+    >
         <el-table-column
                 prop="id"
                 label="Id" fixed
         ></el-table-column>
-        <el-table-column  width="400px"
-                prop="content"
-                label="内容"
+        <el-table-column width="100px"
+                         prop="user.id"
+                         label="用户编号"
+        ></el-table-column>
+        <el-table-column width="100px"
+                         prop="user.username"
+                         label="用户名"
+        ></el-table-column>
+        <el-table-column width="100px"
+                         prop="user.password"
+                         label="密码"
+        ></el-table-column>
+        <el-table-column width="400px"
+                         prop="content"
+                         label="内容"
         ></el-table-column>
         <el-table-column width="120px"
-                prop="location.ip"
-                label="外网IP">
+                         prop="location.ip"
+                         label="外网IP">
         </el-table-column>
-        <el-table-column  width="120px"
-                prop="location.localIp"
-                label="局域网IP">
+        <el-table-column width="120px"
+                         prop="location.localIp"
+                         label="局域网IP">
         </el-table-column>
-        <el-table-column  width="150px"
-                prop="location.location"
-                label="位置">
+        <el-table-column width="150px"
+                         prop="location.location"
+                         label="位置">
         </el-table-column>
-        <el-table-column  width="100px"
-                prop="location.x"
-                label="经度">
+        <el-table-column width="100px"
+                         prop="location.x"
+                         label="经度">
         </el-table-column>
-        <el-table-column  width="100px"
-                prop="location.y"
-                label="纬度">
+        <el-table-column width="100px"
+                         prop="location.y"
+                         label="纬度">
         </el-table-column>
 
-        <el-table-column  width="100px"
-                prop="browserInfo.system"
-                label="操作系统">
+        <el-table-column width="100px"
+                         prop="browserInfo.system"
+                         label="操作系统">
         </el-table-column>
-        <el-table-column  width="100px"
-                prop="browserInfo.browserType"
-                label="浏览器类型">
+        <el-table-column width="100px"
+                         prop="browserInfo.browserType"
+                         label="浏览器类型">
         </el-table-column>
-        <el-table-column  width="120px"
-                prop="browserInfo.browserVersion"
-                label="浏览器版本">
+        <el-table-column width="120px"
+                         prop="browserInfo.browserVersion"
+                         label="浏览器版本">
         </el-table-column>
-        <el-table-column  width="100px"
-                prop="location.keyword"
-                label="设备">
+        <el-table-column width="100px"
+                         prop="location.keyword"
+                         label="设备">
         </el-table-column>
-        <el-table-column  fixed="right" width="200px"
-                          prop="createtime"
-                          label="创建时间">
+        <el-table-column fixed="right" width="200px"
+                         prop="createtime"
+                         label="创建时间">
         </el-table-column>
     </el-table>
     <div style="display: flex; justify-content:center">
-            <div aria-label="Page navigation">
-                <ul class="pagination" style="width:300px;">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        <div aria-label="Page navigation">
+            <ul class="pagination" style="width:300px;">
+                <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
+</div>
 </div>
 </body>
 <script src="/js/jquery-1.9.1.min.js"></script>

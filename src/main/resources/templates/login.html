@@ -30,11 +30,11 @@
 <div id="app" style="display: none">
     <div class="search" @keyup.enter="login">
         <el-form :label-position="labelPosition" label-width="80px" :model="store.user">
-            <el-form-item label="用户名">
-                <el-input placeholder="登录" style="width:300px;" v-model="store.user.username"></el-input>
+            <el-form-item autofocus label="用户名">
+                <el-input autofocus placeholder="登录" style="width:300px;" v-model="store.user.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-                <el-input style="width:300px;" v-model="store.user.password" type="password"></el-input>
+                <el-input autofocus  style="width:300px;" v-model="store.user.password" type="password"></el-input>
             </el-form-item>
         </el-form>
     </div>
