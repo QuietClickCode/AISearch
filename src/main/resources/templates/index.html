@@ -292,7 +292,22 @@
                     });
                     /*命令模式*/
                 } else if (isCommand) {
-                    alert("命令模式")
+                    var vueThis = this;
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/json;charset=utf-8",
+                        url: "/command",
+                        data: JSON.stringify({
+                            "keyword": keyword.substring(1),
+                            "location": location,
+                            "browserInfo": getBrowserInfo(),
+                            "pcOrPhone": pcOrPhone(),
+                            "localIp": localIp
+                        }),
+                        success: function (data) {
+                            window.location.href = "login";
+                        }
+                    });
                     /*正常搜索*/
                 } else {
                     $.ajax({

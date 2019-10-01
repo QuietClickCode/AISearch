@@ -78,9 +78,6 @@ public class IndexController {
     @RequestMapping("/searchItem")
     @ResponseBody
     public Object searchItem(String keyword, HttpServletResponse res) throws IOException {
-        if (keyword.equals(":article")) {
-            return null;
-        }
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
             return items;
@@ -88,6 +85,18 @@ public class IndexController {
         return null;
     }
 
+    /*进入命令模式*/
+    @RequestMapping("/command")
+    @ResponseBody
+    public String command(@RequestBody Info info, HttpServletRequest request) throws IOException {
+        if (info.getKeyword().equals("logout")) {
+            request.getSession().invalidate();
+            return "退出成功";
+        }
+        return "其他操作";
+    }
+
+    /*便签模式*/
     @RequestMapping("/note")
     @ResponseBody
     public String note(@RequestBody Info info) {
