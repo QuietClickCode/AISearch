@@ -112,4 +112,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.selectSystemLogList();
     }
 
+    @Override
+    public List<JianShuArticle> searchJianShuArticle(String keyword) {
+        return indexMapper.searchJianShuArticle(keyword);
+    }
+
 }

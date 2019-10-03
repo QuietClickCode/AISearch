@@ -236,7 +236,7 @@
         keyword: "",
         isShow: false,
         article: [],
-        msg:msg
+        msg: msg
 
     };
     var app = new Vue({
@@ -358,7 +358,25 @@
 
                     /*开启命令模式,也是啥都不做,等待enter*/
                 } else if (isCommand) {
-
+                    var index = keyword.indexOf(" ");
+                    if (index != -1) {
+                        var command = keyword.substring(1, index + 1);
+                        var title = keyword.substring(index + 1);
+                        console.log(index)
+                        console.log(command)
+                        console.log(title)
+                        if (title != "") {
+                            this.isShow = true;
+                            $.ajax({
+                                url: "/command", data: {keyword: keyword.substring(1)}, success: function (data) {
+                                    store.article = [];
+                                    for (var i = 0; i < data.length; i++) {
+                                        store.article.push(data[i]);
+                                    }
+                                }
+                            });
+                        }
+                    }
                     /*开启便签模式*/
                 } else if (isNote) {
                     store.isSee = "block";

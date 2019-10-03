@@ -172,6 +172,7 @@ public class IndexController {
     @RequestMapping("/searchItem")
     @ResponseBody
     public Object searchItem(String keyword, HttpServletResponse res) throws IOException {
+        System.out.println(keyword+"----------");
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
             return items;
@@ -180,12 +181,27 @@ public class IndexController {
     }
 
     /**
+     * 搜索简书文章
+     */
+
+    @RequestMapping("/searchJianShuArticle")
+    @ResponseBody
+    public Object searchJianShuArticle(String keyword, HttpServletResponse res) throws IOException {
+        if (!keyword.isEmpty()) {
+            List<JianShuArticle> items = indexServiceImpl.searchJianShuArticle(keyword);
+            return items;
+        }
+        return null;
+    }
+
+
+    /**
      * 进入命令模式
      */
     @RequestMapping("/command")
     @ResponseBody
-    public String command(@RequestBody Info info, HttpServletRequest request) throws IOException {
-        String[] locationArr = info.getLocation();
+    public Object command(String keyword, HttpServletResponse res) throws IOException {
+        /*String[] locationArr = info.getLocation();
         String[] browserInfoArr = info.getBrowserInfo();
         String pcOrPhone = info.getPcOrPhone();
         BrowserInfo bi = new BrowserInfo();
@@ -202,10 +218,23 @@ public class IndexController {
         indexServiceImpl.insertBrowserInfo(bi);
         indexServiceImpl.insertLocation(lo);
         String browserInfoId = bi.getBrowserInfoId();
-        String locationId = lo.getLocationId();
+        String locationId = lo.getLocationId();*/
 
-        User user = (User) request.getSession().getAttribute("user");
-        if (info.getKeyword().equals("logout")) {
+        /*User user = (User) request.getSession().getAttribute("user");*/
+        System.out.println(keyword);
+        int index = keyword.indexOf(" ");
+        System.out.println("--------------" + index);
+        if (index != -1) {
+            String substring = keyword.substring(0, index);
+            String title = keyword.substring(index + 1);
+            System.out.println("-------------" + title);
+            System.out.println("-------------" + substring);
+            if (substring.equals("js")) {
+                List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
+                return jianShuArticles;
+            }
+        }
+       /* if (info.getKeyword().equals("logout")) {
             LogoutLog logoutLog = new LogoutLog();
             logoutLog.setCreatetime(new Date().toLocaleString());
             logoutLog.setBrowserInfoId(browserInfoId);
@@ -220,7 +249,7 @@ public class IndexController {
             indexServiceImpl.insertSystemLog(systemLog);
             request.getSession().invalidate();
             return "login";
-        }
+        }*/
         return "其他操作";
     }
 
@@ -451,6 +480,7 @@ public class IndexController {
         model.addAttribute("items", logoutLogLocation);
         return "logoutloglist";
     }
+
     /**
      * 系统操作日志列表
      */

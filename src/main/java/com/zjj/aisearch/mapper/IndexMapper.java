@@ -11,6 +11,7 @@ public interface IndexMapper  {
 
     Article search(int keyword);
     List<Item> searchItem(String keyword);
+    List<JianShuArticle> searchJianShuArticle(String keyword);
 
     int insertBrowserInfo(BrowserInfo browserInfo);
 
