@@ -2,9 +2,7 @@ package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +26,6 @@ import java.util.*;
  * @create: 2019-09-21 19:16:26
  **/
 @Controller
-@Slf4j
-@Api(value = "测试Controller" , tags = "测试类")
 public class IndexController {
 
     @Autowired
@@ -55,7 +51,6 @@ public class IndexController {
     @ApiOperation(value = "登录方法")
     @ResponseBody
     public String tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
-        log.error("login" + " ---------------------");
         String username = userInfo.getUser().getUsername();
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
         if (isExistUser != null) {
@@ -192,64 +187,39 @@ public class IndexController {
      */
     @RequestMapping("/command")
     @ResponseBody
-    public Object command(String keyword, HttpServletResponse res) throws IOException {
-        /*String[] locationArr = info.getLocation();
-        String[] browserInfoArr = info.getBrowserInfo();
-        String pcOrPhone = info.getPcOrPhone();
-        BrowserInfo bi = new BrowserInfo();
-        Location lo = new Location();
-        bi.setSystem(browserInfoArr[0]);
-        bi.setBrowserType(browserInfoArr[1]);
-        bi.setBrowserVersion(browserInfoArr[2]);
-        lo.setIp(locationArr[0]);
-        lo.setLocation(locationArr[1]);
-        lo.setX(locationArr[2]);
-        lo.setY(locationArr[3]);
-        lo.setKeyword(pcOrPhone);
-        lo.setLocalIp(info.getLocalIp());
-        indexServiceImpl.insertBrowserInfo(bi);
-        indexServiceImpl.insertLocation(lo);
-        String browserInfoId = bi.getBrowserInfoId();
-        String locationId = lo.getLocationId();*/
+    public Object command(String keyword, HttpServletRequest request) throws IOException {
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
 
-        /*User user = (User) request.getSession().getAttribute("user");*/
-        System.out.println(keyword);
         int index = keyword.indexOf(" ");
-        System.out.println("--------------" + index);
         if (index != -1) {
             String substring = keyword.substring(0, index);
             String title = keyword.substring(index + 1);
-            System.out.println("-------------" + title);
-            System.out.println("-------------" + substring);
             if (substring.equals("js")) {
                 List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":js" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
                 return jianShuArticles;
             }
             if (substring.equals("zh")) {
                 List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":zh" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
                 return zhiHuArticles;
             }
             if (substring.equals("csdn")) {
                 List<Article> Articles = indexServiceImpl.searchArticle(title);
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":csdn" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
                 return Articles;
             }
         }
-       /* if (info.getKeyword().equals("logout")) {
-            LogoutLog logoutLog = new LogoutLog();
-            logoutLog.setCreatetime(new Date().toLocaleString());
-            logoutLog.setBrowserInfoId(browserInfoId);
-            logoutLog.setLocationId(locationId);
-            logoutLog.setUserId(user.getId());
-            indexServiceImpl.insertLogoutLog(logoutLog);
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
-            systemLog.setOperation("logout");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            request.getSession().invalidate();
-            return "login";
-        }*/
         return "其他操作";
     }
 
