@@ -1,0 +1,19 @@
+package com.zjj.aisearch.service;
+
+import com.zjj.aisearch.model.QueryForm;
+import com.zjj.aisearch.model.SystemLogList;
+
+import java.util.List;
+
+/**
+ * @program: AISearch
+ * @description:
+ * @author: zjj
+ * @create: 2019-10-05 02:51:40
+ **/
+public interface QueryService {
+
+
+    public List<SystemLogList> queryForm(QueryForm queryForm);
+
+}

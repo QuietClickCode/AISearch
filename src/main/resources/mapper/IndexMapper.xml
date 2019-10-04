@@ -197,6 +197,12 @@
         select * from article where id =  #{id}
     </select>
 
+
+    <!--查询系统日志-->
+    <select id="queryForm" resultType="SystemLogList">
+        select * from ai_system_log where title like  "%"#{keyword}"%"
+    </select>
+
     <!--查询用户通过用户名-->
     <select id="selectUserByUserName" resultType="User">
         select * from user where username =  #{username}
