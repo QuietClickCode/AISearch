@@ -285,7 +285,7 @@ public class IndexController {
             if (substring.equals("zh")) {
                 List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
                 attributes.addFlashAttribute(id + "-" + "items1", zhiHuArticles);
-                return "redirect:commandlist";
+                return "redirect:zhihucommandlist";
             }
             if (substring.equals("csdn")) {
                 List<Article> Articles = indexServiceImpl.searchArticle(title);
@@ -311,6 +311,34 @@ public class IndexController {
         }
 
         modelAndView.setViewName("commandlist");
+
+        if (list != null) {
+            map.put(id + "-" + "items1", list);
+            modelAndView.addObject("items", list);
+            return modelAndView;
+        } else {
+            List<Item> lists = (List<Item>) map.get(id + "-" + "items1");
+            modelAndView.addObject("items", lists);
+            return modelAndView;
+
+        }
+    }
+
+    /**
+     * 进入知乎定向搜索结果详情页
+     */
+    @RequestMapping("/zhihucommandlist")
+    public ModelAndView zhihucommandlist(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
+            httpServletRequest, HttpServletResponse res) throws IOException {
+
+        String id = httpServletRequest.getSession().getId();
+        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
+        List<Item> list = null;
+        if (maps != null) {
+            list = (List<Item>) maps.get(id + "-" + "items1");
+        }
+
+        modelAndView.setViewName("zhihucommandlist");
 
         if (list != null) {
             map.put(id + "-" + "items1", list);
