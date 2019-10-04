@@ -2,6 +2,9 @@ package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,8 @@ import java.util.*;
  * @create: 2019-09-21 19:16:26
  **/
 @Controller
+@Slf4j
+@Api(value = "测试Controller" , tags = "测试类")
 public class IndexController {
 
     @Autowired
@@ -48,8 +53,10 @@ public class IndexController {
      * 登录
      */
     @RequestMapping("/tologin")
+    @ApiOperation(value = "登录方法")
     @ResponseBody
     public String tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+        log.error("login" + " ---------------------");
         String username = userInfo.getUser().getUsername();
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
         if (isExistUser != null) {
