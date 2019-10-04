@@ -304,22 +304,29 @@
                     });
                     /*命令模式*/
                 } else if (isCommand) {
-                    var vueThis = this;
-                    $.ajax({
-                        type: "post",
-                        contentType: "application/json;charset=utf-8",
-                        url: "/command",
-                        data: JSON.stringify({
-                            "keyword": keyword.substring(1),
-                            "location": location,
-                            "browserInfo": getBrowserInfo(),
-                            "pcOrPhone": pcOrPhone(),
-                            "localIp": localIp
-                        }),
-                        success: function (data) {
-                            window.location.href = data;
+                    var index = keyword.indexOf(" ");
+                    if (index != -1) {
+                        var command = keyword.substring(1, index + 1);
+                        var title = keyword.substring(index + 1);
+                        var end = keyword.lastIndexOf(" ");
+                        console.log(end + "end")
+                        console.log(keyword.length + "length");
+                        if (end + 1 == keyword.length) {
+                            store.pattern = ":" + command;
+                            console.log(store.pattern + "---------");
+                            console.log(index)
+                            console.log(command)
+                            console.log(title)
+                            if (title != "") {
+                                this.isShow = true;
+                                $.ajax({
+                                    url: "/iscommand", data: {keyword: keyword.substring(1,keyword.length-1)}, success: function (data) {
+                                        window.location.href = "commandlist";
+                                    }
+                                });
+                            }
                         }
-                    });
+                    }
                     /*正常搜索*/
                 } else {
                     console.log(JSON.stringify({
@@ -375,7 +382,7 @@
                             if (title != "") {
                                 this.isShow = true;
                                 $.ajax({
-                                    url: "/command", data: {keyword: keyword.substring(1)}, success: function (data) {
+                                    url: "/command", data: {keyword: keyword.substring(1, keyword.length-1)}, success: function (data) {
                                         store.article = [];
                                         for (var i = 0; i < data.length; i++) {
                                             store.article.push(data[i]);

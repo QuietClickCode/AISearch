@@ -261,6 +261,69 @@ public class IndexController {
         return "其他操作";
     }
 
+
+    /**
+     * 定向搜索结果详情
+     */
+    @RequestMapping("/iscommand")
+    public String isCommand(String keyword, RedirectAttributes attributes, HttpServletRequest httpServletRequest, HttpServletResponse res) throws IOException {
+
+        String id = httpServletRequest.getSession().getId();
+        System.out.println(keyword);
+        int index = keyword.indexOf(" ");
+        System.out.println("--------------" + index);
+        if (index != -1) {
+            String substring = keyword.substring(0, index);
+            String title = keyword.substring(index + 1);
+            System.out.println("-------------" + title);
+            System.out.println("-------------" + substring);
+            if (substring.equals("js")) {
+                List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
+                attributes.addFlashAttribute(id + "-" + "items1", jianShuArticles);
+                return "redirect:commandlist";
+            }
+            if (substring.equals("zh")) {
+                List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
+                attributes.addFlashAttribute(id + "-" + "items1", zhiHuArticles);
+                return "redirect:commandlist";
+            }
+            if (substring.equals("csdn")) {
+                List<Article> Articles = indexServiceImpl.searchArticle(title);
+                attributes.addFlashAttribute(id + "-" + "items1", Articles);
+                return "redirect:commandlist";
+            }
+        }
+        return null;
+
+    }
+    /**
+     * 进入定向搜索结果详情页
+     */
+    @RequestMapping("/commandlist")
+    public ModelAndView commandlist(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
+            httpServletRequest, HttpServletResponse res) throws IOException {
+
+        String id = httpServletRequest.getSession().getId();
+        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
+        List<Item> list = null;
+        if (maps != null) {
+            list = (List<Item>) maps.get(id + "-" + "items1");
+        }
+
+        modelAndView.setViewName("commandlist");
+
+        if (list != null) {
+            map.put(id + "-" + "items1", list);
+            modelAndView.addObject("items", list);
+            return modelAndView;
+        } else {
+            List<Item> lists = (List<Item>) map.get(id + "-" + "items1");
+            modelAndView.addObject("items", lists);
+            return modelAndView;
+
+        }
+    }
+
     /**
      * 重定向到搜索结果详情页
      */
