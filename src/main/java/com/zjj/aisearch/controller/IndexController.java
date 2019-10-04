@@ -48,7 +48,6 @@ public class IndexController {
         return path;
     }
 
-
     /**
      * 登录
      */
