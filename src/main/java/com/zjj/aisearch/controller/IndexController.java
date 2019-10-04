@@ -188,70 +188,65 @@ public class IndexController {
     @RequestMapping("/command")
     @ResponseBody
     public Object command(String keyword, HttpServletRequest request) throws IOException {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-
         int index = keyword.indexOf(" ");
         if (index != -1) {
             String substring = keyword.substring(0, index);
             String title = keyword.substring(index + 1);
             if (substring.equals("js")) {
                 List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
-                systemLog.setCreatetime(new Date().toLocaleString());
-                systemLog.setOperation(":js" + "?keyword=" + title);
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
                 return jianShuArticles;
             }
             if (substring.equals("zh")) {
                 List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
-                systemLog.setCreatetime(new Date().toLocaleString());
-                systemLog.setOperation(":zh" + "?keyword=" + title);
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
+
                 return zhiHuArticles;
             }
             if (substring.equals("csdn")) {
                 List<Article> Articles = indexServiceImpl.searchArticle(title);
-                systemLog.setCreatetime(new Date().toLocaleString());
-                systemLog.setOperation(":csdn" + "?keyword=" + title);
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
+
                 return Articles;
             }
         }
         return "其他操作";
     }
 
-
     /**
      * 定向搜索结果详情
      */
     @RequestMapping("/iscommand")
     public String isCommand(String keyword, RedirectAttributes attributes, HttpServletRequest httpServletRequest, HttpServletResponse res) throws IOException {
-
+        Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
         String id = httpServletRequest.getSession().getId();
-        System.out.println(keyword);
         int index = keyword.indexOf(" ");
-        System.out.println("--------------" + index);
         if (index != -1) {
             String substring = keyword.substring(0, index);
             String title = keyword.substring(index + 1);
-            System.out.println("-------------" + title);
-            System.out.println("-------------" + substring);
             if (substring.equals("js")) {
                 List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
                 attributes.addFlashAttribute(id + "-" + "items1", jianShuArticles);
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":js" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
                 return "redirect:commandlist";
             }
             if (substring.equals("zh")) {
                 List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
                 attributes.addFlashAttribute(id + "-" + "items1", zhiHuArticles);
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":zh" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
                 return "redirect:zhihucommandlist";
             }
             if (substring.equals("csdn")) {
                 List<Article> Articles = indexServiceImpl.searchArticle(title);
                 attributes.addFlashAttribute(id + "-" + "items1", Articles);
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":csdn" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
                 return "redirect:commandlist";
             }
         }
@@ -271,9 +266,7 @@ public class IndexController {
         if (maps != null) {
             list = (List<Item>) maps.get(id + "-" + "items1");
         }
-
         modelAndView.setViewName("commandlist");
-
         if (list != null) {
             map.put(id + "-" + "items1", list);
             modelAndView.addObject("items", list);
@@ -292,16 +285,13 @@ public class IndexController {
     @RequestMapping("/zhihucommandlist")
     public ModelAndView zhihucommandlist(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest, HttpServletResponse res) throws IOException {
-
         String id = httpServletRequest.getSession().getId();
         Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
         if (maps != null) {
             list = (List<Item>) maps.get(id + "-" + "items1");
         }
-
         modelAndView.setViewName("zhihucommandlist");
-
         if (list != null) {
             map.put(id + "-" + "items1", list);
             modelAndView.addObject("items", list);
@@ -310,7 +300,6 @@ public class IndexController {
             List<Item> lists = (List<Item>) map.get(id + "-" + "items1");
             modelAndView.addObject("items", lists);
             return modelAndView;
-
         }
     }
 
@@ -320,7 +309,6 @@ public class IndexController {
     @RequestMapping("/todetail")
     public String toDetail(@RequestBody Info info, RedirectAttributes attributes, HttpServletRequest httpServletRequest, HttpServletResponse res) throws IOException {
         String id = httpServletRequest.getSession().getId();
-
         if (info.getKeyword().equals(":article")) {
             return "redirect:article";
         }
@@ -343,8 +331,6 @@ public class IndexController {
             lo.setLocalIp(info.getLocalIp());
             indexServiceImpl.insertBrowserInfo(bi);
             indexServiceImpl.insertLocation(lo);
-
-
             SearchRecord searchRecord = new SearchRecord();
             searchRecord.setBrowserInfoId(bi.getBrowserInfoId());
             searchRecord.setLocationId(lo.getLocationId());
@@ -364,7 +350,6 @@ public class IndexController {
             return "redirect:detail";
         }
         return null;
-
     }
 
     /**
@@ -373,16 +358,13 @@ public class IndexController {
     @RequestMapping("/detail")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest, HttpServletResponse res) throws IOException {
-
         String id = httpServletRequest.getSession().getId();
         Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
         List<Item> list = null;
         if (maps != null) {
             list = (List<Item>) maps.get(id + "-" + "items1");
         }
-
         modelAndView.setViewName("detail");
-
         if (list != null) {
             map.put(id + "-" + "items1", list);
             modelAndView.addObject("items", list);
@@ -391,7 +373,6 @@ public class IndexController {
             List<Item> lists = (List<Item>) map.get(id + "-" + "items1");
             modelAndView.addObject("items", lists);
             return modelAndView;
-
         }
     }
 
@@ -541,7 +522,6 @@ public class IndexController {
         model.addAttribute("items", logoutLogLocation);
         return "logoutloglist";
     }
-
     /**
      * 系统操作日志列表
      */
@@ -557,5 +537,4 @@ public class IndexController {
         model.addAttribute("items", systemLogList);
         return "systemLogList";
     }
-
 }

@@ -384,22 +384,15 @@
                 var isCommand = keyword.startsWith(':');
                 /*开启转发模式,什么都不做,不向后台提交数据*/
                 if (isForward) {
-
-                    /*开启命令模式,也是啥都不做,等待enter*/
+                    /*开启命令模式*/
                 } else if (isCommand) {
                     var index = keyword.indexOf(" ");
                     if (index != -1) {
                         var command = keyword.substring(1, index + 1);
                         var title = keyword.substring(index + 1);
                         var end = keyword.lastIndexOf(" ");
-                        console.log(end + "end")
-                        console.log(keyword.length + "length");
                         if (end + 1 == keyword.length) {
                             store.pattern = ":" + command;
-                            console.log(store.pattern + "---------");
-                            console.log(index)
-                            console.log(command)
-                            console.log(title)
                             if (title != "") {
                                 this.isShow = true;
                                 $.ajax({
