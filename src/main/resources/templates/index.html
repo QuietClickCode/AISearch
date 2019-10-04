@@ -320,7 +320,9 @@
                             if (title != "") {
                                 this.isShow = true;
                                 $.ajax({
-                                    url: "/iscommand", data: {keyword: keyword.substring(1,keyword.length-1)}, success: function (data) {
+                                    url: "/iscommand",
+                                    data: {keyword: keyword.substring(1, keyword.length - 1)},
+                                    success: function (data) {
                                         window.location.href = "commandlist";
                                     }
                                 });
@@ -382,7 +384,9 @@
                             if (title != "") {
                                 this.isShow = true;
                                 $.ajax({
-                                    url: "/command", data: {keyword: keyword.substring(1, keyword.length-1)}, success: function (data) {
+                                    url: "/command",
+                                    data: {keyword: keyword.substring(1, keyword.length - 1)},
+                                    success: function (data) {
                                         store.article = [];
                                         for (var i = 0; i < data.length; i++) {
                                             store.article.push(data[i]);
@@ -421,12 +425,16 @@
 
             upScreen: function (label) {
                 if (store.pattern == ":js ") {
-                    store.keyword = ":js " + label;
+                    store.keyword = ":js " + label + " ";
+                    $("#el-input").focus();
                 } else if (store.pattern == ":csdn ") {
-                    store.keyword = ":csdn " + label;
+                    store.keyword = ":csdn " + label + " ";
+                    $("#el-input").focus();
+
                 }
                 else {
                     store.keyword = label;
+                    $("#el-input").focus();
                 }
             },
         }
