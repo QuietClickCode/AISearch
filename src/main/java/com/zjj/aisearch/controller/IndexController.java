@@ -179,7 +179,6 @@ public class IndexController {
     @RequestMapping("/searchItem")
     @ResponseBody
     public Object searchItem(String keyword, HttpServletResponse res) throws IOException {
-        System.out.println(keyword+"----------");
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
             return items;
@@ -187,19 +186,6 @@ public class IndexController {
         return null;
     }
 
-    /**
-     * 搜索简书文章
-     */
-
-    @RequestMapping("/searchJianShuArticle")
-    @ResponseBody
-    public Object searchJianShuArticle(String keyword, HttpServletResponse res) throws IOException {
-        if (!keyword.isEmpty()) {
-            List<JianShuArticle> items = indexServiceImpl.searchJianShuArticle(keyword);
-            return items;
-        }
-        return null;
-    }
 
 
     /**
