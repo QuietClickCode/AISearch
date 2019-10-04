@@ -226,6 +226,7 @@
     }
 
     var store = {
+        pattern: "",
         notePlaceholder: "写点什么吧～～",
         note: "",
         isSee: 'none',
@@ -363,9 +364,11 @@
                         var command = keyword.substring(1, index + 1);
                         var title = keyword.substring(index + 1);
                         var end = keyword.lastIndexOf(" ");
-                        console.log(end+"end")
-                        console.log(keyword.length+"length");
+                        console.log(end + "end")
+                        console.log(keyword.length + "length");
                         if (end + 1 == keyword.length) {
+                            store.pattern = ":" + command;
+                            console.log(store.pattern + "---------");
                             console.log(index)
                             console.log(command)
                             console.log(title)
@@ -410,7 +413,14 @@
             },
 
             upScreen: function (label) {
-                store.keyword = label;
+                if (store.pattern == ":js ") {
+                    store.keyword = ":js " + label;
+                } else if (store.pattern == ":csdn ") {
+                    store.keyword = ":csdn " + label;
+                }
+                else {
+                    store.keyword = label;
+                }
             },
         }
     })
