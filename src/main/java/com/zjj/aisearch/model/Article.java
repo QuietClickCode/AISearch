@@ -24,7 +24,7 @@ public class Article {
 
     private String content;
 
-    private String create_time;
+    private String createtime;
 
 
 }

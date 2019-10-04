@@ -117,4 +117,14 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.searchJianShuArticle(keyword);
     }
 
+    @Override
+    public List<ZhiHuArticle> searchZhiHuArticle(String title) {
+        return indexMapper.searchZhiHuArticle(title);
+    }
+
+    @Override
+    public List<Article> searchArticle(String title) {
+        return indexMapper.searchArticle(title);
+    }
+
 }

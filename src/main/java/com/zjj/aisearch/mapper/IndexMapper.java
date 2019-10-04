@@ -40,4 +40,9 @@ public interface IndexMapper  {
     int insertSystemLog(SystemLog systemLog);
 
     List<SystemLogList> selectSystemLogList();
+
+
+    List<ZhiHuArticle> searchZhiHuArticle(String title);
+
+    List<Article> searchArticle(String title);
 }

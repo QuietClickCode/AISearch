@@ -362,19 +362,24 @@
                     if (index != -1) {
                         var command = keyword.substring(1, index + 1);
                         var title = keyword.substring(index + 1);
-                        console.log(index)
-                        console.log(command)
-                        console.log(title)
-                        if (title != "") {
-                            this.isShow = true;
-                            $.ajax({
-                                url: "/command", data: {keyword: keyword.substring(1)}, success: function (data) {
-                                    store.article = [];
-                                    for (var i = 0; i < data.length; i++) {
-                                        store.article.push(data[i]);
+                        var end = keyword.lastIndexOf(" ");
+                        console.log(end+"end")
+                        console.log(keyword.length+"length");
+                        if (end + 1 == keyword.length) {
+                            console.log(index)
+                            console.log(command)
+                            console.log(title)
+                            if (title != "") {
+                                this.isShow = true;
+                                $.ajax({
+                                    url: "/command", data: {keyword: keyword.substring(1)}, success: function (data) {
+                                        store.article = [];
+                                        for (var i = 0; i < data.length; i++) {
+                                            store.article.push(data[i]);
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
                     }
                     /*开启便签模式*/

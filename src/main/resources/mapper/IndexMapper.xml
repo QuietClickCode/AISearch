@@ -210,6 +210,14 @@
     <select id="searchJianShuArticle" resultType="JianShuArticle">
         select * from jianshu_article where title like "%"#{name}"%"
     </select>
+        <!--查询知乎详情-->
+    <select id="searchZhiHuArticle" resultType="ZhiHuArticle">
+        select * from zhihu_article where answer like "%"#{name}"%"
+    </select>
+        <!--查询csdn详情-->
+    <select id="searchArticle" resultType="Article">
+        select * from article where title like "%"#{name}"%"
+    </select>
 
     <!--查询搜索记录详情-->
     <select id="selectSearchRecordLocation" resultMap="searchRecordLocation">

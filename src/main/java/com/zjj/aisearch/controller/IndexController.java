@@ -233,6 +233,14 @@ public class IndexController {
                 List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
                 return jianShuArticles;
             }
+            if (substring.equals("zh")) {
+                List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
+                return zhiHuArticles;
+            }
+            if (substring.equals("csdn")) {
+                List<Article> Articles = indexServiceImpl.searchArticle(title);
+                return Articles;
+            }
         }
        /* if (info.getKeyword().equals("logout")) {
             LogoutLog logoutLog = new LogoutLog();

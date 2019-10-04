@@ -47,4 +47,8 @@ public interface IndexService {
     List<SystemLogList> selectSystemLogList();
 
     List<JianShuArticle> searchJianShuArticle(String keyword);
+
+    List<ZhiHuArticle> searchZhiHuArticle(String title);
+
+    List<Article> searchArticle(String title);
 }
