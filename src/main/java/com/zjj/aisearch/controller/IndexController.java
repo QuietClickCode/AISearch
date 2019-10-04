@@ -536,7 +536,7 @@ public class IndexController {
         indexServiceImpl.insertSystemLog(systemLog);
         List<AiNoteLocation> aiNoteLocation = indexServiceImpl.selectAiNoteLocation();
         model.addAttribute("items", aiNoteLocation);
-        return "aiNoteList";
+        return "ainotelist";
     }
 
     /**
