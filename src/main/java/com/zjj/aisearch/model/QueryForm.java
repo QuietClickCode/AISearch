@@ -18,6 +18,8 @@ import lombok.ToString;
 public class QueryForm {
 
     private String keyword;
+    private String location;
+    private String system;
     private String[] createtime;
 
 }

@@ -25,20 +25,33 @@
             </div>
             <div class="query-title">位置</div>
             <div class="query-input">
-                <el-input></el-input>
+                <el-input v-model="queryForm.location"></el-input>
             </div>
             <div class="query-title">搜索时间</div>
             <div class="query-input">
-                <el-input></el-input>
-                至
-                <el-input></el-input>
+                <el-date-picker
+                        v-model="queryForm.createtime"
+                        type="datetimerange"
+                        format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                </el-date-picker>
             </div>
 
         </div>
         <div class="query-row">
             <div class="query-title">操作系统</div>
             <div class="query-input">
-                <el-input></el-input>
+                <el-select v-model="queryForm.system" placeholder="请选择">
+                    <el-option
+                            v-for="item in system"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
+
             </div>
             <div class="query-title">浏览器</div>
             <div class="query-input">
@@ -148,7 +161,8 @@
 
 <script>
     var store = {
-        queryForm: {keyword: "", createtime: ["2019-10-03 11:18:54","2019-10-04 11:22:20"]},
+        queryForm: {keyword: "", location: "",system:"", createtime: []},
+        system:[],
         visible: false,
         width: 0,
         title: "",
@@ -165,12 +179,23 @@
             this.width = $("#el-input").width();
             $("#app").show();
             console.log(JSON.stringify(dealMeasureEnum));
+            this.init();
         },
         methods: {
+            init:function () {
+                var vueThis = this;
+                $.ajax({
+                    contentType: "application/json;charset=utf-8",
+                    url: "/querySystem",
+                    success: function (data) {
+                        vueThis.system = data;
+                    }
+                })
+            },
             query: function () {
                 var vueThis = this;
                 $.ajax({
-                    type:"post",
+                    type: "post",
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(vueThis.queryForm),
                     url: "/querySystemLog",

@@ -53,6 +53,12 @@
             <if test="keyword != ''">
                 operation like "%"#{keyword}"%"
             </if>
+            <if test="location != ''">
+                and location like "%"#{location}"%"
+            </if>
+            <if test="system != ''">
+                and system  = #{system}
+            </if>
             <if test="createtime.length != 0">
                 and s.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
             </if>
