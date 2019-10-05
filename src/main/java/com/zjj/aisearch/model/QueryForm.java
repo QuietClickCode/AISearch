@@ -20,6 +20,8 @@ public class QueryForm {
     private String keyword;
     private String location;
     private String system;
+    private String device;
+    private String browser;
     private String[] createtime;
 
 }

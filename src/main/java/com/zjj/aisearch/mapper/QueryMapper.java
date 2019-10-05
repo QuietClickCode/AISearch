@@ -14,4 +14,7 @@ import java.util.List;
 public interface QueryMapper {
 
     List<SystemLogList> queryForm(QueryForm queryForm);
+    List<String> querySystem();
+    List<String> queryBrowser();
+    List<String> queryDevice();
 }

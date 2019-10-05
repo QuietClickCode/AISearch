@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,9 +32,19 @@ public class QueryController {
     @RequestMapping("querySystem")
     @ResponseBody
     public List<String> querySystem() {
-        List<String> list = new ArrayList<>();
-        list.add("Win10");
-        list.add("linux");
-        return list;
+        List<String> strings = queryServiceImpl.querySystem();
+        return strings;
+    }
+    @RequestMapping("queryDevice")
+    @ResponseBody
+    public List<String> queryDevice() {
+        List<String> strings = queryServiceImpl.queryDevice();
+        return strings;
+    }
+    @RequestMapping("queryBrowser")
+    @ResponseBody
+    public List<String> queryBrowser() {
+        List<String> strings = queryServiceImpl.queryBrowser();
+        return strings;
     }
 }

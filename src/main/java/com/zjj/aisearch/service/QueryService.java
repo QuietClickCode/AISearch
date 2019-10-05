@@ -15,5 +15,8 @@ public interface QueryService {
 
 
     public List<SystemLogList> queryForm(QueryForm queryForm);
+    public List<String> querySystem();
+    public List<String> queryBrowser();
+    public List<String> queryDevice();
 
 }

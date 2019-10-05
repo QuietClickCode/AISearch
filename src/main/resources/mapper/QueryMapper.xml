@@ -59,9 +59,28 @@
             <if test="system != ''">
                 and system  = #{system}
             </if>
+            <if test="browser != ''">
+                and b.browser_type = #{browser}
+            </if>
+            <if test="device != ''">
+                and l.keyword  = #{device}
+            </if>
             <if test="createtime.length != 0">
                 and s.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
             </if>
         </where>
+    </select>
+
+    <!--查询系统-->
+    <select id="querySystem" resultType="String">
+        select DISTINCT(system) from browser_info
+    </select>
+    <!--查询浏览器-->
+    <select id="queryBrowser" resultType="String">
+        select DISTINCT(browser_type) from browser_info
+    </select>
+    <!--查询设备-->
+    <select id="queryDevice" resultType="String">
+        select DISTINCT(keyword) as device from location
     </select>
 </mapper>

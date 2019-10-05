@@ -25,4 +25,19 @@ public class QueryServiceImpl implements QueryService {
     public List<SystemLogList> queryForm(QueryForm queryForm) {
         return queryMapper.queryForm(queryForm);
     }
+
+    @Override
+    public List<String> querySystem() {
+        return queryMapper.querySystem();
+    }
+
+    @Override
+    public List<String> queryBrowser() {
+        return queryMapper.queryBrowser();
+    }
+
+    @Override
+    public List<String> queryDevice() {
+        return queryMapper.queryDevice();
+    }
 }

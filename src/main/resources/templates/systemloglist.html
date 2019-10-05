@@ -45,21 +45,46 @@
             <div class="query-input">
                 <el-select v-model="queryForm.system" placeholder="请选择">
                     <el-option
+                            label="请选择"
+                            value="">
+                    </el-option>
+                    <el-option
                             v-for="item in system"
                             :key="item"
                             :label="item"
                             :value="item">
                     </el-option>
                 </el-select>
-
             </div>
             <div class="query-title">浏览器</div>
             <div class="query-input">
-                <el-input></el-input>
+                <el-select v-model="queryForm.browser" placeholder="请选择">
+                    <el-option
+                            label="请选择"
+                            value="">
+                    </el-option>
+                    <el-option
+                            v-for="item in browser"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
             </div>
             <div class="query-title">设备</div>
             <div class="query-input">
-                <el-input></el-input>
+                <el-select v-model="queryForm.device" placeholder="请选择">
+                    <el-option
+                            label="请选择"
+                            value="">
+                    </el-option>
+                    <el-option
+                            v-for="item in device"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
             </div>
         </div>
     </div>
@@ -161,8 +186,10 @@
 
 <script>
     var store = {
-        queryForm: {keyword: "", location: "",system:"", createtime: []},
-        system:[],
+        queryForm: {keyword: "", location: "", system: "", createtime: [], browser: "", device: ""},
+        system: [],
+        browser: [],
+        device: [],
         visible: false,
         width: 0,
         title: "",
@@ -180,15 +207,31 @@
             $("#app").show();
             console.log(JSON.stringify(dealMeasureEnum));
             this.init();
+
         },
         methods: {
-            init:function () {
+            init: function () {
                 var vueThis = this;
+                $.ajax({
+                    contentType: "application/json;charset=utf-8",
+                    url: "/queryBrowser",
+                    success: function (data) {
+                        vueThis.browser = data;
+                    }
+                });
                 $.ajax({
                     contentType: "application/json;charset=utf-8",
                     url: "/querySystem",
                     success: function (data) {
                         vueThis.system = data;
+                    }
+                });
+
+                $.ajax({
+                    contentType: "application/json;charset=utf-8",
+                    url: "/queryDevice",
+                    success: function (data) {
+                        vueThis.device = data;
                     }
                 })
             },
