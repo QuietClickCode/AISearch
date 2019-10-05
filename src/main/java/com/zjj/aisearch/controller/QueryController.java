@@ -26,7 +26,9 @@ public class QueryController {
     @RequestMapping("querySystemLog")
     @ResponseBody
     public List<SystemLogList> querySystemLog(@RequestBody QueryForm queryForm) {
-
+        System.out.println(queryForm);
+        System.out.println(queryForm.getCreatetime()[0]);
+        System.out.println(queryForm.getCreatetime()[1]);
         return queryServiceImpl.queryForm(queryForm);
     }
 }

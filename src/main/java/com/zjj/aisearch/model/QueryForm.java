@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 /**
  * @program: AISearch
  * @description: 查询
@@ -20,5 +18,6 @@ import java.util.List;
 public class QueryForm {
 
     private String keyword;
+    private String[] createtime;
 
 }

@@ -27,27 +27,35 @@
     </resultMap>
     <!--查询系统操作日志详情-->
     <select id="queryForm" resultMap="systemLogList">
-    SELECT
-    u.id uid,
-    u.username,
-    u.`password`,
-    s.id,
-    s.operation,
-    s.createtime,
-    b.browser_type,
-    b.browser_version,
-    b.system,
-    l.ip,
-    l.keyword,
-    l.local_ip,
-    l.location,
-    l.X,
-    l.Y
-    FROM
-    ai_system_log s
-    LEFT JOIN login_log ll ON s.login_log_id = ll.id
-    LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
-    LEFT JOIN location l ON l.location_id = ll.location_id
-    LEFT JOIN USER u ON u.id = ll.user_id where operation like "%"#{keyword}"%"
+        SELECT
+        u.id uid,
+        u.username,
+        u.`password`,
+        s.id,
+        s.operation,
+        s.createtime,
+        b.browser_type,
+        b.browser_version,
+        b.system,
+        l.ip,
+        l.keyword,
+        l.local_ip,
+        l.location,
+        l.X,
+        l.Y
+        FROM
+        ai_system_log s
+        LEFT JOIN login_log ll ON s.login_log_id = ll.id
+        LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
+        LEFT JOIN location l ON l.location_id = ll.location_id
+        LEFT JOIN USER u ON u.id = ll.user_id
+        <where>
+            <if test="keyword != ''">
+                operation like "%"#{keyword}"%"
+            </if>
+            <if test="createtime.length != 0">
+                and s.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
+            </if>
+        </where>
     </select>
 </mapper>
