@@ -350,6 +350,7 @@ public class IndexController {
         return null;
     }
 
+
     /**
      * 进入搜索结果详情页
      */
