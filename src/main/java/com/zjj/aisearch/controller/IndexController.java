@@ -2,7 +2,6 @@ package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +47,6 @@ public class IndexController {
      * 登录
      */
     @RequestMapping("/tologin")
-    @ApiOperation(value = "登录方法")
     @ResponseBody
     public String tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         String username = userInfo.getUser().getUsername();
