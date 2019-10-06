@@ -37,12 +37,14 @@ public class QueryController {
         List<String> strings = queryServiceImpl.querySystem();
         return strings;
     }
+
     @RequestMapping("queryDevice")
     @ResponseBody
     public List<String> queryDevice() {
         List<String> strings = queryServiceImpl.queryDevice();
         return strings;
     }
+    
     @RequestMapping("queryBrowser")
     @ResponseBody
     public List<String> queryBrowser() {
