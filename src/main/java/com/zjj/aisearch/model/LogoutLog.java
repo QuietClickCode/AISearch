@@ -22,10 +22,8 @@ import java.util.Date;
 public class LogoutLog {
 
     private Integer id;
-    private Integer userId ;
     private String createtime;
-    private String locationId;
-    private String browserInfoId;
+    private Integer loginLogId;
 
     public void setCreatetime(String createtime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

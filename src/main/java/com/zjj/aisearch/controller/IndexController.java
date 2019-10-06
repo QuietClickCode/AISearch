@@ -244,6 +244,10 @@ public class IndexController {
         systemLog.setOperation(":logout");
         systemLog.setLoginLogId(loginLogId);
         indexServiceImpl.insertSystemLog(systemLog);
+        LogoutLog logoutLog = new LogoutLog();
+        logoutLog.setCreatetime(new Date().toLocaleString());
+        logoutLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertLogoutLog(logoutLog);
         httpServletRequest.getSession().invalidate();
         attributes.addFlashAttribute("msg", "请登录");
         return "redirect:login";
@@ -356,14 +360,13 @@ public class IndexController {
         User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
             String keyword = (String) httpServletRequest.getSession().getAttribute("keyword");
-            String id = httpServletRequest.getSession().getId();
             List<Item> items = indexServiceImpl.searchItem(keyword);
             modelAndView.addObject("items", items);
             modelAndView.setViewName("/detail");
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
             systemLog.setCreatetime(new Date().toLocaleString());
-            systemLog.setOperation("list");
+            systemLog.setOperation("detail" + "?keyword=" + keyword);
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
             return modelAndView;
@@ -385,7 +388,6 @@ public class IndexController {
             AiNote aiNote = new AiNote();
             aiNote.setContent(info.getKeyword());
             aiNote.setCreatetime(new Date().toLocaleString());
-            aiNote.setLoginLogId((Integer) request.getSession().getAttribute("loginLogId"));
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
             systemLog.setCreatetime(new Date().toLocaleString());
