@@ -44,7 +44,7 @@ public class QueryController {
         List<String> strings = queryServiceImpl.queryDevice();
         return strings;
     }
-    
+
     @RequestMapping("queryBrowser")
     @ResponseBody
     public List<String> queryBrowser() {
