@@ -267,7 +267,7 @@
                 if (keyword != "") {
                     /*如果/开头,跳转到对应页面*/
                     var isForward = keyword.startsWith('/');
-                    /*转发*/
+                    /*转发模式*/
                     if (isForward) {
                         window.location.href = keyword.substring(1);
                         /*调用下面的函数*/
@@ -294,12 +294,17 @@
                             "localIp": localIp
                         }),
                         success: function (data) {
-                            if (store.note == "") {
-                                store.note = data.concat("---").concat(new Date().toLocaleString());
+
+                            if (data == "nologin") {
+                                window.location.href = "/login";
                             } else {
-                                store.note += "\n".concat(data).concat("---").concat(new Date().toLocaleString());
+                                if (store.note == "") {
+                                    store.note = data.concat("---").concat(new Date().toLocaleString());
+                                } else {
+                                    store.note += "\n".concat(data).concat("---").concat(new Date().toLocaleString());
+                                }
+                                store.keyword = "";
                             }
-                            store.keyword = "";
                         }
                     });
                     /*命令模式*/
@@ -336,15 +341,19 @@
                             console.log(index)
                             console.log(command)
                             console.log(title)
-                            if (title != "") {
-                                this.isShow = true;
-                                $.ajax({
-                                    url: "/iscommand",
-                                    data: {keyword: keyword.substring(1, keyword.length - 1)},
-                                    success: function (data) {
-                                        window.location.href = "commandlist";
-                                    }
-                                });
+                            if (store.pattern == ":logout ") {
+                                window.location.href = "/logout";
+                            } else {
+                                if (title != "") {
+                                    this.isShow = true;
+                                    $.ajax({
+                                        url: "/iscommand",
+                                        data: {keyword: keyword.substring(1, keyword.length - 1)},
+                                        success: function (data) {
+                                            window.location.href = "commandlist";
+                                        }
+                                    });
+                                }
                             }
                         }
                     }
@@ -442,7 +451,6 @@
                 } else if (store.pattern == ":csdn ") {
                     store.keyword = ":csdn " + label + " ";
                     $("#el-input").focus();
-
                 }
                 else {
                     store.keyword = label;

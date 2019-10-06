@@ -5,18 +5,16 @@ import com.zjj.aisearch.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 /***
  * @program: AISearch
@@ -30,10 +28,6 @@ public class IndexController {
     @Autowired
     private IndexService indexServiceImpl;
 
-    /**
-     * 这样用可能有缺陷,内存泄漏
-     */
-    private HashMap<String, Object> map = new HashMap<>();
 
     /**
      * 实现转发模式,/index
@@ -179,33 +173,32 @@ public class IndexController {
     }
 
 
-
     /**
      * 进入命令模式
      */
     @RequestMapping("/command")
     @ResponseBody
-    public Object command(String keyword, HttpServletRequest request) throws IOException {
-        int index = keyword.indexOf(" ");
-        if (index != -1) {
-            String substring = keyword.substring(0, index);
-            String title = keyword.substring(index + 1);
-            if (substring.equals("js")) {
-                List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
-                return jianShuArticles;
+    public Object command(String keyword, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            int index = keyword.indexOf(" ");
+            if (index != -1) {
+                String substring = keyword.substring(0, index);
+                String title = keyword.substring(index + 1);
+                if (substring.equals("js")) {
+                    List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
+                    return jianShuArticles;
+                }
+                if (substring.equals("csdn")) {
+                    List<Article> Articles = indexServiceImpl.searchArticle(title);
+                    return Articles;
+                }
             }
-            if (substring.equals("zh")) {
-                List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
-
-                return zhiHuArticles;
-            }
-            if (substring.equals("csdn")) {
-                List<Article> Articles = indexServiceImpl.searchArticle(title);
-
-                return Articles;
-            }
+            return "其他操作";
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "请登录");
+            return "redirect:login";
         }
-        return "其他操作";
     }
 
     /**
@@ -213,69 +206,97 @@ public class IndexController {
      */
     @RequestMapping("/iscommand")
     public String isCommand(String keyword, RedirectAttributes attributes, HttpServletRequest httpServletRequest, HttpServletResponse res) throws IOException {
-        Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        String id = httpServletRequest.getSession().getId();
-        int index = keyword.indexOf(" ");
-        if (index != -1) {
-            String substring = keyword.substring(0, index);
-            String title = keyword.substring(index + 1);
-            if (substring.equals("js")) {
-                List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
-                attributes.addFlashAttribute(id + "-" + "items1", jianShuArticles);
-                systemLog.setCreatetime(new Date().toLocaleString());
-                systemLog.setOperation(":js" + "?keyword=" + title);
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
-                return "redirect:commandlist";
+        User user = (User) httpServletRequest.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            int index = keyword.indexOf(" ");
+            if (index != -1) {
+                String substring = keyword.substring(0, index);
+                String title = keyword.substring(index + 1);
+                httpServletRequest.getSession().setAttribute("title", title);
+                if (substring.equals("js")) {
+                    httpServletRequest.getSession().setAttribute("command", "js");
+                    return "redirect:commandlist";
+                }
+                if (substring.equals("zh")) {
+                    httpServletRequest.getSession().setAttribute("command", "zh");
+                    return "redirect:commandlist";
+                }
+                if (substring.equals("csdn")) {
+                    httpServletRequest.getSession().setAttribute("command", "csdn");
+                    return "redirect:commandlist";
+                }
             }
-            if (substring.equals("zh")) {
-                List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
-                attributes.addFlashAttribute(id + "-" + "items1", zhiHuArticles);
-                systemLog.setCreatetime(new Date().toLocaleString());
-                systemLog.setOperation(":zh" + "?keyword=" + title);
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
-                return "redirect:zhihucommandlist";
-            }
-            if (substring.equals("csdn")) {
-                List<Article> Articles = indexServiceImpl.searchArticle(title);
-                attributes.addFlashAttribute(id + "-" + "items1", Articles);
-                systemLog.setCreatetime(new Date().toLocaleString());
-                systemLog.setOperation(":csdn" + "?keyword=" + title);
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
-                return "redirect:commandlist";
-            }
+            return null;
+        } else {
+            attributes.addFlashAttribute("msg", "请登录");
+            return "redirect:login";
         }
-        return null;
 
     }
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest httpServletRequest, RedirectAttributes attributes, HttpServletResponse res) throws IOException {
+        Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setOperation(":logout");
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
+        httpServletRequest.getSession().invalidate();
+        attributes.addFlashAttribute("msg", "请登录");
+        return "redirect:login";
+    }
+
     /**
      * 进入定向搜索结果详情页
      */
     @RequestMapping("/commandlist")
     public ModelAndView commandlist(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest, HttpServletResponse res) throws IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            String command = (String) httpServletRequest.getSession().getAttribute("command");
+            String title = (String) httpServletRequest.getSession().getAttribute("title");
+            Integer loginLogId = (int) httpServletRequest.getSession().getAttribute("loginLogId");
+            if (command.equals("zh")) {
+                modelAndView.setViewName("zhihucommandlist");
+                return modelAndView;
+            }
+            if (command.equals("csdn")) {
+                List<Article> Articles = indexServiceImpl.searchArticle(title);
+                SystemLog systemLog = new SystemLog();
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":csdn" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
+                modelAndView.setViewName("commandlist");
+                modelAndView.addObject("items", Articles);
+                return modelAndView;
+            }
+            if (command.equals("js")) {
+                List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
+                SystemLog systemLog = new SystemLog();
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":js" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
+                modelAndView.setViewName("commandlist");
+                modelAndView.addObject("items", jianShuArticles);
+                return modelAndView;
+            }
+            if (command.equals("logout")) {
 
-        String id = httpServletRequest.getSession().getId();
-        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
-        List<Item> list = null;
-        if (maps != null) {
-            list = (List<Item>) maps.get(id + "-" + "items1");
-        }
-        modelAndView.setViewName("commandlist");
-        if (list != null) {
-            map.put(id + "-" + "items1", list);
-            modelAndView.addObject("items", list);
-            return modelAndView;
+            }
         } else {
-            List<Item> lists = (List<Item>) map.get(id + "-" + "items1");
-            modelAndView.addObject("items", lists);
+            modelAndView.setViewName("login");
+            modelAndView.addObject("msg", "请登录");
             return modelAndView;
-
         }
+        return null;
     }
+
 
     /**
      * 进入知乎定向搜索结果详情页
@@ -283,71 +304,46 @@ public class IndexController {
     @RequestMapping("/zhihucommandlist")
     public ModelAndView zhihucommandlist(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest, HttpServletResponse res) throws IOException {
-        String id = httpServletRequest.getSession().getId();
-        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
-        List<Item> list = null;
-        if (maps != null) {
-            list = (List<Item>) maps.get(id + "-" + "items1");
-        }
-        modelAndView.setViewName("zhihucommandlist");
-        if (list != null) {
-            map.put(id + "-" + "items1", list);
-            modelAndView.addObject("items", list);
-            return modelAndView;
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            String command = (String) httpServletRequest.getSession().getAttribute("command");
+            String title = (String) httpServletRequest.getSession().getAttribute("title");
+            Integer loginLogId = (int) httpServletRequest.getSession().getAttribute("loginLogId");
+            if (command.equals("zh")) {
+                List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
+                SystemLog systemLog = new SystemLog();
+                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setOperation(":zh" + "?keyword=" + title);
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
+                modelAndView.setViewName("zhihucommandlist");
+                modelAndView.addObject("items", zhiHuArticles);
+                return modelAndView;
+            }
         } else {
-            List<Item> lists = (List<Item>) map.get(id + "-" + "items1");
-            modelAndView.addObject("items", lists);
+            modelAndView.setViewName("login");
+            modelAndView.addObject("msg", "请登录");
             return modelAndView;
         }
+        return null;
     }
 
     /**
      * 重定向到搜索结果详情页
      */
     @RequestMapping("/todetail")
-    public String toDetail(@RequestBody Info info, RedirectAttributes attributes, HttpServletRequest httpServletRequest, HttpServletResponse res) throws IOException {
-        String id = httpServletRequest.getSession().getId();
-        if (info.getKeyword().equals(":article")) {
-            return "redirect:article";
+    public String toDetail(@RequestBody Info info, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse res) throws IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            if (!info.getKeyword().isEmpty()) {
+                request.getSession().setAttribute("keyword", info.getKeyword());
+                return "redirect:detail";
+            }
+            return null;
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "请登录");
+            return "redirect:login";
         }
-        if (!info.getKeyword().isEmpty()) {
-            /**125.84.181.44,重庆市重庆市,29.56471,106.55073
-             windows,chrome,74.0.3729.131*/
-            String[] locationArr = info.getLocation();
-            String[] browserInfoArr = info.getBrowserInfo();
-            String pcOrPhone = info.getPcOrPhone();
-            BrowserInfo bi = new BrowserInfo();
-            Location lo = new Location();
-            bi.setSystem(browserInfoArr[0]);
-            bi.setBrowserType(browserInfoArr[1]);
-            bi.setBrowserVersion(browserInfoArr[2]);
-            lo.setIp(locationArr[0]);
-            lo.setLocation(locationArr[1]);
-            lo.setX(locationArr[2]);
-            lo.setY(locationArr[3]);
-            lo.setKeyword(pcOrPhone);
-            lo.setLocalIp(info.getLocalIp());
-            indexServiceImpl.insertBrowserInfo(bi);
-            indexServiceImpl.insertLocation(lo);
-            SearchRecord searchRecord = new SearchRecord();
-            searchRecord.setBrowserInfoId(bi.getBrowserInfoId());
-            searchRecord.setLocationId(lo.getLocationId());
-            searchRecord.setSearchTime(new Date().toLocaleString());
-            searchRecord.setKeyword(info.getKeyword());
-            indexServiceImpl.insertSearchRecord(searchRecord);
-            Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
-            //这儿不光记录了操作还记录了本次查询的关键字
-            systemLog.setOperation("todetail" + "?keyword=" + info.getKeyword());
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<Item> items = indexServiceImpl.searchItem(info.getKeyword());
-            attributes.addFlashAttribute(id + "-" + "items1", items);
-            /**这里不是很懂,不重定向会报错,重定向,前端页面不主动+window.location跳转也不生效,这儿必须前后端配合,缺一不可*/
-            return "redirect:detail";
-        }
-        return null;
     }
 
 
@@ -357,20 +353,23 @@ public class IndexController {
     @RequestMapping("/detail")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest, HttpServletResponse res) throws IOException {
-        String id = httpServletRequest.getSession().getId();
-        Map<String, ?> maps = RequestContextUtils.getInputFlashMap(request);
-        List<Item> list = null;
-        if (maps != null) {
-            list = (List<Item>) maps.get(id + "-" + "items1");
-        }
-        modelAndView.setViewName("detail");
-        if (list != null) {
-            map.put(id + "-" + "items1", list);
-            modelAndView.addObject("items", list);
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            String keyword = (String) httpServletRequest.getSession().getAttribute("keyword");
+            String id = httpServletRequest.getSession().getId();
+            List<Item> items = indexServiceImpl.searchItem(keyword);
+            modelAndView.addObject("items", items);
+            modelAndView.setViewName("/detail");
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("list");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
             return modelAndView;
         } else {
-            List<Item> lists = (List<Item>) map.get(id + "-" + "items1");
-            modelAndView.addObject("items", lists);
+            modelAndView.addObject("msg", "请登录");
+            modelAndView.setViewName("login");
             return modelAndView;
         }
     }
@@ -380,40 +379,24 @@ public class IndexController {
      */
     @RequestMapping("/note")
     @ResponseBody
-    public String note(@RequestBody Info info, HttpServletRequest request) {
-        String[] locationArr = info.getLocation();
-        String[] browserInfoArr = info.getBrowserInfo();
-        String pcOrPhone = info.getPcOrPhone();
-        BrowserInfo bi = new BrowserInfo();
-        Location lo = new Location();
-        bi.setSystem(browserInfoArr[0]);
-        bi.setBrowserType(browserInfoArr[1]);
-        bi.setBrowserVersion(browserInfoArr[2]);
-        lo.setIp(locationArr[0]);
-        lo.setLocation(locationArr[1]);
-        lo.setX(locationArr[2]);
-        lo.setY(locationArr[3]);
-        lo.setKeyword(pcOrPhone);
-        lo.setLocalIp(info.getLocalIp());
-
-        indexServiceImpl.insertBrowserInfo(bi);
-        indexServiceImpl.insertLocation(lo);
-
-        AiNote aiNote = new AiNote();
-        aiNote.setContent(info.getKeyword());
-        aiNote.setBrowserInfoId(bi.getBrowserInfoId());
-        aiNote.setLocationId(lo.getLocationId());
-        aiNote.setCreatetime(new Date().toLocaleString());
-        //这儿明显冗余了,上面记录浏览器和位置,下面的登录日志id中都有了这些信息,记录两遍干啥子,后面重构的时候,处理下
-        aiNote.setLoginLogId((Integer) request.getSession().getAttribute("loginLogId"));
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
-        systemLog.setOperation("note" + "?content=" + aiNote.getContent());
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
-        indexServiceImpl.insertAiNote(aiNote);
-        return info.getKeyword();
+    public String note(@RequestBody Info info, HttpServletRequest request, ModelAndView modelAndView) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            AiNote aiNote = new AiNote();
+            aiNote.setContent(info.getKeyword());
+            aiNote.setCreatetime(new Date().toLocaleString());
+            aiNote.setLoginLogId((Integer) request.getSession().getAttribute("loginLogId"));
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("note" + "?content=" + aiNote.getContent());
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            indexServiceImpl.insertAiNote(aiNote);
+            return info.getKeyword();
+        } else {
+            return "nologin";
+        }
     }
 
     /**
@@ -422,24 +405,31 @@ public class IndexController {
     @RequestMapping("/article")
     public ModelAndView article(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest, HttpServletResponse res) throws IOException {
-        Article article = new Article();
-        for (; ; ) {
-            Random r = new Random();
-            int id = r.nextInt(101268) + 1;
-            article = indexServiceImpl.search(id);
-            if (article != null) {
-                Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-                SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(new Date().toLocaleString());
-                systemLog.setOperation("article" + "?id=" + article.getId());
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
-                break;
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Article article = new Article();
+            for (; ; ) {
+                Random r = new Random();
+                int id = r.nextInt(101268) + 1;
+                article = indexServiceImpl.search(id);
+                if (article != null) {
+                    Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+                    SystemLog systemLog = new SystemLog();
+                    systemLog.setCreatetime(new Date().toLocaleString());
+                    systemLog.setOperation("article" + "?id=" + article.getId());
+                    systemLog.setLoginLogId(loginLogId);
+                    indexServiceImpl.insertSystemLog(systemLog);
+                    break;
+                }
             }
+            modelAndView.setViewName("article");
+            modelAndView.addObject("article", article);
+            return modelAndView;
+        } else {
+            modelAndView.addObject("msg", "请登录");
+            modelAndView.setViewName("login");
+            return modelAndView;
         }
-        modelAndView.setViewName("article");
-        modelAndView.addObject("article", article);
-        return modelAndView;
     }
 
     /**
@@ -447,15 +437,21 @@ public class IndexController {
      */
     @RequestMapping("/list")
     public String list(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
-        systemLog.setOperation("list");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
-        List<SearchRecordLocation> searchRecordLocation = indexServiceImpl.selectSearchRecordLocation();
-        model.addAttribute("items", searchRecordLocation);
-        return "list";
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("list");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            List<SearchRecordLocation> searchRecordLocation = indexServiceImpl.selectSearchRecordLocation();
+            model.addAttribute("items", searchRecordLocation);
+            return "list";
+        } else {
+            model.addAttribute("msg", "请登录");
+            return "login";
+        }
     }
 
     /**
@@ -463,15 +459,21 @@ public class IndexController {
      */
     @RequestMapping("/ainote")
     public String aiNotelist(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
-        systemLog.setOperation("ainote");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
-        List<AiNoteLocation> aiNoteLocation = indexServiceImpl.selectAiNoteLocation();
-        model.addAttribute("items", aiNoteLocation);
-        return "ainotelist";
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("ainote");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            List<AiNoteLocation> aiNoteLocation = indexServiceImpl.selectAiNoteLocation();
+            model.addAttribute("items", aiNoteLocation);
+            return "ainotelist";
+        } else {
+            model.addAttribute("msg", "请登录");
+            return "login";
+        }
     }
 
     /**
@@ -479,15 +481,21 @@ public class IndexController {
      */
     @RequestMapping("/userlist")
     public String userList(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
-        systemLog.setOperation("userlist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
-        List<UserLocation> userLocations = indexServiceImpl.selectUserLocation();
-        model.addAttribute("items", userLocations);
-        return "userlist";
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("userlist");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            List<UserLocation> userLocations = indexServiceImpl.selectUserLocation();
+            model.addAttribute("items", userLocations);
+            return "userlist";
+        } else {
+            model.addAttribute("msg", "请登录");
+            return "login";
+        }
     }
 
     /**
@@ -495,15 +503,21 @@ public class IndexController {
      */
     @RequestMapping("/loginloglist")
     public String loginLogList(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
-        systemLog.setOperation("loginloglist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
-        List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
-        model.addAttribute("items", loginLogLocation);
-        return "loginloglist";
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("loginloglist");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
+            model.addAttribute("items", loginLogLocation);
+            return "loginloglist";
+        } else {
+            model.addAttribute("msg", "请登录");
+            return "login";
+        }
     }
 
     /**
@@ -511,29 +525,42 @@ public class IndexController {
      */
     @RequestMapping("/logoutloglist")
     public String logoutLogList(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
-        systemLog.setOperation("logoutloglist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
-        List<LogoutLogLocation> logoutLogLocation = indexServiceImpl.selectLogoutLocation();
-        model.addAttribute("items", logoutLogLocation);
-        return "logoutloglist";
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("logoutloglist");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            List<LogoutLogLocation> logoutLogLocation = indexServiceImpl.selectLogoutLocation();
+            model.addAttribute("items", logoutLogLocation);
+            return "logoutloglist";
+        } else {
+            model.addAttribute("msg", "请登录");
+            return "login";
+        }
     }
+
     /**
      * 系统操作日志列表
      */
     @RequestMapping("/systemloglist")
     public String systemloglist(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
-        systemLog.setOperation("systemloglist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
-        List<SystemLogList> systemLogList = indexServiceImpl.selectSystemLogList();
-        model.addAttribute("items", systemLogList);
-        return "systemLogList";
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("systemloglist");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            List<SystemLogList> systemLogList = indexServiceImpl.selectSystemLogList();
+            model.addAttribute("items", systemLogList);
+            return "systemLogList";
+        } else {
+            model.addAttribute("msg", "请登录");
+            return "login";
+        }
     }
 }
