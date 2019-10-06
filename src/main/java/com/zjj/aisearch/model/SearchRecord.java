@@ -27,9 +27,8 @@ public class SearchRecord {
 
     private String searchTime;
 
-    private String locationId;
+    private Integer loginLogId;
 
-    private String browserInfoId;
 
     public void setSearchTime(String searchTime)  {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

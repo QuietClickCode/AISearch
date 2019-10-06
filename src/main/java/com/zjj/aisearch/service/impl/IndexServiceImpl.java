@@ -53,19 +53,10 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<SearchRecordLocation> selectSearchRecordLocation() {
-        return indexMapper.selectSearchRecordLocation();
-    }
-
-    @Override
     public int insertAiNote(AiNote aiNote) {
         return indexMapper.insertAiNote(aiNote);
     }
 
-    @Override
-    public List<AiNoteLocation> selectAiNoteLocation() {
-        return indexMapper.selectAiNoteLocation();
-    }
 
     @Override
     public User selectUserByUserName(String username) {
@@ -93,13 +84,13 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public int insertLogoutLog(LogoutLog logoutLog) {
-        return indexMapper.insertLogoutLog(logoutLog);
+    public List<LogoutLogList> selectLogoutLogList() {
+        return indexMapper.selectLogoutLogList();
     }
 
     @Override
-    public List<LogoutLogLocation> selectLogoutLocation() {
-        return indexMapper.selectLogoutLogLocation();
+    public int insertLogoutLog(LogoutLog logoutLog) {
+        return indexMapper.insertLogoutLog(logoutLog);
     }
 
     @Override
@@ -125,6 +116,16 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public List<Article> searchArticle(String title) {
         return indexMapper.searchArticle(title);
+    }
+
+    @Override
+    public List<AiNoteList> selectAiNoteList() {
+        return indexMapper.selectAiNoteList();
+    }
+
+    @Override
+    public List<SearchRecordList> selectSearchRecordList() {
+        return indexMapper.selectSearchRecordList();
     }
 
 }

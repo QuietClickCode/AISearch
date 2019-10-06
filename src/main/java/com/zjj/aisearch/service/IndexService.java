@@ -21,12 +21,8 @@ public interface IndexService {
 
     int insertLocation(Location location);
 
-
-    List<SearchRecordLocation> selectSearchRecordLocation();
-
     int insertAiNote(AiNote aiNote);
 
-    List<AiNoteLocation> selectAiNoteLocation();
 
     User selectUserByUserName(String username);
 
@@ -37,10 +33,10 @@ public interface IndexService {
     int insertLoginLog(LoginLog loginLog);
 
     List<LoginLogLocation> selectLoginLocation();
+    List<LogoutLogList> selectLogoutLogList();
 
     int insertLogoutLog(LogoutLog logoutLog);
 
-    List<LogoutLogLocation> selectLogoutLocation();
 
     int insertSystemLog(SystemLog systemLog);
 
@@ -51,4 +47,8 @@ public interface IndexService {
     List<ZhiHuArticle> searchZhiHuArticle(String title);
 
     List<Article> searchArticle(String title);
+
+    List<AiNoteList> selectAiNoteList();
+
+    List<SearchRecordList> selectSearchRecordList();
 }

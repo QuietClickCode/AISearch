@@ -9,7 +9,8 @@
         <result property="price" column="price"/>
     </resultMap>
 
-    <resultMap id="searchRecordLocation" type="SearchRecordLocation">
+    <!--搜索记录详情-->
+    <resultMap id="searchRecordList" type="SearchRecordList">
         <id property="id" column="id"></id>
         <result property="keyword" column="keyword"></result>
         <result property="searchTime" column="searchtime"></result>
@@ -26,9 +27,14 @@
             <result property="browserType" column="browser_type"></result>
             <result property="browserVersion" column="browser_version"></result>
         </association>
+        <association property="user" javaType="User">
+            <result property="id" column="uid"></result>
+            <result property="username" column="username"></result>
+            <result property="password" column="password"></result>
+        </association>
     </resultMap>
     <!--便签记录详情-->
-    <resultMap id="aiNoteLocation" type="AiNoteLocation">
+    <resultMap id="aiNoteList" type="AiNoteList">
         <id property="id" column="id"></id>
         <result property="content" column="content"></result>
         <result property="createtime" column="createtime"></result>
@@ -54,30 +60,6 @@
     <!--登录日志-->
 
     <resultMap id="loginLogLocation" type="LoginLogLocation">
-        <id property="id" column="id"></id>
-        <result property="createtime" column="createtime"></result>
-        <association property="location" javaType="Location">
-            <result property="X" column="X"></result>
-            <result property="Y" column="Y"></result>
-            <result property="location" column="location"></result>
-            <result property="ip" column="ip"></result>
-            <result property="keyword" column="pcOrPhone"></result>
-            <result property="localIp" column="local_ip"></result>
-        </association>
-        <association property="browserInfo" javaType="BrowserInfo">
-            <result property="system" column="system"></result>
-            <result property="browserType" column="browser_type"></result>
-            <result property="browserVersion" column="browser_version"></result>
-        </association>
-        <association property="user" javaType="User">
-            <result property="id" column="uid"></result>
-            <result property="username" column="username"></result>
-            <result property="password" column="password"></result>
-        </association>
-    </resultMap>
-    <!--退出日志-->
-
-    <resultMap id="logoutLogLocation" type="LogoutLogLocation">
         <id property="id" column="id"></id>
         <result property="createtime" column="createtime"></result>
         <association property="location" javaType="Location">
@@ -172,7 +154,7 @@
     <!--插入-->
     <!--插入搜索记录-->
     <insert id="insertSearchRecord" parameterType="SearchRecord">
-         insert into searchrecord(keyword,searchtime,location_id,browser_info_id) values(#{keyword},#{searchTime},#{locationId},#{browserInfoId})
+         insert into searchrecord(keyword,searchtime,login_log_id) values(#{keyword},#{searchTime},#{loginLogId})
     </insert>
     <!--注册用户-->
     <insert id="insertUser" parameterType="User">
@@ -180,7 +162,7 @@
     </insert>
     <!--插入便签记录-->
     <insert id="insertAiNote" parameterType="AiNote">
-         insert into ai_note(content,createtime,location_id,browser_info_id,login_log_id) values(#{content},#{createtime},#{locationId},#{browserInfoId},#{loginLogId})
+         insert into ai_note(content,createtime,login_log_id) values(#{content},#{createtime},#{loginLogId})
     </insert>
     <!--插入浏览器相关信息-->
     <insert id="insertBrowserInfo" parameterType="BrowserInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
@@ -250,16 +232,54 @@
     </select>
 
     <!--查询搜索记录详情-->
-    <select id="selectSearchRecordLocation" resultMap="searchRecordLocation">
-        select s.id,s.keyword,s.searchtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `searchrecord` s
-        left JOIN `location` l ON s.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = s.browser_info_id
+    <select id="selectSearchRecordList" resultMap="searchRecordList">
+            SELECT
+	u.id uid,
+	u.username,
+	u.`password`,
+	ss.id,
+	ss.searchtime,
+	ss.keyword,
+	b.browser_type,
+	b.browser_version,
+	b.system,
+	l.ip,
+	l.keyword,
+	l.local_ip,
+	l.location,
+	l.X,
+	l.Y
+FROM
+	searchrecord ss
+LEFT JOIN login_log ll ON ss.login_log_id = ll.id
+LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
+LEFT JOIN location l ON l.location_id = ll.location_id
+LEFT JOIN USER u ON u.id = ll.user_id
     </select>
     <!--查询便签记录详情-->
-    <select id="selectAiNoteLocation" resultMap="aiNoteLocation">
-        select u.id uid,u.username,u.`password`, n.id,n.content,n.createtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `ai_note` n
-        left JOIN `location` l ON n.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = n.browser_info_id
-        LEFT JOIN login_log ll ON n.login_log_id = ll.id
-        LEFT JOIN  `user` u on u.id = ll.user_id
+    <select id="selectAiNoteList" resultMap="aiNoteList">
+          SELECT
+	u.id uid,
+	u.username,
+	u.`password`,
+	an.id,
+	an.createtime,
+	an.content,
+	b.browser_type,
+	b.browser_version,
+	b.system,
+	l.ip,
+	l.keyword,
+	l.local_ip,
+	l.location,
+	l.X,
+	l.Y
+FROM
+	ai_note an
+LEFT JOIN login_log ll ON an.login_log_id = ll.id
+LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
+LEFT JOIN location l ON l.location_id = ll.location_id
+LEFT JOIN USER u ON u.id = ll.user_id
     </select>
 
     <!--查询注册用户详情-->
@@ -274,7 +294,7 @@
         LEFT JOIN  `user` u on u.id = ll.user_id
     </select>
     <!--查询退出日志详情-->
-    <select id="selectLogoutLogLocation" resultMap="logoutLogList">
+    <select id="selectLogoutLogList" resultMap="logoutLogList">
           SELECT
 	u.id uid,
 	u.username,

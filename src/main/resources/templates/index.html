@@ -50,9 +50,9 @@
                   v-model="store.keyword">
         </el-input>
         <ul style="position: absolute;overflow-y: auto;overflow-x: hidden;width:500px;height:250px;" v-show="isShow">
-            <li @click="upScreen(item.title)" v-for="item in store.article" :value="item.id"
+            <li @click="upScreen(item.title==null?item.answer:item.title)" v-for="item in store.article" :value="item.id"
                 :style="{width : width +'px',height:height +'px'}" th:class="li">
-                {{item.title}}
+                {{item.title==null?item.answer:item.title}}
             </li>
         </ul>
     </div>
@@ -314,15 +314,8 @@
                         var command = keyword.substring(1, index + 1);
                         var title = keyword.substring(index + 1);
                         var end = keyword.lastIndexOf(" ");
-                        console.log(end + "end")
-                        console.log(keyword.length + "length");
-                        console.log(command);
                         if (command == "zh ") {
                             store.pattern = ":" + command;
-                            console.log(store.pattern + "---------");
-                            console.log(index)
-                            console.log(command)
-                            console.log(title)
                             if (title != "") {
                                 this.isShow = true;
                                 $.ajax({
@@ -337,10 +330,6 @@
                         }
                         if (end + 1 == keyword.length) {
                             store.pattern = ":" + command;
-                            console.log(store.pattern + "---------");
-                            console.log(index)
-                            console.log(command)
-                            console.log(title)
                             if (store.pattern == ":logout ") {
                                 window.location.href = "/logout";
                             } else {
@@ -450,6 +439,9 @@
                     $("#el-input").focus();
                 } else if (store.pattern == ":csdn ") {
                     store.keyword = ":csdn " + label + " ";
+                    $("#el-input").focus();
+                } else if (store.pattern == ":zh ") {
+                    store.keyword = ":zh " + label.substring(0,10) + " ";
                     $("#el-input").focus();
                 }
                 else {

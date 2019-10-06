@@ -23,8 +23,6 @@ public class AiNote {
     private Integer id;
     private String content;
     private String createtime;
-    private String locationId;
-    private String browserInfoId;
     private Integer loginLogId;
 
     public void setCreatetime(String createtime) {

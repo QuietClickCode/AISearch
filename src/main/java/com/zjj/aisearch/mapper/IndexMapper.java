@@ -17,11 +17,9 @@ public interface IndexMapper  {
 
     int insertLocation(Location location);
 
-    List<SearchRecordLocation> selectSearchRecordLocation();
 
     int insertAiNote(AiNote aiNote);
 
-    List<AiNoteLocation> selectAiNoteLocation();
 
     User selectUserByUserName(String username);
 
@@ -32,10 +30,10 @@ public interface IndexMapper  {
     int insertLoginLog(LoginLog loginLog);
 
     List<LoginLogLocation> selectLoginLogLocation();
+    List<LogoutLogList> selectLogoutLogList();
 
     int insertLogoutLog(LogoutLog logoutLog);
 
-    List<LogoutLogLocation> selectLogoutLogLocation();
 
     int insertSystemLog(SystemLog systemLog);
 
@@ -45,4 +43,8 @@ public interface IndexMapper  {
     List<ZhiHuArticle> searchZhiHuArticle(String title);
 
     List<Article> searchArticle(String title);
+
+    List<AiNoteList> selectAiNoteList();
+
+    List<SearchRecordList> selectSearchRecordList();
 }
