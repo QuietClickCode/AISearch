@@ -38,7 +38,7 @@
         b.browser_version,
         b.system,
         l.ip,
-        l.keyword,
+        l.keyword pcOrPhone,
         l.local_ip,
         l.location,
         l.X,
