@@ -220,15 +220,15 @@
     </select>
     <!--查询简书详情-->
     <select id="searchJianShuArticle" resultType="JianShuArticle">
-        select * from jianshu_article where title like "%"#{name}"%"
+        select * from jianshu_article where title like "%"#{name}"%" limit 0,10
     </select>
     <!--查询知乎详情-->
     <select id="searchZhiHuArticle" resultType="ZhiHuArticle">
-        select * from zhihu_article where answer like "%"#{name}"%"
+        select * from zhihu_article where answer like "%"#{name}"%" limit 0,10
     </select>
     <!--查询csdn详情-->
     <select id="searchArticle" resultType="Article">
-        select * from article where title like "%"#{name}"%"
+        select * from article where title like "%"#{name}"%" limit 0,10
     </select>
 
     <!--查询搜索记录详情-->

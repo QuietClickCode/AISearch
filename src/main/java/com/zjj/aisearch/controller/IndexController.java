@@ -221,15 +221,15 @@ public class IndexController {
                 httpServletRequest.getSession().setAttribute("title", title);
                 if (substring.equals("js")) {
                     httpServletRequest.getSession().setAttribute("command", "js");
-                    return "redirect:commandlist";
+                    return null;
                 }
                 if (substring.equals("zh")) {
                     httpServletRequest.getSession().setAttribute("command", "zh");
-                    return "redirect:commandlist";
+                    return null;
                 }
                 if (substring.equals("csdn")) {
                     httpServletRequest.getSession().setAttribute("command", "csdn");
-                    return "redirect:commandlist";
+                    return null;
                 }
             }
             return null;
