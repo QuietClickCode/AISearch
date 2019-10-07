@@ -2,6 +2,7 @@ package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import java.util.Random;
  * @create: 2019-09-21 19:16:26
  **/
 @Controller
+@Slf4j
 public class IndexController {
 
     @Autowired
@@ -72,6 +74,7 @@ public class IndexController {
                 /**写入登录日志*/
                 indexServiceImpl.insertLoginLog(loginLog);
 
+                log.info("[{}]正在登陆",username);
                 //获取本次登录日志id
                 Integer loginLogId = loginLog.getId();
                 request.getSession().setAttribute("user", isExistUser);
@@ -123,6 +126,7 @@ public class IndexController {
             systemLog.setOperation("regist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
+            log.info("[{}]注册成功",user.getUsername());
             return "success";
         }
         return null;
@@ -142,6 +146,7 @@ public class IndexController {
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
             model.addAttribute("msg", "你好," + user.getUsername());
+            log.info("[{}]进入首页",user.getUsername());
             return "index";
         } else {
             redirectAttributes.addFlashAttribute("msg", "请登录");
@@ -186,14 +191,17 @@ public class IndexController {
                 String substring = keyword.substring(0, index);
                 String title = keyword.substring(index + 1);
                 if (substring.equals("js")) {
+                    log.info("[{}]正在简书搜索[{}]",user.getUsername(),title);
                     List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
                     return jianShuArticles;
                 }
                 if (substring.equals("csdn")) {
+                    log.info("[{}]正在CSDN搜索[{}]",user.getUsername(),title);
                     List<Article> Articles = indexServiceImpl.searchArticle(title);
                     return Articles;
                 }
                 if (substring.equals("zh")) {
+                    log.info("[{}]正在知乎搜索[{}]",user.getUsername(),title);
                     List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
                     return zhiHuArticles;
                 }
