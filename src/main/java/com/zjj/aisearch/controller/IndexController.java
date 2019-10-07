@@ -177,7 +177,6 @@ public class IndexController {
         return null;
     }
 
-
     /**
      * 进入命令模式
      */
