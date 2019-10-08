@@ -51,4 +51,8 @@ public interface IndexService {
     List<AiNoteList> selectAiNoteList();
 
     List<SearchRecordList> selectSearchRecordList();
+
+    List<EditorList> selectEditorList();
+
+    List<MarkDownList> selectMarkDownList();
 }

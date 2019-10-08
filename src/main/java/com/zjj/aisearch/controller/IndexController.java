@@ -494,6 +494,48 @@ public class IndexController {
             return "login";
         }
     }
+    /**
+     * editor详情列表
+     */
+    @RequestMapping("/editorlist")
+    public String editorList(Model model, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("editorlist");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            List<EditorList> editorLists = indexServiceImpl.selectEditorList();
+            model.addAttribute("items", editorLists);
+            return "editorlist";
+        } else {
+            model.addAttribute("msg", "请登录");
+            return "login";
+        }
+    }
+    /**
+     * editor详情列表
+     */
+    @RequestMapping("/markdownlist")
+    public String markdownList(Model model, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setOperation("markdownlist");
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
+            List<MarkDownList> markDownLists  = indexServiceImpl.selectMarkDownList();
+            model.addAttribute("items", markDownLists);
+            return "markdownlist";
+        } else {
+            model.addAttribute("msg", "请登录");
+            return "login";
+        }
+    }
 
     /**
      * 注册用户列表

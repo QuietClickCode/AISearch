@@ -47,4 +47,8 @@ public interface IndexMapper  {
     List<AiNoteList> selectAiNoteList();
 
     List<SearchRecordList> selectSearchRecordList();
+
+    List<EditorList> selectEditorList();
+
+    List<MarkDownList> selectMarkDownList();
 }

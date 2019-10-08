@@ -128,4 +128,14 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.selectSearchRecordList();
     }
 
+    @Override
+    public List<EditorList> selectEditorList() {
+        return indexMapper.selectEditorList();
+    }
+
+    @Override
+    public List<MarkDownList> selectMarkDownList() {
+        return indexMapper.selectMarkDownList();
+    }
+
 }
