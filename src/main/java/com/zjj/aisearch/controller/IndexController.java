@@ -67,8 +67,7 @@ public class IndexController {
                 String locationId = location.getLocationId();
                 Integer userId = isExistUser.getId();
                 LoginLog loginLog = new LoginLog();
-                System.out.println(new Date().toLocaleString());
-                loginLog.setCreatetime("Oct 9, 2019 9:11:30 AM");
+                loginLog.setCreatetime(new Date().toLocaleString());
                 loginLog.setBrowserInfoId(browserInfoId);
                 loginLog.setLocationId(locationId);
                 loginLog.setUserId(userId);
