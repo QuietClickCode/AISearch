@@ -1,4 +1,4 @@
-package com.zheng.common.base;
+package com.aisearch.common.base;
 
 import com.aisearch.common.base.BaseService;
 import com.aisearch.common.db.DataSourceEnum;
