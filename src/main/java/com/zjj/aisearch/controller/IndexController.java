@@ -34,10 +34,10 @@ public class IndexController {
     /**
      * 实现转发模式,/index
      */
-    @RequestMapping(value = "{path}")
+    /*@RequestMapping(value = "{path}")
     public String del(@PathVariable("path") String path) {
         return path;
-    }
+    }*/
 
     /**
      * 登录
