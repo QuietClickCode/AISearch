@@ -56,7 +56,7 @@ public class IndexController {
      */
     @RequestMapping("/tologin")
     @ResponseBody
-    @ApiOperation(value = "登录ajax")
+    @ApiOperation(value = "login")
     public String tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         String username = userInfo.getUser().getUsername();
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
