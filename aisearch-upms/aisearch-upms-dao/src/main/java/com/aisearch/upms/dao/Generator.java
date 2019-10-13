@@ -15,7 +15,7 @@ import java.util.Map;
 public class Generator {
     // 根据命名规范，只修改此常量值即可
     private static String MODULE = "aisearch-upms";
-    private static String DATABASE = "aisearch";
+    private static String DATABASE = "aisearch-zheng";
     private static String TABLE_PREFIX = "upms_";
     private static String PACKAGE_NAME = "com.aisearch.upms";
     private static String JDBC_DRIVER = PropertiesFileUtil.getInstance("generator").get("generator.jdbc.driver");
