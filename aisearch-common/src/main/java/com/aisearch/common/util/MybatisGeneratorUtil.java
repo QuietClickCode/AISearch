@@ -27,6 +27,8 @@ public class MybatisGeneratorUtil {
 	private static String serviceMock_vm = "/template/ServiceMock.vm";
 	// ServiceImpl模板路径
 	private static String serviceImpl_vm = "/template/ServiceImpl.vm";
+	// Controller模板路径
+	private static String controller_vm = "/template/Controller.vm";
 
 	/**
 	 * 根据模板生成generatorConfig.xml文件
@@ -124,11 +126,13 @@ public class MybatisGeneratorUtil {
 		String ctime = new SimpleDateFormat("yyyy/M/d").format(new Date());
 		String servicePath = basePath + module + "/" + module + "-rpc-api" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/rpc/api";
 		String serviceImplPath = basePath + module + "/" + module + "-rpc-service" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/rpc/service/impl";
+		String controllerPath = basePath + module + "/" + module + "-server" + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/server/controller/manage";
 		for (int i = 0; i < tables.size(); i++) {
 			String model = lineToHump(ObjectUtils.toString(tables.get(i).get("table_name")));
 			String service = servicePath + "/" + model + "Service.java";
 			String serviceMock = servicePath + "/" + model + "ServiceMock.java";
 			String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
+			String controller = serviceImplPath + "/" + model + "Controller.java";
 			// 生成service
 			File serviceFile = new File(service);
 			if (!serviceFile.exists()) {
@@ -159,6 +163,17 @@ public class MybatisGeneratorUtil {
 				context.put("ctime", ctime);
 				VelocityUtil.generate(serviceImpl_vm, serviceImpl, context);
 				System.out.println(serviceImpl);
+			}
+			// 生成controller
+			File controllerFile = new File(controller);
+			if (!controllerFile.exists()) {
+				VelocityContext context = new VelocityContext();
+				context.put("package_name", packageName);
+				context.put("model", model);
+				context.put("mapper", StringUtil.toLowerCaseFirstOne(model));
+				context.put("ctime", ctime);
+				VelocityUtil.generate(controller_vm, controller, context);
+				System.out.println(controller);
 			}
 		}
 		System.out.println("========== 结束生成Service ==========");
