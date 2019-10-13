@@ -4,7 +4,6 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.internal.DefaultCommentGenerator;
-
 /**
  * @program: AISearch
  * @description: 生成model中，字段增加注释
