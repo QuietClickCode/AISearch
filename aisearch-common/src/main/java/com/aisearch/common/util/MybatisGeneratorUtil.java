@@ -132,7 +132,7 @@ public class MybatisGeneratorUtil {
 			String service = servicePath + "/" + model + "Service.java";
 			String serviceMock = servicePath + "/" + model + "ServiceMock.java";
 			String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
-			String controller = serviceImplPath + "/" + model + "Controller.java";
+			String controller = controllerPath + "/" + model + "Controller.java";
 			// 生成service
 			File serviceFile = new File(service);
 			if (!serviceFile.exists()) {
