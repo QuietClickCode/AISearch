@@ -38,7 +38,6 @@ public class LogAspect {
     private long startTime = 0L;
     // 结束时间
     private long endTime = 0L;
-
     @Autowired
     IndexService indexServiceImpl;
     /**
