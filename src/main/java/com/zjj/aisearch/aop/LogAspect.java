@@ -41,7 +41,6 @@ public class LogAspect {
 
     @Autowired
     IndexService indexServiceImpl;
-
     /**
          execution(表达式)
          表达式:
