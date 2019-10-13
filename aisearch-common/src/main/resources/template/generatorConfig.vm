@@ -16,12 +16,12 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
 
         <!-- 为生成的Java模型类添加序列化接口，并生成serialVersionUID字段 -->
-        <plugin type="com.zheng.common.plugin.SerializablePlugin">
+        <plugin type="com.aisearch.common.plugin.SerializablePlugin">
             <property name="suppressJavaInterface" value="false"/>
         </plugin>
 
         <!-- 生成一个新的selectByExample方法，这个方法可以接收offset和limit参数，主要用来实现分页，只支持mysql(已使用pagehelper代替) -->
-        <!--<plugin type="com.zheng.common.plugin.PaginationPlugin"></plugin>-->
+        <!--<plugin type="com.aisearch.common.plugin.PaginationPlugin"></plugin>-->
 
         <!-- 生成在XML中的<cache>元素 -->
         <plugin type="org.mybatis.generator.plugins.CachePlugin">
@@ -40,7 +40,7 @@
         <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
 
         <!-- 生成的代码去掉注释 -->
-        <commentGenerator type="com.zheng.common.plugin.CommentGenerator">
+        <commentGenerator type="com.aisearch.common.plugin.CommentGenerator">
             <property name="suppressAllComments" value="true" />
             <property name="suppressDate" value="true"/>
         </commentGenerator>
