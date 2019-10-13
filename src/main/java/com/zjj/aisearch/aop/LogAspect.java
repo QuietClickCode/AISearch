@@ -57,12 +57,12 @@ public class LogAspect {
      */
     @Before("execution(* *..controller..*.*(..))")
     public void doBeforeInServiceLayer(JoinPoint joinPoint) {
-        log.debug("doBeforeInServiceLayer");
+        log.info("doBeforeInServiceLayer");
         startTime = System.currentTimeMillis();
     }
     @After("execution(* *..controller..*.*(..))")
     public void doAfterInServiceLayer(JoinPoint joinPoint) {
-        log.debug("doAfterInServiceLayer");
+        log.info("doAfterInServiceLayer");
     }
 
     @Around("execution(* *..controller..*.*(..))")
@@ -97,7 +97,6 @@ public class LogAspect {
                 } else {
                     return "redirect:login";
                 }
-
             }
         }
 
