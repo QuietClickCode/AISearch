@@ -11,6 +11,7 @@
     <modules>
         <module>aisearch-common</module>
         <module>aisearch-upms</module>
+        <module>aisearch-admin</module>
     </modules>
 
     <parent>

@@ -14,7 +14,7 @@ public class AisearchUpmsRpcServiceApplication {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AisearchUpmsRpcServiceApplication.class);
 
 	public static void main(String[] args) {
-		LOGGER.info(">>>>> zheng-upms-rpc-service 正在启动 <<<<<");
+		LOGGER.info(">>>>> aisearch-upms-rpc-service 正在启动 <<<<<");
 		/**
 		ClassPathXmlApplicationContext作用加载类路径下 Spring 的配置文件
 		*/
@@ -39,7 +39,7 @@ public class AisearchUpmsRpcServiceApplication {
 		 当项目中有多个classpath路径，并同时加载多个classpath路径下（此种情况多数不会遇到）的文件，*就发挥了作用，如果不加*，则表示仅仅加载第一个classpath路径。
 		 */
 		new ClassPathXmlApplicationContext("classpath:META-INF/spring/*.xml");
-		LOGGER.info(">>>>> zheng-upms-rpc-service 启动完成 <<<<<");
+		LOGGER.info(">>>>> aisearch-upms-rpc-service 启动完成 <<<<<");
 	}
 
 }
