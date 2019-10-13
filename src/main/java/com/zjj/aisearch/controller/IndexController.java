@@ -36,7 +36,6 @@ public class IndexController {
     @Autowired
     private IndexService indexServiceImpl;
 
-
     /**
      * 实现转发模式,/index,完美兼容swagger
      */
