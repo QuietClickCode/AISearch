@@ -2,11 +2,16 @@ package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,6 +30,7 @@ import java.util.Random;
  **/
 @Controller
 @Slf4j
+@Api(value = "首页", description = "首页")
 public class IndexController {
 
     @Autowired
@@ -32,18 +38,25 @@ public class IndexController {
 
 
     /**
-     * 实现转发模式,/index
+     * 实现转发模式,/index,完美兼容swagger
      */
-    /*@RequestMapping(value = "{path}")
+    @RequestMapping(value = "{path}")
     public String del(@PathVariable("path") String path) {
-        return path;
-    }*/
+        if (path.equals("swagger-ui.html")) {
+
+            return "/";
+        } else {
+
+            return path;
+        }
+    }
 
     /**
      * 登录
      */
     @RequestMapping("/tologin")
     @ResponseBody
+    @ApiOperation(value = "登录ajax")
     public String tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         String username = userInfo.getUser().getUsername();
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
@@ -74,7 +87,7 @@ public class IndexController {
                 /**写入登录日志*/
                 indexServiceImpl.insertLoginLog(loginLog);
 
-                log.info("[{}]正在登陆",username);
+                log.info("[{}]正在登陆", username);
                 //获取本次登录日志id
                 Integer loginLogId = loginLog.getId();
                 request.getSession().setAttribute("user", isExistUser);
@@ -126,7 +139,7 @@ public class IndexController {
             systemLog.setOperation("regist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
-            log.info("[{}]注册成功",user.getUsername());
+            log.info("[{}]注册成功", user.getUsername());
             return "success";
         }
         return null;
@@ -146,7 +159,7 @@ public class IndexController {
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
             model.addAttribute("msg", "你好," + user.getUsername());
-            log.info("[{}]进入首页",user.getUsername());
+            log.info("[{}]进入首页", user.getUsername());
             return "index";
         } else {
             redirectAttributes.addFlashAttribute("msg", "请登录");
@@ -190,17 +203,17 @@ public class IndexController {
                 String substring = keyword.substring(0, index);
                 String title = keyword.substring(index + 1);
                 if (substring.equals("js")) {
-                    log.info("[{}]正在简书搜索[{}]",user.getUsername(),title);
+                    log.info("[{}]正在简书搜索[{}]", user.getUsername(), title);
                     List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
                     return jianShuArticles;
                 }
                 if (substring.equals("csdn")) {
-                    log.info("[{}]正在CSDN搜索[{}]",user.getUsername(),title);
+                    log.info("[{}]正在CSDN搜索[{}]", user.getUsername(), title);
                     List<Article> Articles = indexServiceImpl.searchArticle(title);
                     return Articles;
                 }
                 if (substring.equals("zh")) {
-                    log.info("[{}]正在知乎搜索[{}]",user.getUsername(),title);
+                    log.info("[{}]正在知乎搜索[{}]", user.getUsername(), title);
                     List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
                     return zhiHuArticles;
                 }
@@ -248,7 +261,7 @@ public class IndexController {
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest httpServletRequest,Model model, RedirectAttributes attributes, HttpServletResponse res) throws IOException {
+    public String logout(HttpServletRequest httpServletRequest, Model model, RedirectAttributes attributes, HttpServletResponse res) throws IOException {
         User user = (User) httpServletRequest.getSession().getAttribute("user");
         if (user != null) {
             Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
@@ -464,7 +477,7 @@ public class IndexController {
             systemLog.setOperation("list");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
-            List<SearchRecordList> searchRecordList= indexServiceImpl.selectSearchRecordList();
+            List<SearchRecordList> searchRecordList = indexServiceImpl.selectSearchRecordList();
             model.addAttribute("items", searchRecordList);
             return "list";
         } else {
@@ -486,7 +499,7 @@ public class IndexController {
             systemLog.setOperation("ainote");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
-            List<AiNoteList> aiNoteList= indexServiceImpl.selectAiNoteList();
+            List<AiNoteList> aiNoteList = indexServiceImpl.selectAiNoteList();
             model.addAttribute("items", aiNoteList);
             return "ainotelist";
         } else {
@@ -494,6 +507,7 @@ public class IndexController {
             return "login";
         }
     }
+
     /**
      * editor详情列表
      */
@@ -515,6 +529,7 @@ public class IndexController {
             return "login";
         }
     }
+
     /**
      * editor详情列表
      */
@@ -528,7 +543,7 @@ public class IndexController {
             systemLog.setOperation("markdownlist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
-            List<MarkDownList> markDownLists  = indexServiceImpl.selectMarkDownList();
+            List<MarkDownList> markDownLists = indexServiceImpl.selectMarkDownList();
             model.addAttribute("items", markDownLists);
             return "markdownlist";
         } else {
