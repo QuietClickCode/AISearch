@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjj.aisearch.mapper.DemoMapper">
+    <!--员工详情-->
+    <resultMap id="empList" type="EmpList">
+        <id property="empId" column="emp_id"></id>
+        <result property="empNo" column="emp_no"></result>
+        <result property="empName" column="emp_name"></result>
+        <result property="empSex" column="emp_sex"></result>
+        <result property="empDate" column="emp_date"></result>
+        <result property="empAddress" column="emp_address"></result>
+        <association property="dept" javaType="Dept">
+            <result property="deptId" column="dept_id"></result>
+            <result property="deptName" column="dept_name"></result>
+        </association>
+        <association property="position" javaType="Position">
+            <result property="positionId" column="deptpost_id"></result>
+            <result property="positionName" column="deptpost_name"></result>
+            <result property="deptId" column="dept_id"></result>
+        </association>
+    </resultMap>
+    <!--查询员工详情-->
+    <select id="queryEmpList" resultMap="empList">
+        SELECT
+        emp.emp_no,
+        emp.emp_name,
+        emp_sex,
+        emp_date,
+        emp_address,
+        post.deptpost_name,
+        dept.dept_name
+        FROM
+        emp_info emp
+        LEFT JOIN deptpost_info post ON emp.emp_deptpost_id = post.deptpost_id
+        LEFT JOIN dept_info dept ON emp.emp_dept_id = dept.dept_id
+    </select>
+
+</mapper>
