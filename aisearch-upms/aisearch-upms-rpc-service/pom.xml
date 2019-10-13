@@ -6,7 +6,6 @@
         <artifactId>aisearch-upms</artifactId>
         <version>1.0.0</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>aisearch-upms-rpc-service</artifactId>
     <packaging>jar</packaging>

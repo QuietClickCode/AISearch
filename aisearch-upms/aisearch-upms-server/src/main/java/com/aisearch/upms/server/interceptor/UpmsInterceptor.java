@@ -16,12 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 登录信息拦截器
- * Created by shuzheng on 2017/2/11.
+ * Created by shuaisearch on 2017/2/11.
  */
 public class UpmsInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UpmsInterceptor.class);
-    private static final String AISEARCH_OSS_ALIYUN_OSS_POLICY = PropertiesFileUtil.getInstance("zheng-oss-client").get("zheng.oss.aliyun.oss.policy");
+    private static final String AISEARCH_OSS_ALIYUN_OSS_POLICY = PropertiesFileUtil.getInstance("aisearch-oss-client").get("aisearch.oss.aliyun.oss.policy");
 
     @Autowired
     UpmsApiService upmsApiService;

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zheng.upms.rpc.mapper.UpmsApiMapper">
+<mapper namespace="com.aisearch.upms.rpc.mapper.UpmsApiMapper">
 
 	<!-- 权限 -->
-	<resultMap id="UpmsPermissionResultMap" type="com.zheng.upms.dao.model.UpmsPermission">
+	<resultMap id="UpmsPermissionResultMap" type="com.aisearch.upms.dao.model.UpmsPermission">
 		<id column="permission_id" jdbcType="INTEGER" property="permissionId" />
 		<result column="system_id" jdbcType="INTEGER" property="systemId" />
 		<result column="pid" jdbcType="INTEGER" property="pid" />
@@ -18,7 +18,7 @@
 	</resultMap>
 
 	<!-- 角色 -->
-	<resultMap id="UpmsRoleResultMap" type="com.zheng.upms.dao.model.UpmsRole">
+	<resultMap id="UpmsRoleResultMap" type="com.aisearch.upms.dao.model.UpmsRole">
 		<id column="role_id" jdbcType="INTEGER" property="roleId" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="title" jdbcType="VARCHAR" property="title" />

@@ -62,7 +62,7 @@ function initUploader() {
     //百度上传按钮
     var uploader = WebUploader.create({
         // swf文件路径
-        swf: '${basePath}/resources/zheng-admin/plugins/webuploader-0.1.5/Uploader.swf',
+        swf: '${basePath}/resources/aisearch-admin/plugins/webuploader-0.1.5/Uploader.swf',
         // 文件接收服务端
         method: 'POST',
         // 选择文件的按钮。可选。
