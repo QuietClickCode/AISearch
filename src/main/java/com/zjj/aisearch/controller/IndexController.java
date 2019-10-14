@@ -45,7 +45,6 @@ public class IndexController {
 
             return "/";
         } else {
-
             return path;
         }
     }
