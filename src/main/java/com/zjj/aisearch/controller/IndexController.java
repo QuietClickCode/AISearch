@@ -35,7 +35,7 @@ public class IndexController {
     /**
      * 实现转发模式,/index,完美兼容swagger
      */
-    @RequestMapping(value = "{path}")
+   /* @RequestMapping(value = "{path}")
     public String del(@PathVariable("path") String path) {
         if (path.equals("swagger-ui.html")) {
 
@@ -43,7 +43,7 @@ public class IndexController {
         } else {
             return path;
         }
-    }
+    }*/
 
     @PostMapping("/test")
     @ResponseBody
