@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,11 +45,15 @@ public class IndexController {
             return path;
         }
     }*/
-
     @PostMapping("/test")
     @ResponseBody
     public String test() {
         return "true";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
     /**
