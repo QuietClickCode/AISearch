@@ -74,6 +74,7 @@
                 this.tips();
             }
             this.width = $("#el-input").width();
+            this.test();
         },
         watch: {
             /*用于监听关键字,如果为空,隐藏ul框*/
@@ -84,6 +85,20 @@
             }
         },
         methods: {
+            test:function() {
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json",
+                    url: "/test",
+                    data: JSON.stringify({
+                        "keyword": "test"
+                    }),
+                    success: function (data) {
+
+                        alert(data);
+                    }
+                });
+            },
             tips: function () {
                 this.$message(msg);
             },
