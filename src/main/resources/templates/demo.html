@@ -13,6 +13,7 @@
     var msg = [[${msg}]];
 </script>
 <div id="app" class="search" style="display: none">
+    <button @click="todemo2">跳转到demo2</button>
     <div class="aplayer" id="player" style="display: none;color:black"
          data-id="402192905"
          data-fixed="true"
@@ -84,6 +85,11 @@
             }
         },
         methods: {
+            todemo2:function () {
+              $.ajax({
+
+              })
+            },
             tips: function () {
                 this.$message(msg);
             },
