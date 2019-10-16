@@ -490,10 +490,12 @@ public class IndexController {
     /**
      * 便签模式
      */
-    @RequestMapping("/note")
+    @PostMapping("/note")
     @ResponseBody
-    public String note(@RequestBody Info info, HttpServletRequest request, ModelAndView modelAndView) {
-        User user = (User) request.getSession().getAttribute("user");
+    public String note(HttpServletResponse response, HttpServletRequest request) {
+        log.error(request.getParameter("keyword").toString());
+        return null;
+      /*  User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
             AiNote aiNote = new AiNote();
             aiNote.setContent(info.getKeyword());
@@ -509,7 +511,7 @@ public class IndexController {
             return info.getKeyword();
         } else {
             return "nologin";
-        }
+        }*/
     }
 
     /**
