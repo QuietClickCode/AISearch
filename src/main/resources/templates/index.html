@@ -13,6 +13,7 @@
 </head>
 <body>
 <div id="app" style="display: none">
+    <!--便签内容框放在最顶部,可清空,可无限扩展-->
     <el-input type="textarea" autosize :placeholder="store.notePlaceholder" class="textarea" v-model="store.note"
               :style="{display:isSee}"
     ></el-input>
@@ -32,8 +33,11 @@
     var store = {
         pattern: "",
         notePlaceholder: "写点什么吧～～",
+        /*便签内容*/
         note: "",
+        /*便签是否可见*/
         isSee: 'none',
+        /*输入框内容*/
         keyword: "",
         article: []
     };
