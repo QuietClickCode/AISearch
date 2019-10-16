@@ -52,6 +52,20 @@
     <div style="margin-top:40px;">
     </div>
     <div id="top" style="display:inline">
+        <el-select v-model="platform" placeholder="请选择">
+            <el-option
+                    label="csdn"
+                    value="1">
+            </el-option>
+            <el-option
+                    label="简书"
+                    value="2">
+            </el-option>
+            <el-option
+                    label="知乎"
+                    value="3">
+            </el-option>
+        </el-select>
         <el-input v-model="id" placeholder="输入文章编号" style="margin-bottom:5px;width: 200px"></el-input>
         <el-input v-model="title" placeholder="输入文章标题" style="margin-bottom:5px;width: 200px"></el-input>
         <el-input v-model="content" placeholder="输入文章内容" style="margin-bottom:5px;width: 200px"></el-input>
@@ -86,6 +100,7 @@
 <script src="/js/Meting.min.js"></script>
 <script>
     var store = {
+        platform:"csdn",
         article: "",
         IsShow: false,
         id: "",
@@ -147,6 +162,5 @@
 
     /*显示时间*/
     setInterval("cg.innerHTML=new Date().toLocaleString()", 1000);
-
 </script>
 </html>
