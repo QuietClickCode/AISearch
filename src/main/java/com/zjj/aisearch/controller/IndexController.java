@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -479,12 +478,12 @@ public class IndexController {
     /**
      * 随机csdn文章功能
      */
-    @RequestMapping("/article")
-    public ModelAndView article(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
-            httpServletRequest, HttpServletResponse res) throws IOException {
+    @GetMapping("/articledata")
+    public Object article(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
+        ResponseResult responseResult = new ResponseResult();
         if (user != null) {
-            Article article = new Article();
+            Article article;
             for (; ; ) {
                 Random r = new Random();
                 int id = r.nextInt(101268) + 1;
@@ -493,195 +492,18 @@ public class IndexController {
                     Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
                     SystemLog systemLog = new SystemLog();
                     systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                    systemLog.setOperation("article" + "?id=" + article.getId());
+                    systemLog.setOperation("article" + "?id=" + article.getId() + "&title" + article.getTitle());
                     systemLog.setLoginLogId(loginLogId);
                     indexServiceImpl.insertSystemLog(systemLog);
                     break;
                 }
             }
-            modelAndView.setViewName("article");
-            modelAndView.addObject("article", article);
-            return modelAndView;
+            responseResult.setData(article);
+            return responseResult;
         } else {
-            modelAndView.addObject("msg", "请登录");
-            modelAndView.setViewName("login");
-            return modelAndView;
-        }
-    }
-
-    /**
-     * 搜索记录详情列表
-     */
-    @RequestMapping("/list")
-    public String list(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("list");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<SearchRecordList> searchRecordList = indexServiceImpl.selectSearchRecordList();
-            model.addAttribute("items", searchRecordList);
-            return "list";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
-        }
-    }
-
-    /**
-     * 便签记录详情列表
-     */
-    @RequestMapping("/ainote")
-    public String aiNotelist(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("ainote");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<AiNoteList> aiNoteList = indexServiceImpl.selectAiNoteList();
-            model.addAttribute("items", aiNoteList);
-            return "ainotelist";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
-        }
-    }
-
-    /**
-     * editor详情列表
-     */
-    @RequestMapping("/editorlist")
-    public String editorList(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("editorlist");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<EditorList> editorLists = indexServiceImpl.selectEditorList();
-            model.addAttribute("items", editorLists);
-            return "editorlist";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
-        }
-    }
-
-    /**
-     * editor详情列表
-     */
-    @RequestMapping("/markdownlist")
-    public String markdownList(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("markdownlist");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<MarkDownList> markDownLists = indexServiceImpl.selectMarkDownList();
-            model.addAttribute("items", markDownLists);
-            return "markdownlist";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
-        }
-    }
-
-    /**
-     * 注册用户列表
-     */
-    @RequestMapping("/userlist")
-    public String userList(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("userlist");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<UserLocation> userLocations = indexServiceImpl.selectUserLocation();
-            model.addAttribute("items", userLocations);
-            return "userlist";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
-        }
-    }
-
-    /**
-     * 登录日志列表
-     */
-    @RequestMapping("/loginloglist")
-    public String loginLogList(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("loginloglist");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
-            model.addAttribute("items", loginLogLocation);
-            return "loginloglist";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
-        }
-    }
-
-    /**
-     * 退出日志列表
-     */
-    @RequestMapping("/logoutloglist")
-    public String logoutLogList(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("logoutloglist");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<LogoutLogList> logoutLogList = indexServiceImpl.selectLogoutLogList();
-            model.addAttribute("items", logoutLogList);
-            return "logoutloglist";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
-        }
-    }
-
-    /**
-     * 系统操作日志列表
-     */
-    @GetMapping("/systemloglist")
-    public String systemloglist(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("systemloglist");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<SystemLogList> systemLogList = indexServiceImpl.selectSystemLogList();
-            model.addAttribute("items", systemLogList);
-            return "systemLogList";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
+            return null;
         }
     }
 }
+
+
