@@ -22,6 +22,7 @@
 </head>
 <body>
 <div id="app" style="display: none;">
+
     <div class="aplayer" id="player" style="display: none;color:black"
          data-id="402192905"
          data-fixed="true"
@@ -33,6 +34,7 @@
     <a href="#top" style="position:fixed;right:100px;bottom:100px"><i class="fa fa-2x fa-arrow-up"
                                                                       aria-hidden="true"></i></a>
     <a style="position:fixed;right:100px;top:100px"><i @click="music" class="fa fa-2x fa-music" aria-hidden="true"></i></a>
+    <a style="position:fixed;right:10px;bottom:5px;z-index: 10000"><span id="cg"></span></a>
     <!--为了回到顶部,用这几个div占位-->
     <div style="color: #C7EDCC;">1</div>
     <div style="color: #C7EDCC;">1</div>
@@ -139,6 +141,8 @@
         }
     })
 
+    /*显示时间*/
+    setInterval("cg.innerHTML=new Date().toLocaleString()", 1000);
 
 </script>
 </html>
