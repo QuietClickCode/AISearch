@@ -46,15 +46,6 @@
         data: store,
         created: function () {
             $("#app").show();
-            this.width = $("#el-input").width();
-        },
-        watch: {
-            /*用于监听关键字,如果为空,隐藏ul框*/
-            keyword: function () {
-                if (this.keyword == "") {
-                    this.isShow = false;
-                }
-            }
         },
         methods: {
             //enter或者button激发,用于记录用户上下文
@@ -65,20 +56,22 @@
                     /*转发模式*/
                     if (isForward) {
                         window.location.href = keyword.substring(1);
-                        /*调用下面的函数*/
                     } else {
                         this.toDetail(keyword);
                     }
                 }
             },
+            /*由toDetails调用*/
             toDetail: function (keyword) {
-                var isNote = keyword.startsWith('"');
+                //便签模式
+                var isNote = keyword.startsWith("'");
+                //命令模式
                 var isCommand = keyword.startsWith(":")
                 /*便签模式*/
                 if (isNote) {
                     if (keyword.substring(1) == "clear ") {
                         store.note = "";
-                        store.keyword = '"';
+                        store.keyword = "'";
                     } else {
                         $.ajax({
                             type: "post",
@@ -88,7 +81,6 @@
                                 "keyword": keyword.substring(1)
                             }),
                             success: function (data) {
-
                                 if (data == "nologin") {
                                     window.location.href = "/login";
                                 } else {
@@ -97,7 +89,7 @@
                                     } else {
                                         store.note += "\n".concat(data).concat("---").concat(new Date().toLocaleString());
                                     }
-                                    store.keyword = '"';
+                                    store.keyword = "'";
                                 }
                             }
                         });
@@ -168,7 +160,7 @@
             },
             searchItem: function (keyword) {
                 /*是否"开头*/
-                var isNote = keyword.startsWith('\"');
+                var isNote = keyword.startsWith("'");
                 /*是否/开头*/
                 var isForward = keyword.startsWith('/');
                 /*是否:开头*/
