@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
     <link rel="stylesheet" href="/css/element-ui.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
     <style>
         /*背景为护眼绿*/
         body {
@@ -12,11 +13,21 @@
             margin-top: 35px;
             margin-bottom: 35px;
         }
-        .el-textarea__inner { background:#C7EDCC;}
+
+        .el-textarea__inner {
+            background: #C7EDCC;
+        }
     </style>
 </head>
 <body>
 <div id="app" style="display: none;">
+    <a href="#top" style="position:fixed;right:100px;bottom:100px"><i class="fa fa-2x fa-arrow-up"
+                                                                      aria-hidden="true"></i></a>
+    <!--为了回到顶部,用这几个div占位-->
+    <div style="color: #C7EDCC;">1</div>
+    <div style="color: #C7EDCC;">1</div>
+    <div style="color: #C7EDCC;">1</div>
+    <div id="top" ></div>
     <div style="display: block;text-align: center">
         <el-button @click="toggleFullScreen" style="position:fixed; top:0; left:0;width:100%;height:35px;"
                    type="success">{{article.id}} | {{article.title}} | {{article.createtime}}
@@ -26,6 +37,7 @@
         <el-input v-model="article.content" type="textarea" autosize readonly style="color: #C7EDCC;"></el-input>
     </div>
     <div style="display: block;text-align: center">
+        <a href="#topAnchor" style="position:fixed;right:0;bottom:0">回到顶部</a>
         <el-button style="position:fixed; bottom:0; left:0;width:100%;height:35px;" @click="query" type="success">
             下一篇
         </el-button>
