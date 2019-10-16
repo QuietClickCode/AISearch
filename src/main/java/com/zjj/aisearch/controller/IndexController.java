@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,7 @@ public class IndexController {
 
     /**
      * 跳转到login页面
+     *
      * @return
      */
     @GetMapping("/login")
@@ -63,6 +65,7 @@ public class IndexController {
 
     /**
      * 跳转到regist页面
+     *
      * @return
      */
     @GetMapping("/regist")
@@ -73,7 +76,7 @@ public class IndexController {
     /**
      * login.html,ajax发送的登录请求
      * UserInfo 包含浏览器传过来的所有信息
-     *
+     * <p>
      * 待优化:没做异常处理,
      * 数据库字段如果为not null,
      * 前端传过来为null,就会出问题
@@ -132,34 +135,43 @@ public class IndexController {
 
                 //插入系统日志
                 SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(),"yyyy-MM-dd HH:mm:ss"));
+                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
                 systemLog.setOperation("login?" + "username=" + username);
                 systemLog.setLoginLogId(loginLogId);
                 indexServiceImpl.insertSystemLog(systemLog);
-                responseResult.setMsg("success").setUrl("index");
+                responseResult.setUrl("index").setStatus(0);
                 return responseResult;
             } else {
-                responseResult.setMsg("密码错误");
+                responseResult.setMsg("密码错误").setStatus(-1);
                 return responseResult;
             }
         } else {
-            responseResult.setMsg("用户不存在");
+            responseResult.setMsg("用户不存在").setStatus(-1);
             return responseResult;
         }
     }
 
     /**
-     * 注册
+     * regist.html,ajax发送的登录请求
+     * UserInfo 包含浏览器传过来的所有信息
+     * <p>
+     * 待优化:没做异常处理,
+     * 数据库字段如果为not null,
+     * 前端传过来为null,就会出问题
      */
     @RequestMapping("/toregist")
     @ResponseBody
-    public String toregist(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+    public Object toregist(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+        //插入本次登录的浏览器信息:型号,版本,系统类型
         BrowserInfo browserInfo = new BrowserInfo();
         browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
         browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
         browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
         indexServiceImpl.insertBrowserInfo(browserInfo);
+        //返回自动递增的ID
         String browserInfoId = browserInfo.getBrowserInfoId();
+
+        //插入位置信息:X,Y,公网IP,地点,设备类型
         Location location = new Location();
         location.setIp(userInfo.getLocation()[0]);
         location.setLocation(userInfo.getLocation()[1]);
@@ -168,23 +180,46 @@ public class IndexController {
         location.setY(userInfo.getLocation()[3]);
         location.setKeyword(userInfo.getPcOrPhone());
         indexServiceImpl.insertLocation(location);
+        //返回自动递增的ID
         String locationId = location.getLocationId();
+
+        //插入用户表
         User user = userInfo.getUser();
         user.setCreatetime(new Date().toLocaleString());
         user.setBrowserInfoId(browserInfoId);
         user.setLocationId(locationId);
-        int i = indexServiceImpl.insertUser(user);
-        if (i == 1) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
-            systemLog.setOperation("regist");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            log.info("[{}]注册成功", user.getUsername());
-            return "success";
+
+        ResponseResult responseResult = new ResponseResult();
+        //异常
+        try {
+            indexServiceImpl.insertUser(user);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                e.printStackTrace();
+                responseResult.setMsg("用户名重复");
+                return responseResult;
+            } else {
+                e.printStackTrace();
+                responseResult.setMsg("未知异常,请检查用户名密码是否符合规范!");
+                return responseResult;
+            }
         }
-        return null;
+
+        //正常
+        //拿到登录id,考虑如果用户已登录然后注册其他账号,
+        //没有登录,loginLogId就为空
+        //插入系统日志
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        systemLog.setOperation("regist?" + "username=" + user.getUsername());
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
+        log.info("[{}]注册成功", user.getUsername());
+        responseResult.setMsg("恭喜" + user.getUsername() + "注册成功" + ",您是第" + user.getId() + "位用户")
+                .setUrl("login");
+        return responseResult;
+
     }
 
     /**

@@ -42,30 +42,37 @@
             $("#app").show();
         },
         methods: {
-            regist:function () {
+            regist: function () {
                 getLocation(cb);
             },
-            toregist: function(user, location, localIp) {
-                var vueThis = this;
-                $.ajax({
-                    type: "post",
-                    contentType: "application/json",
-                    url: "/toregist",
-                    data: JSON.stringify({
-                        "user": user,
-                        "location": location,
-                        "browserInfo": getBrowserInfo(),
-                        "pcOrPhone": pcOrPhone(),
-                        "localIp": localIp
-                    }),
-                    success: function (data) {
-                        if (data.msg == "success") {
-                            window.location.href = data.url;
-                        } else {
-                            vueThis.$message(data.msg);
+            toregist: function (user, location, localIp) {
+                if (user.username != "" && user.password != "") {
+                    var vueThis = this;
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/json",
+                        url: "/toregist",
+                        data: JSON.stringify({
+                            "user": user,
+                            "location": location,
+                            "browserInfo": getBrowserInfo(),
+                            "pcOrPhone": pcOrPhone(),
+                            "localIp": localIp
+                        }),
+                        success: function (data) {
+                            if (data.msg == "success") {
+                                window.location.href = data.url;
+                            } else {
+                                vueThis.$message({
+                                    showClose: true,
+                                    message: data.msg,
+                                    type: 'error',
+                                    duration:0
+                                });
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
         }
     })

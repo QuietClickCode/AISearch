@@ -26,5 +26,7 @@ public class ResponseResult {
 
     private String url;//跳转url
 
+    private Integer status;//状态,成功0,失败-1
+
 
 }

@@ -53,26 +53,28 @@
             * pcOrPhone:获取设备类型,pc或者手机
             * */
             tologin: function (user, location, localIp) {
-                var vueThis = this;
-                $.ajax({
-                    type: "post",
-                    contentType: "application/json",
-                    url: "/tologin",
-                    data: JSON.stringify({
-                        "user": user,
-                        "location": location,
-                        "browserInfo": getBrowserInfo(),
-                        "pcOrPhone": pcOrPhone(),
-                        "localIp": localIp
-                    }),
-                    success: function (data) {
-                        if (data.msg == "success") {
-                            window.location.href = data.url;
-                        } else {
-                            vueThis.$message(data.msg);
+                if (user.username != "" && user.password != "") {
+                    var vueThis = this;
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/json",
+                        url: "/tologin",
+                        data: JSON.stringify({
+                            "user": user,
+                            "location": location,
+                            "browserInfo": getBrowserInfo(),
+                            "pcOrPhone": pcOrPhone(),
+                            "localIp": localIp
+                        }),
+                        success: function (data) {
+                            if (data.status == 0) {
+                                window.location.href = data.url;
+                            } else {
+                                vueThis.$message(data.msg);
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
         }
     })
