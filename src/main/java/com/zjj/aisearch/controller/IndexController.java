@@ -68,9 +68,10 @@ public class IndexController {
     @RequestMapping("/tologin")
     @ResponseBody
     @ApiOperation(value = "tologin")
-    public String tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+    public Object tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         String username = userInfo.getUser().getUsername();
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
+        ResponseResult responseResult = new ResponseResult();
         //如果用户存在,判断密码是否正确
         if (isExistUser != null) {
             boolean isEqual = userInfo.getUser().getPassword().equals(isExistUser.getPassword());
@@ -122,14 +123,15 @@ public class IndexController {
                 systemLog.setOperation("login?" + "username=" + username);
                 systemLog.setLoginLogId(loginLogId);
                 indexServiceImpl.insertSystemLog(systemLog);
-                ResponseResult responseResult = new ResponseResult();
-                responseResult.setMsg("success");
-                return "success";
+                responseResult.setMsg("success").setUrl("index");
+                return responseResult;
             } else {
-                return "密码错误";
+                responseResult.setMsg("密码错误");
+                return responseResult;
             }
         } else {
-            return "用户不存在";
+            responseResult.setMsg("用户不存在");
+            return responseResult;
         }
     }
 

@@ -66,10 +66,14 @@
                         "localIp": localIp
                     }),
                     success: function (data) {
-                        if (data == "success") {
-                            window.location.href = "/index";
+                        console.log(data)
+                        console.log(data.msg)
+                        console.log(data.url)
+                        console.log(data.data)
+                        if (data.msg == "success") {
+                            window.location.href = data.url;
                         } else {
-                            vueThis.$message(data);
+                            vueThis.$message(data.msg);
                         }
                     }
                 })
