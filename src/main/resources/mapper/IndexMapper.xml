@@ -208,6 +208,9 @@
     </insert>
     <!--注册用户-->
     <insert id="insertUser" parameterType="User">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
          insert into user(username,password,createtime,location_id,browser_info_id) values(#{username},#{password},#{createtime},#{locationId},#{browserInfoId})
     </insert>
     <!--插入便签记录-->
@@ -447,7 +450,7 @@ LEFT JOIN USER u ON u.id = ll.user_id
     </select>
 
 
-    <select id="validateUsername">
+    <select id="validateUsername" resultType="integer">
         select count(*) from user where username = #{username};
     </select>
 </mapper>

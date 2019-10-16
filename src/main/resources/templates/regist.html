@@ -15,12 +15,12 @@
 <div id="app" style="display: none">
     <!--注册框-->
     <div @keyup.enter="regist" style="width: 300px" class="center">
-        <el-form  :rules="rules" :model="store.user" label-width="80px" :label-position="labelPosition">
+        <el-form :rules="rules" :model="store.user" label-width="80px" :label-position="labelPosition">
             <el-form-item prop="username" label="用户名">
-                <el-input  @input="validateUsername" style="width: 200px" placeholder="注册" autofocus v-model="store.user.username"></el-input>
+                <el-input style="width: 200px" placeholder="注册" autofocus v-model="store.user.username"></el-input>
             </el-form-item>
             <el-form-item prop="password" label="密码">
-                <el-input   style="width: 200px" autofocus type="password" v-model="store.user.password"></el-input>
+                <el-input style="width: 200px" autofocus type="password" v-model="store.user.password"></el-input>
             </el-form-item>
         </el-form>
     </div>
@@ -35,10 +35,14 @@
         labelPosition: 'right',
         user: {username: "", password: ""},
         rules: {
-            username:{ required: true, message: '用户名不能为空', trigger: 'blur' },
-            password:{ required: true, message: '密码不能为空', trigger: 'blur' }
+            username: [{required: true, message: '用户名不能为空', trigger: 'blur'}, {
+                validator: validateUsername,
+                trigger: 'blur'
+            }],
+            password: {required: true, message: '密码不能为空', trigger: 'blur'}
         }
     };
+
     var app = new Vue({
         el: '#app',
         data: store,
@@ -48,21 +52,6 @@
         methods: {
             regist: function () {
                 getLocation(cb);
-            },
-            validateUsername:function () {
-               $ajax({
-                   url:"validateUsername",
-                   data: JSON.stringify({
-                       "username": user.username,
-                   }),
-                   success: function (data) {
-                       if (data.status == 0) {
-
-                       } else {
-
-                       }
-                   }
-               })
             },
             toregist: function (user, location, localIp) {
                 if (user.username != "" && user.password != "") {
@@ -79,15 +68,13 @@
                             "localIp": localIp
                         }),
                         success: function (data) {
-                            if (data.msg == "success") {
-                                window.location.href = data.url;
+                            if (data.status == 0) {
+                                vueThis.$message(data.msg);
+                                setTimeout(function () {
+                                    window.location.href = data.url;
+                                }, 2000)
                             } else {
-                                vueThis.$message({
-                                    showClose: true,
-                                    message: data.msg,
-                                    type: 'error',
-                                    duration:0
-                                });
+                                vueThis.$message(data.msg);
                             }
                         }
                     })
@@ -95,5 +82,23 @@
             }
         }
     })
+
+    //自定义校验
+    function validateUsername(rule, value, callback) {
+        $.ajax({
+            url: "validateUsername",
+            contentType: "application/json",
+            data: {
+                "username": value,
+            },
+            success: function (data) {
+                if (data.status == 0) {
+                    callback()
+                } else {
+                    callback(data.msg)
+                }
+            }
+        })
+    }
 </script>
 </html>

@@ -79,14 +79,16 @@ public class IndexController {
      * @return
      */
     @GetMapping("/validateUsername")
+    @ResponseBody
     public Object validateUsername(String username) {
+        log.error(username);
         int result = indexServiceImpl.validateUsername(username);
         ResponseResult responseResult = new ResponseResult();
         if (result == 0) {
             responseResult.setStatus(0);
             return responseResult;
         } else {
-            responseResult.setStatus(-1);
+            responseResult.setStatus(-1).setMsg("用户名已存在");
             return responseResult;
         }
     }
@@ -214,7 +216,7 @@ public class IndexController {
         } catch (Exception e) {
             if (e instanceof DuplicateKeyException) {
                 e.printStackTrace();
-                responseResult.setMsg("用户名重复");
+                responseResult.setMsg("用户名已存在");
                 return responseResult;
             } else {
                 e.printStackTrace();
@@ -235,7 +237,7 @@ public class IndexController {
         indexServiceImpl.insertSystemLog(systemLog);
         log.info("[{}]注册成功", user.getUsername());
         responseResult.setMsg("恭喜" + user.getUsername() + "注册成功" + ",您是第" + user.getId() + "位用户")
-                .setUrl("login");
+                .setUrl("login").setStatus(0);
         return responseResult;
 
     }
