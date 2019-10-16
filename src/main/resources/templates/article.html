@@ -50,6 +50,14 @@
     <a style="position:fixed;right:100px;top:100px"><i @click="music" class="fa fa-2x fa-music" aria-hidden="true"></i></a>
     <a style="position:fixed;right:10px;bottom:5px;z-index: 10000"><span id="cg"></span></a>
     <div style="margin-top:40px;">
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+        最近浏览:
+        时间轴:
+        目录:
+
     </div>
     <div id="top" style="display:inline">
         <el-select v-model="platform" placeholder="请选择">
@@ -84,12 +92,14 @@
     <div class="content">
         <el-input v-model="article.content" type="textarea" autosize readonly style="color: #C7EDCC;"></el-input>
     </div>
+
     <div style="display: block;text-align: center">
         <a href="#topAnchor" style="position:fixed;right:0;bottom:0">回到顶部</a>
         <el-button style="position:fixed; bottom:0; left:0;width:100%;height:35px;" @click="query" type="success">
             随便看看
         </el-button>
     </div>
+
 
 </div>
 </body>
@@ -159,7 +169,7 @@
             }
         }
     })
-    
+
     /*显示时间*/
     setInterval("cg.innerHTML=new Date().toLocaleString()", 1000);
 </script>
