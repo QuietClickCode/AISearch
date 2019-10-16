@@ -11,7 +11,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -492,7 +491,7 @@ public class IndexController {
                     Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
                     SystemLog systemLog = new SystemLog();
                     systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                    systemLog.setOperation("article" + "?id=" + article.getId() + "&title" + article.getTitle());
+                    systemLog.setOperation("article" + "?id=" + article.getId() + "&title=" + article.getTitle());
                     systemLog.setLoginLogId(loginLogId);
                     indexServiceImpl.insertSystemLog(systemLog);
                     break;
