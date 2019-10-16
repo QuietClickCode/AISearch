@@ -92,6 +92,7 @@
                     }
                     /*3.命令模式*/
                 } else if (isCommand) {
+                    var vueThis = this;
                     var index = keyword.indexOf(" ");
                     if (index != -1) {
                         var command = keyword.substring(1, index + 1);
@@ -100,7 +101,17 @@
                         if (isEnd + 1 == keyword.length) {
                             store.pattern = ":" + command;
                             if (store.pattern == ":logout ") {
-                                window.location.href = "/logout";
+                                $.ajax({
+                                    contentType: "application/json;charset=utf-8",
+                                    url: "/logout",
+                                    success: function (data) {
+                                        vueThis.$message(data.msg);
+                                        setTimeout(function () {
+                                                window.location.href = data.url;
+                                            }, 1000
+                                        )
+                                    }
+                                });
                             } else if ((store.pattern == ":clear ")) {
                                 store.note = "";
                             }

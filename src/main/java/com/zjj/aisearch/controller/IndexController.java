@@ -292,29 +292,32 @@ public class IndexController {
 
     }
 
-    @RequestMapping("/logout")
-    public Object logout(HttpServletRequest httpServletRequest, Model model, RedirectAttributes attributes, HttpServletResponse res) throws IOException {
+
+    @GetMapping("/logout")
+    public Object logout(HttpServletRequest httpServletRequest) {
         User user = (User) httpServletRequest.getSession().getAttribute("user");
         ResponseResult responseResult = new ResponseResult();
         if (user != null) {
 
             Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
+
             SystemLog systemLog = new SystemLog();
             systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation(":logout");
+            systemLog.setOperation(":logout?username" + user.getUsername());
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
+
             LogoutLog logoutLog = new LogoutLog();
             logoutLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             logoutLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertLogoutLog(logoutLog);
 
             httpServletRequest.getSession().invalidate();
-            attributes.addFlashAttribute("msg", "请登录");
-            return "redirect:login";
+            responseResult.setUrl("login").setStatus(0).setMsg("退出成功");
+            return responseResult;
         } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
+            responseResult.setUrl("login").setStatus(-1).setMsg("请登录");
+            return responseResult;
         }
     }
 
