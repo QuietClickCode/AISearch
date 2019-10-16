@@ -4,10 +4,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * @program: AISearch
- * @description: csdn文章
+ * @description: 响应对象
  * @author: zjj
  * @create: 2019-09-21 19:21:35
  **/
@@ -16,15 +17,14 @@ import lombok.ToString;
 @Setter
 @Data
 @ToString
-public class Article {
+@Accessors(chain = true)
+public class ResponseResult {
 
-    private Integer id;//主键Id
+    private String msg;//消息
 
-    private String title;//标题
+    private Object data;//数据
 
-    private String content;//内容
-
-    private String createtime;//创建时间
+    private String url;//跳转url
 
 
 }

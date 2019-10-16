@@ -2,6 +2,7 @@ package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
+import com.zjj.aisearch.utils.DateTimeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -117,10 +118,12 @@ public class IndexController {
 
                 //插入系统日志
                 SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(new Date().toString());
+                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(),"yyyy-MM-dd HH:mm:ss"));
                 systemLog.setOperation("login?" + "username=" + username);
                 systemLog.setLoginLogId(loginLogId);
                 indexServiceImpl.insertSystemLog(systemLog);
+                ResponseResult responseResult = new ResponseResult();
+                responseResult.setMsg("success");
                 return "success";
             } else {
                 return "密码错误";
