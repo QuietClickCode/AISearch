@@ -111,14 +111,14 @@ public class IndexController {
 
                 log.info("[{}]正在登陆,登录ID为[{}]", username, loginLogId);
 
-                //往session存入用户数据,和登录loginLogId
+                //往session存入用户数据,和登录loginLogId,用于判断是否登录
                 request.getSession().setAttribute("user", isExistUser);
                 request.getSession().setAttribute("loginLogId", loginLogId);
 
-                
+                //插入系统日志
                 SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(new Date().toLocaleString());
-                systemLog.setOperation("login");
+                systemLog.setCreatetime(new Date().toString());
+                systemLog.setOperation("login?" + "username=" + username);
                 systemLog.setLoginLogId(loginLogId);
                 indexServiceImpl.insertSystemLog(systemLog);
                 return "success";

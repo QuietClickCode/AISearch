@@ -5,10 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * @program: AISearch
  * @description: 系统操作日志
@@ -21,20 +17,9 @@ import java.util.Date;
 @ToString
 public class SystemLog {
 
-    private Integer id;
-    private String createtime;
-    private String operation;
-    private Integer loginLogId;
+    private Integer id;//主键id
+    private String createtime;//创建时间
+    private String operation;//执行的操作
+    private Integer loginLogId;//登录Id
 
-    public void setCreatetime(String createtime) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date dd = null;
-        try {
-            dd = sdf.parse(createtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String d = sdf.format(dd);
-        this.createtime = d;
-    }
 }
