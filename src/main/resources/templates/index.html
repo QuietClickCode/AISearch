@@ -95,47 +95,14 @@
                     var index = keyword.indexOf(" ");
                     if (index != -1) {
                         var command = keyword.substring(1, index + 1);
-                        var title = keyword.substring(index + 1);
-                        var end = keyword.lastIndexOf(" ");
-                        if (command == "zh ") {
-                            store.pattern = ":" + command;
-                            if (title != "") {
-                                this.isShow = true;
-                                $.ajax({
-                                    url: "/iscommand",
-                                    data: {keyword: keyword.substring(1, keyword.length - 1)},
-                                    success: function (data) {
-                                        window.location.href = "zhihucommandlist";
-                                    }
-                                });
-                            }
-                            return;
-                        }
-                        if (end + 1 == keyword.length) {
+                        var isEnd = keyword.lastIndexOf(" ");
+                        /*退出功能*/
+                        if (isEnd + 1 == keyword.length) {
                             store.pattern = ":" + command;
                             if (store.pattern == ":logout ") {
                                 window.location.href = "/logout";
                             } else if ((store.pattern == ":clear ")) {
                                 store.note = "";
-                            } else if (store.pattern == ":music ") {
-                                this.IsShow = !this.IsShow;
-                                if (this.IsShow) {
-                                    $("#player").show();
-                                } else {
-                                    $("#player").hide();
-                                }
-                            }
-                            else {
-                                if (title != "") {
-                                    this.isShow = true;
-                                    $.ajax({
-                                        url: "/iscommand",
-                                        data: {keyword: keyword.substring(1, keyword.length - 1)},
-                                        success: function (data) {
-                                            window.location.href = "commandlist";
-                                        }
-                                    });
-                                }
                             }
                         }
                     }

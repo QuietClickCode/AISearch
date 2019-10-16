@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +27,7 @@ import java.util.Random;
  * @author: zjj
  * @create: 2019-09-21 19:16:26
  **/
-@Controller
+@RestController
 @Slf4j
 @Api(value = "首页", description = "首页")
 public class IndexController {
@@ -37,25 +36,7 @@ public class IndexController {
     private IndexService indexServiceImpl;
 
 
-    /**
-     * 跳转到login页面
-     *
-     * @return
-     */
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
 
-    /**
-     * 跳转到regist页面
-     *
-     * @return
-     */
-    @GetMapping("/regist")
-    public String regist() {
-        return "regist";
-    }
 
     /**
      * 异步校验用户名
@@ -227,37 +208,9 @@ public class IndexController {
 
     }
 
-    /**
-     * 进入首页的唯一入口
-     */
-    @RequestMapping("/index")
-    public String index(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("index");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            model.addAttribute("msg", "你好," + user.getUsername());
-            log.info("[{}]进入首页", user.getUsername());
-            return "index";
-        } else {
-            redirectAttributes.addFlashAttribute("msg", "请登录");
-            return "redirect:login";
-        }
 
-    }
 
-    /**
-     * 重定向进入首页
-     */
-    @RequestMapping("/")
-    public String index() {
-        return "redirect:index";
 
-    }
 
     /**
      * ajax实时搜索
