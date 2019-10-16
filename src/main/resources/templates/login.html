@@ -66,10 +66,6 @@
                         "localIp": localIp
                     }),
                     success: function (data) {
-                        console.log(data)
-                        console.log(data.msg)
-                        console.log(data.url)
-                        console.log(data.data)
                         if (data.msg == "success") {
                             window.location.href = data.url;
                         } else {
