@@ -57,23 +57,35 @@ public class IndexController {
     }
 
     /**
-     * 登录
+     * login.html,ajax发送的登录请求
+     * UserInfo 包含浏览器传过来的所有信息
+     *
+     * 待优化:没做异常处理,
+     * 数据库字段如果为not null,
+     * 前端传过来为null,就会出问题
      */
     @RequestMapping("/tologin")
     @ResponseBody
-    @ApiOperation(value = "login")
+    @ApiOperation(value = "tologin")
     public String tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         String username = userInfo.getUser().getUsername();
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
+        //如果用户存在,判断密码是否正确
         if (isExistUser != null) {
             boolean isEqual = userInfo.getUser().getPassword().equals(isExistUser.getPassword());
+            //密码正确
             if (isEqual) {
+
+                //插入本次登录的浏览器信息:型号,版本,系统类型
                 BrowserInfo browserInfo = new BrowserInfo();
                 browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
                 browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
                 browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
                 indexServiceImpl.insertBrowserInfo(browserInfo);
+                //返回自动递增的ID
                 String browserInfoId = browserInfo.getBrowserInfoId();
+
+                //插入位置信息:X,Y,公网IP,地点,设备类型
                 Location location = new Location();
                 location.setIp(userInfo.getLocation()[0]);
                 location.setLocation(userInfo.getLocation()[1]);
@@ -82,21 +94,28 @@ public class IndexController {
                 location.setY(userInfo.getLocation()[3]);
                 location.setKeyword(userInfo.getPcOrPhone());
                 indexServiceImpl.insertLocation(location);
+                //返回自动递增的ID
                 String locationId = location.getLocationId();
+
+                //插入登录日志
                 Integer userId = isExistUser.getId();
                 LoginLog loginLog = new LoginLog();
                 loginLog.setCreatetime(new Date().toLocaleString());
                 loginLog.setBrowserInfoId(browserInfoId);
                 loginLog.setLocationId(locationId);
                 loginLog.setUserId(userId);
-                /**写入登录日志*/
                 indexServiceImpl.insertLoginLog(loginLog);
-
-                log.info("[{}]正在登陆", username);
-                //获取本次登录日志id
+                //返回本次登录日志id
                 Integer loginLogId = loginLog.getId();
+
+
+                log.info("[{}]正在登陆,登录ID为[{}]", username, loginLogId);
+
+                //往session存入用户数据,和登录loginLogId
                 request.getSession().setAttribute("user", isExistUser);
                 request.getSession().setAttribute("loginLogId", loginLogId);
+
+                
                 SystemLog systemLog = new SystemLog();
                 systemLog.setCreatetime(new Date().toLocaleString());
                 systemLog.setOperation("login");

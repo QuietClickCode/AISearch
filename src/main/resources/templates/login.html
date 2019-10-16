@@ -13,6 +13,7 @@
 </head>
 <body>
 <div id="app" style="display: none">
+    <!--登录框-->
     <div @keyup.enter="login" style="width: 300px" class="center">
         <el-form :model="store.user" label-width="80px" :label-position="labelPosition">
             <el-form-item label="用户名">
@@ -41,9 +42,16 @@
             $("#app").show();
         },
         methods: {
+            /*用户名或者密码任意一个点击enter都会触发*/
             login: function () {
+                //my-login.js通过回调获取ip,系统信息,位置信息等
                 getLocation(cb);
             },
+            /*my-login.js中的app.tologin(store.user, result, localIp)
+            * result:包含经度X,纬度Y,省市区,和公网IP
+            * getBrowserInfo():获取浏览器类型,版本,操作系统类型
+            * pcOrPhone:获取设备类型,pc或者手机
+            * */
             tologin: function (user, location, localIp) {
                 var vueThis = this;
                 $.ajax({
