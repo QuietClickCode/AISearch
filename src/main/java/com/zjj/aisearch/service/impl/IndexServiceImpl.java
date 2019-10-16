@@ -138,4 +138,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.selectMarkDownList();
     }
 
+    @Override
+    public int validateUsername(String username) {
+        return indexMapper.validateUsername(username);
+    }
+
 }

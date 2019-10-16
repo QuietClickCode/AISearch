@@ -446,4 +446,8 @@ LEFT JOIN location l ON l.location_id = ll.location_id
 LEFT JOIN USER u ON u.id = ll.user_id
     </select>
 
+
+    <select id="validateUsername">
+        select count(*) from user where username = #{username};
+    </select>
 </mapper>

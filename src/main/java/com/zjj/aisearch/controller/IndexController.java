@@ -74,6 +74,24 @@ public class IndexController {
     }
 
     /**
+     * 异步校验用户名
+     *
+     * @return
+     */
+    @GetMapping("/validateUsername")
+    public Object validateUsername(String username) {
+        int result = indexServiceImpl.validateUsername(username);
+        ResponseResult responseResult = new ResponseResult();
+        if (result == 0) {
+            responseResult.setStatus(0);
+            return responseResult;
+        } else {
+            responseResult.setStatus(-1);
+            return responseResult;
+        }
+    }
+
+    /**
      * login.html,ajax发送的登录请求
      * UserInfo 包含浏览器传过来的所有信息
      * <p>
