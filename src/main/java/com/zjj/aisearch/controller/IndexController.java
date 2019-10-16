@@ -35,23 +35,6 @@ public class IndexController {
     @Autowired
     private IndexService indexServiceImpl;
 
-    /**
-     * 实现转发模式,/index,完美兼容swagger
-     */
-   /* @RequestMapping(value = "{path}")
-    public String del(@PathVariable("path") String path) {
-        if (path.equals("swagger-ui.html")) {
-
-            return "/";
-        } else {
-            return path;
-        }
-    }*/
-    @PostMapping("/test")
-    @ResponseBody
-    public String test() {
-        return "true";
-    }
 
     /**
      * 跳转到login页面
@@ -170,6 +153,7 @@ public class IndexController {
             return responseResult;
         }
     }
+
 
     /**
      * regist.html,ajax发送的登录请求
@@ -718,7 +702,7 @@ public class IndexController {
     /**
      * 系统操作日志列表
      */
-    @RequestMapping("/systemloglist")
+    @GetMapping("/systemloglist")
     public String systemloglist(Model model, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
