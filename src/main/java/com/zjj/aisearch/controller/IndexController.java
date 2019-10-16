@@ -35,9 +35,6 @@ public class IndexController {
     @Autowired
     private IndexService indexServiceImpl;
 
-
-
-
     /**
      * 异步校验用户名
      *
@@ -296,9 +293,11 @@ public class IndexController {
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest httpServletRequest, Model model, RedirectAttributes attributes, HttpServletResponse res) throws IOException {
+    public Object logout(HttpServletRequest httpServletRequest, Model model, RedirectAttributes attributes, HttpServletResponse res) throws IOException {
         User user = (User) httpServletRequest.getSession().getAttribute("user");
+        ResponseResult responseResult = new ResponseResult();
         if (user != null) {
+
             Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
             systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
@@ -309,6 +308,7 @@ public class IndexController {
             logoutLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             logoutLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertLogoutLog(logoutLog);
+
             httpServletRequest.getSession().invalidate();
             attributes.addFlashAttribute("msg", "请登录");
             return "redirect:login";
