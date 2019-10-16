@@ -76,15 +76,17 @@
                             contentType: "application/json",
                             url: "/note",
                             data: JSON.stringify({
-                                "keyword": keyword.substring(1)
+                                "content": keyword.substring(1)
                             }),
                             success: function (data) {
-                                if (store.note == "") {
-                                    store.note = data.concat("---").concat(new Date().toLocaleString());
-                                } else {
-                                    store.note += "\n".concat(data).concat("---").concat(new Date().toLocaleString());
+                                if (data.status == 0) {
+                                    if (store.note == "") {
+                                        store.note = data.data.concat("---").concat(new Date().toLocaleString());
+                                    } else {
+                                        store.note += "\n".concat(data.data).concat("---").concat(new Date().toLocaleString());
+                                    }
+                                    store.keyword = "'";
                                 }
-                                store.keyword = "'";
                             }
                         });
                     }

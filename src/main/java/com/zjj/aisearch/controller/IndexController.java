@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /***
@@ -121,7 +122,7 @@ public class IndexController {
                 //插入登录日志
                 Integer userId = isExistUser.getId();
                 LoginLog loginLog = new LoginLog();
-                loginLog.setCreatetime(new Date().toLocaleString());
+                loginLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
                 loginLog.setBrowserInfoId(browserInfoId);
                 loginLog.setLocationId(locationId);
                 loginLog.setUserId(userId);
@@ -189,7 +190,7 @@ public class IndexController {
 
         //插入用户表
         User user = userInfo.getUser();
-        user.setCreatetime(new Date().toLocaleString());
+        user.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         user.setBrowserInfoId(browserInfoId);
         user.setLocationId(locationId);
 
@@ -235,7 +236,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("index");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
@@ -347,12 +348,12 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation(":logout");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
             LogoutLog logoutLog = new LogoutLog();
-            logoutLog.setCreatetime(new Date().toLocaleString());
+            logoutLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             logoutLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertLogoutLog(logoutLog);
             httpServletRequest.getSession().invalidate();
@@ -378,7 +379,7 @@ public class IndexController {
             if (command.equals("csdn")) {
                 List<Article> Articles = indexServiceImpl.searchArticle(title);
                 SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
                 systemLog.setOperation(":csdn" + "?keyword=" + title);
                 systemLog.setLoginLogId(loginLogId);
                 indexServiceImpl.insertSystemLog(systemLog);
@@ -389,7 +390,7 @@ public class IndexController {
             if (command.equals("js")) {
                 List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
                 SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
                 systemLog.setOperation(":js" + "?keyword=" + title);
                 systemLog.setLoginLogId(loginLogId);
                 indexServiceImpl.insertSystemLog(systemLog);
@@ -420,7 +421,7 @@ public class IndexController {
             if (command.equals("zh")) {
                 List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
                 SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(new Date().toLocaleString());
+                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
                 systemLog.setOperation(":zh" + "?keyword=" + title);
                 systemLog.setLoginLogId(loginLogId);
                 indexServiceImpl.insertSystemLog(systemLog);
@@ -470,7 +471,7 @@ public class IndexController {
             modelAndView.setViewName("/detail");
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("detail" + "?keyword=" + keyword);
             systemLog.setLoginLogId(loginLogId);
             SearchRecord searchRecord = new SearchRecord();
@@ -492,26 +493,31 @@ public class IndexController {
      */
     @PostMapping("/note")
     @ResponseBody
-    public String note(HttpServletResponse response, HttpServletRequest request) {
-        log.error(request.getParameter("keyword").toString());
-        return null;
-      /*  User user = (User) request.getSession().getAttribute("user");
+    public Object note(@RequestBody Map<String, String> map, HttpServletRequest request) {
+        log.info("便签内容为:[{}]", map.get("content"));
+        User user = (User) request.getSession().getAttribute("user");
+        ResponseResult responseResult = new ResponseResult();
         if (user != null) {
-            AiNote aiNote = new AiNote();
-            aiNote.setContent(info.getKeyword());
-            aiNote.setCreatetime(new Date().toLocaleString());
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+
+            AiNote aiNote = new AiNote();
+            aiNote.setContent(map.get("content"));
+            aiNote.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             aiNote.setLoginLogId(loginLogId);
+
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("note" + "?content=" + aiNote.getContent());
             systemLog.setLoginLogId(loginLogId);
+
             indexServiceImpl.insertSystemLog(systemLog);
             indexServiceImpl.insertAiNote(aiNote);
-            return info.getKeyword();
+            responseResult.setStatus(0).setData(map.get("content"));
+            return responseResult;
         } else {
-            return "nologin";
-        }*/
+            responseResult.setStatus(-1).setMsg("请登录");
+            return responseResult;
+        }
     }
 
     /**
@@ -530,7 +536,7 @@ public class IndexController {
                 if (article != null) {
                     Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
                     SystemLog systemLog = new SystemLog();
-                    systemLog.setCreatetime(new Date().toLocaleString());
+                    systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
                     systemLog.setOperation("article" + "?id=" + article.getId());
                     systemLog.setLoginLogId(loginLogId);
                     indexServiceImpl.insertSystemLog(systemLog);
@@ -556,7 +562,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("list");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
@@ -578,7 +584,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("ainote");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
@@ -600,7 +606,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("editorlist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
@@ -622,7 +628,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("markdownlist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
@@ -644,7 +650,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("userlist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
@@ -666,7 +672,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("loginloglist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
@@ -688,7 +694,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("logoutloglist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
@@ -710,7 +716,7 @@ public class IndexController {
         if (user != null) {
             Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
             SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(new Date().toLocaleString());
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             systemLog.setOperation("systemloglist");
             systemLog.setLoginLogId(loginLogId);
             indexServiceImpl.insertSystemLog(systemLog);
