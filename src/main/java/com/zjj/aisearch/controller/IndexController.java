@@ -52,9 +52,22 @@ public class IndexController {
         return "true";
     }
 
+    /**
+     * 跳转到login页面
+     * @return
+     */
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    /**
+     * 跳转到regist页面
+     * @return
+     */
+    @GetMapping("/regist")
+    public String regist() {
+        return "regist";
     }
 
     /**

@@ -134,7 +134,7 @@
     <!--注册用户详情-->
     <resultMap id="userLocation" type="UserLocation">
         <id property="id" column="id"></id>
-        <result property="username" column="user"></result>
+        <result property="username" column="username"></result>
         <result property="password" column="password"></result>
         <result property="createtime" column="createtime"></result>
         <association property="location" javaType="Location">

@@ -17,7 +17,7 @@
     <div @keyup.enter="login" style="width: 300px" class="center">
         <el-form :model="store.user" label-width="80px" :label-position="labelPosition">
             <el-form-item label="用户名">
-                <el-input style="width: 200px" autofocus v-model="store.user.username"></el-input>
+                <el-input style="width: 200px" placeholder="登录" autofocus v-model="store.user.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
                 <el-input style="width: 200px" autofocus type="password" v-model="store.user.password"></el-input>
