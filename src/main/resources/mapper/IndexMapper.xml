@@ -13,10 +13,10 @@
 
 
     <insert id="insertArticle" parameterType="com.zjj.aisearch.model.Article">
-        insert into jianshu_article(title, content, create_time) values(#{title},#{content},#{createTime})
+        insert into jianshu_article(title, content, createtime) values(#{title},#{content},#{createTime})
     </insert>
     <insert id="insertZhihuArticle" parameterType="com.zjj.aisearch.model.ZhihuArticle">
-        insert into zhihu_article(answer, question,question_info, create_time) values(#{answer},#{question},#{questionInfo},#{createTime})
+        insert into zhihu_article(answer, question,question_info, createtime) values(#{answer},#{question},#{questionInfo},#{createTime})
     </insert>
 
 </mapper>
