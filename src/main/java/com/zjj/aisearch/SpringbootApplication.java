@@ -15,8 +15,12 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(basePackages = "com.zjj.aisearch.mapper")
 public class SpringbootApplication {
     public static void main(String[] args) {
+        try {
+            SpringApplication.run(SpringbootApplication.class, args);
+        }catch(Exception e){
 
-        SpringApplication.run(SpringbootApplication.class, args);
+            System.out.println(e);
+        }
       /*  MyProcessor myProcessor = new MyProcessor();
 
         myProcessor.run();*/

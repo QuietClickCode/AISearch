@@ -12,8 +12,11 @@
     </insert>
 
 
-    <insert id="insertArticle" parameterType="com.zjj.aisearch.model.Article">
+   <!-- <insert id="insertArticle" parameterType="com.zjj.aisearch.model.Article">
         insert into jianshu_article(title, content, createtime) values(#{title},#{content},#{createTime})
+    </insert>-->
+    <insert id="insertArticle" parameterType="com.zjj.aisearch.model.Article">
+        insert into bky_article(title, content, createtime) values(#{title},#{content},#{createTime})
     </insert>
     <insert id="insertZhihuArticle" parameterType="com.zjj.aisearch.model.ZhihuArticle">
         insert into zhihu_article(answer, question,question_info, createtime) values(#{answer},#{question},#{questionInfo},#{createTime})
