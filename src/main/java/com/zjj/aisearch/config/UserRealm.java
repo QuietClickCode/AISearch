@@ -37,6 +37,8 @@ public class UserRealm extends AuthorizingRealm {
         log.error(permissionUrl + "------------------>");
         simpleAuthorizationInfo.addStringPermission(permissionUrl);
 
+
+
         return simpleAuthorizationInfo;
     }
 

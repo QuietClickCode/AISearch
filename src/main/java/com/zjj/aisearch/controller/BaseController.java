@@ -41,15 +41,6 @@ public class BaseController {
         return "login";
     }
 
-    /**
-     * 未授权
-     *
-     * @return
-     */
-    @GetMapping("/noAuth")
-    public String noAuth() {
-        return "noauth";
-    }
 
     /**
      * 跳转到regist页面
@@ -69,6 +60,16 @@ public class BaseController {
     @GetMapping("/article")
     public String article() {
         return "article";
+    }
+
+    /**
+     * 跳转到未授权页面
+     *
+     * @return
+     */
+    @GetMapping("/noauth")
+    public String noauth() {
+        return "noauth";
     }
 
     /**

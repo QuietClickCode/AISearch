@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @program: AISearch
@@ -22,6 +24,16 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    @Bean
+    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
+        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
+        Properties properties = new Properties();
+
+        /*未授权处理页*/
+        properties.setProperty("org.apache.shiro.authz.UnauthorizedException", "/noauth");
+        resolver.setExceptionMappings(properties);
+        return resolver;
+    }
 
     /**
      * *
@@ -72,7 +84,7 @@ public class ShiroConfig {
         filterMap.put("/user/update", "authc");
         filterMap.put("/*", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
-        shiroFilterFactoryBean.setUnauthorizedUrl("/noAuth");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/noauth");
         shiroFilterFactoryBean.setLoginUrl("/login");
         return shiroFilterFactoryBean;
     }
