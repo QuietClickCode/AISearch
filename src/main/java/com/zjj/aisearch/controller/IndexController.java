@@ -43,7 +43,7 @@ public class IndexController {
      * @return
      */
     @GetMapping("/validateUsername")
-
+    @ApiOperation("异步校验用户名")
     public Object validateUsername(String username) {
         int result = indexServiceImpl.validateUsername(username);
         ResponseResult responseResult = new ResponseResult();
@@ -67,7 +67,6 @@ public class IndexController {
      * 这个登录的记录系统日志不要去动他,因为比较重要,牵一发动全身
      */
     @RequestMapping("/tologin")
-
     @ApiOperation(value = "登录")
     public Object tologin(@RequestBody UserInfo userInfo) {
 
@@ -156,6 +155,7 @@ public class IndexController {
      */
     @RequestMapping("/toregist")
     @ResponseBody
+    @ApiOperation("注册")
     public Object toregist(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         //插入本次登录的浏览器信息:型号,版本,系统类型
         BrowserInfo browserInfo = new BrowserInfo();
@@ -223,6 +223,7 @@ public class IndexController {
      */
     @RequestMapping("/searchItem")
     @ResponseBody
+    @ApiOperation("ajax实时搜索")
     public Object searchItem(String keyword) {
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
@@ -236,6 +237,7 @@ public class IndexController {
      */
     @RequestMapping("/command")
     @ResponseBody
+    @ApiOperation("进入命令模式")
     public Object command(String keyword) {
         User user = ((User) SecurityUtils.getSubject().getPrincipal());
         int index = keyword.indexOf(" ");
@@ -265,6 +267,7 @@ public class IndexController {
      * 定向搜索结果详情
      */
     @RequestMapping("/iscommand")
+    @ApiOperation("定向搜索结果详情")
     public String isCommand(String keyword, HttpServletRequest httpServletRequest) {
         int index = keyword.indexOf(" ");
         if (index != -1) {
@@ -290,6 +293,7 @@ public class IndexController {
 
 
     @GetMapping("/logout")
+    @ApiOperation("logout")
     public Object logout(HttpServletRequest httpServletRequest) {
         User user = ((User) SecurityUtils.getSubject().getPrincipal());
         ResponseResult responseResult = new ResponseResult();
@@ -316,6 +320,7 @@ public class IndexController {
      * 进入定向搜索结果详情页
      */
     @RequestMapping("/commandlist")
+    @ApiOperation("进入定向搜索结果详情页")
     public ModelAndView commandlist(ModelAndView modelAndView, HttpServletRequest
             httpServletRequest) {
         String command = (String) httpServletRequest.getSession().getAttribute("command");
@@ -351,6 +356,7 @@ public class IndexController {
      * 进入知乎定向搜索结果详情页
      */
     @RequestMapping("/zhihucommandlist")
+    @ApiOperation("进入知乎定向搜索结果详情页")
     public ModelAndView zhihucommandlist(ModelAndView modelAndView, HttpServletRequest
             httpServletRequest) {
         String command = (String) httpServletRequest.getSession().getAttribute("command");
@@ -374,8 +380,8 @@ public class IndexController {
      * 重定向到搜索结果详情页
      */
     @RequestMapping("/todetail")
+    @ApiOperation("重定向到搜索结果详情页")
     public String toDetail(@RequestBody Info info, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
         if (!info.getKeyword().isEmpty()) {
             request.getSession().setAttribute("keyword", info.getKeyword());
             //不做任何事,避免生成两次记录
@@ -389,6 +395,7 @@ public class IndexController {
      * 进入搜索结果详情页
      */
     @RequestMapping("/detail")
+    @ApiOperation("进入搜索结果详情页")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
             httpServletRequest) {
         String keyword = (String) httpServletRequest.getSession().getAttribute("keyword");
@@ -414,9 +421,9 @@ public class IndexController {
      */
     @PostMapping("/note")
     @ResponseBody
+    @ApiOperation("便签模式")
     public Object note(@RequestBody Map<String, String> map, HttpServletRequest request) {
         log.info("便签内容为:[{}]", map.get("content"));
-        User user = (User) request.getSession().getAttribute("user");
         ResponseResult responseResult = new ResponseResult();
         Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
 
@@ -440,8 +447,8 @@ public class IndexController {
      * 随机csdn文章功能
      */
     @GetMapping("/articledata")
+    @ApiOperation("随机csdn文章功能")
     public Object article(HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
         ResponseResult responseResult = new ResponseResult();
         Article article;
         for (; ; ) {
