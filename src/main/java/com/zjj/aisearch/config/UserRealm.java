@@ -3,6 +3,7 @@ package com.zjj.aisearch.config;
 import com.zjj.aisearch.model.User;
 import com.zjj.aisearch.service.IndexService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -31,7 +32,10 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.info("授权");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addStringPermission("user:add");
+        Integer userId = ((User) SecurityUtils.getSubject().getPrincipal()).getId();
+        String permissionUrl = indexServiceImpl.selectPermission(userId);
+        log.error(permissionUrl + "------------------>");
+        simpleAuthorizationInfo.addStringPermission(permissionUrl);
 
         return simpleAuthorizationInfo;
     }

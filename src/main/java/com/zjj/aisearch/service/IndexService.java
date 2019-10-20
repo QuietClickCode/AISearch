@@ -57,4 +57,6 @@ public interface IndexService {
     List<MarkDownList> selectMarkDownList();
 
     int validateUsername(String username);
+
+    String selectPermission(Integer userId);
 }

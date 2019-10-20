@@ -143,4 +143,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.validateUsername(username);
     }
 
+    @Override
+    public String selectPermission(Integer userId) {
+        return indexMapper.selectPermission(userId);
+    }
+
 }

@@ -211,7 +211,8 @@
         <selectKey resultType="int" keyProperty="id" order="AFTER">
             select @@IDENTITY as id
         </selectKey>
-         insert into user(username,password,createtime,location_id,browser_info_id) values(#{username},#{password},#{createtime},#{locationId},#{browserInfoId})
+        insert into user(username,password,createtime,location_id,browser_info_id)
+        values(#{username},#{password},#{createtime},#{locationId},#{browserInfoId})
     </insert>
     <!--插入便签记录-->
     <insert id="insertAiNote" parameterType="AiNote">
@@ -450,7 +451,20 @@ LEFT JOIN USER u ON u.id = ll.user_id
     </select>
 
 
+    <!--异步校验用户名是否重复-->
     <select id="validateUsername" resultType="integer">
         select count(*) from user where username = #{username};
+    </select>
+
+    <!--查询登录用户权限-->
+    <select id="selectPermission" resultType="string">
+SELECT
+	permission.`url`
+FROM
+	permission
+LEFT JOIN role_permission ON permission.id = role_permission.permission_id
+LEFT JOIN role ON role_permission.role_id = role.id
+LEFT JOIN user_role ON user_role.role_id = role.id
+LEFT JOIN USER ON user.id = user_role.user_id  where `user`.id = #{userId}
     </select>
 </mapper>

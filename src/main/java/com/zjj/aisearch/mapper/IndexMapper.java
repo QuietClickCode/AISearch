@@ -53,4 +53,6 @@ public interface IndexMapper  {
     List<MarkDownList> selectMarkDownList();
 
     int validateUsername(String username);
+
+    String selectPermission(Integer userId);
 }
