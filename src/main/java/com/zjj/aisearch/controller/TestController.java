@@ -1,6 +1,7 @@
 package com.zjj.aisearch.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,12 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class TestController {
 
     @RequestMapping("user/add")
+    @RequiresPermissions("user:add")
     @ResponseBody
     public ModelAndView add(ModelAndView modelAndView) {
         modelAndView.setViewName("user/add");
         return modelAndView;
     }
     @RequestMapping("user/update")
+    @RequiresPermissions("user:update")
     @ResponseBody
     public ModelAndView update(ModelAndView modelAndView) {
         modelAndView.setViewName("user/update");

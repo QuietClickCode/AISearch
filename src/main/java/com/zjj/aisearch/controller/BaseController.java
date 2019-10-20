@@ -60,15 +60,6 @@ public class BaseController {
     }
 
     /**
-     * 重定向进入首页
-     */
-    @GetMapping("/")
-    public String index() {
-        return "redirect:index";
-
-    }
-
-    /**
      * 跳转到随机文章页面
      *
      * @return
