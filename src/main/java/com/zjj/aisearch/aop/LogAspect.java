@@ -88,7 +88,7 @@ public class LogAspect {
         log.error("-------------->" + systemLog);
         endTime = System.currentTimeMillis();
         log.debug("doAround>>>result={},耗时：{}", result, endTime - startTime);
-        return null;
+        return result;
     }
 
 }

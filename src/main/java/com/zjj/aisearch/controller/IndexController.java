@@ -46,9 +46,8 @@ public class IndexController {
      * @return
      */
     @GetMapping("/validateUsername")
-    @ResponseBody
+    
     public Object validateUsername(String username) {
-        log.error(username);
         int result = indexServiceImpl.validateUsername(username);
         ResponseResult responseResult = new ResponseResult();
         if (result == 0) {
@@ -69,7 +68,7 @@ public class IndexController {
      * 前端传过来为null,就会出问题
      */
     @RequestMapping("/tologin")
-    @ResponseBody
+    
     @ApiOperation(value = "登录")
     public Object tologin(@RequestBody UserInfo userInfo) {
 
