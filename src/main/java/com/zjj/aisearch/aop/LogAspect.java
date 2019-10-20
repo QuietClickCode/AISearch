@@ -1,11 +1,10 @@
 package com.zjj.aisearch.aop;
+
 import com.zjj.aisearch.model.SystemLog;
-import com.zjj.aisearch.model.User;
-import com.zjj.aisearch.model.UserInfo;
 import com.zjj.aisearch.service.IndexService;
+import com.zjj.aisearch.utils.DateTimeUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -15,6 +14,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -31,7 +31,7 @@ import java.util.Date;
  **/
 @Aspect
 @Slf4j
-/*@Component*/
+@Component
 public class LogAspect {
 
     // 开始时间
@@ -69,35 +69,23 @@ public class LogAspect {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
         HttpServletRequest request = servletRequestAttributes.getRequest();
+
         // 从注解中获取操作名称、获取响应结果
 
+        SystemLog systemLog = new SystemLog();
         Object result = pjp.proceed();
-        Object[] args = pjp.getArgs();
         Signature signature = pjp.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();
-        String[] parameterNames = methodSignature.getParameterNames();
-        int isUserInfo = ArrayUtils.indexOf(parameterNames, "userInfo");
-        if (isUserInfo != -1) {
-            UserInfo userinfo = (UserInfo) args[isUserInfo];
-            if (method.isAnnotationPresent(ApiOperation.class)) {
-                ApiOperation logs = method.getAnnotation(ApiOperation.class);
-                User user = (User) request.getSession().getAttribute("user");
-                if (user != null) {
-                    Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-                    SystemLog systemLog = new SystemLog();
-                    systemLog.setCreatetime(new Date().toLocaleString());
-                    systemLog.setOperation(logs.value()+":aop:");
-                    systemLog.setLoginLogId(loginLogId);
-                    indexServiceImpl.insertSystemLog(systemLog);
-                    log.info("[{}]进入首页:aop:", user.getUsername());
-                    return "index";
-                } else {
-                    return "redirect:login";
-                }
-            }
-        }
 
+        if (method.isAnnotationPresent(ApiOperation.class)) {
+            ApiOperation log = method.getAnnotation(ApiOperation.class);
+            systemLog.setOperation(log.value());
+        }
+        systemLog.setLoginLogId((Integer) request.getSession().getAttribute("loginLogId"));
+        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        indexServiceImpl.insertSystemLog(systemLog);
+        log.error("-------------->" + systemLog);
         endTime = System.currentTimeMillis();
         log.debug("doAround>>>result={},耗时：{}", result, endTime - startTime);
         return null;

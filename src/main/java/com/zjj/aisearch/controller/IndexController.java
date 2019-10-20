@@ -70,7 +70,7 @@ public class IndexController {
      */
     @RequestMapping("/tologin")
     @ResponseBody
-    @ApiOperation(value = "tologin")
+    @ApiOperation(value = "登录")
     public Object tologin(@RequestBody UserInfo userInfo) {
 
         String username = userInfo.getUser().getUsername();
@@ -406,7 +406,7 @@ public class IndexController {
         systemLog.setLoginLogId(loginLogId);
         SearchRecord searchRecord = new SearchRecord();
         searchRecord.setKeyword(keyword);
-        searchRecord.setSearchTime(new Date().toLocaleString());
+        searchRecord.setSearchTime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         searchRecord.setLoginLogId(loginLogId);
         indexServiceImpl.insertSearchRecord(searchRecord);
         indexServiceImpl.insertSystemLog(systemLog);
