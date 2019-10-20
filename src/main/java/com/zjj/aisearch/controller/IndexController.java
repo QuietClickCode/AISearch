@@ -16,11 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +43,7 @@ public class IndexController {
      * @return
      */
     @GetMapping("/validateUsername")
-    
+
     public Object validateUsername(String username) {
         int result = indexServiceImpl.validateUsername(username);
         ResponseResult responseResult = new ResponseResult();
@@ -66,9 +63,11 @@ public class IndexController {
      * 待优化:没做异常处理,
      * 数据库字段如果为not null,
      * 前端传过来为null,就会出问题
+     * <p>
+     * 这个登录的记录系统日志不要去动他,因为比较重要,牵一发动全身
      */
     @RequestMapping("/tologin")
-    
+
     @ApiOperation(value = "登录")
     public Object tologin(@RequestBody UserInfo userInfo) {
 
@@ -224,7 +223,7 @@ public class IndexController {
      */
     @RequestMapping("/searchItem")
     @ResponseBody
-    public Object searchItem(String keyword, HttpServletResponse res) throws IOException {
+    public Object searchItem(String keyword) {
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
             return items;
@@ -237,7 +236,7 @@ public class IndexController {
      */
     @RequestMapping("/command")
     @ResponseBody
-    public Object command(String keyword, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
+    public Object command(String keyword) {
         User user = ((User) SecurityUtils.getSubject().getPrincipal());
         int index = keyword.indexOf(" ");
         if (index != -1) {
@@ -266,9 +265,7 @@ public class IndexController {
      * 定向搜索结果详情
      */
     @RequestMapping("/iscommand")
-    public String isCommand(String keyword, RedirectAttributes attributes, HttpServletRequest httpServletRequest, HttpServletResponse res) throws IOException {
-        Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
+    public String isCommand(String keyword, HttpServletRequest httpServletRequest) {
         int index = keyword.indexOf(" ");
         if (index != -1) {
             String substring = keyword.substring(0, index);
@@ -319,8 +316,8 @@ public class IndexController {
      * 进入定向搜索结果详情页
      */
     @RequestMapping("/commandlist")
-    public ModelAndView commandlist(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
-            httpServletRequest, HttpServletResponse res) throws IOException {
+    public ModelAndView commandlist(ModelAndView modelAndView, HttpServletRequest
+            httpServletRequest) {
         String command = (String) httpServletRequest.getSession().getAttribute("command");
         String title = (String) httpServletRequest.getSession().getAttribute("title");
         Integer loginLogId = (int) httpServletRequest.getSession().getAttribute("loginLogId");
@@ -354,8 +351,8 @@ public class IndexController {
      * 进入知乎定向搜索结果详情页
      */
     @RequestMapping("/zhihucommandlist")
-    public ModelAndView zhihucommandlist(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
-            httpServletRequest, HttpServletResponse res) throws IOException {
+    public ModelAndView zhihucommandlist(ModelAndView modelAndView, HttpServletRequest
+            httpServletRequest) {
         String command = (String) httpServletRequest.getSession().getAttribute("command");
         String title = (String) httpServletRequest.getSession().getAttribute("title");
         Integer loginLogId = (int) httpServletRequest.getSession().getAttribute("loginLogId");
@@ -377,7 +374,7 @@ public class IndexController {
      * 重定向到搜索结果详情页
      */
     @RequestMapping("/todetail")
-    public String toDetail(@RequestBody Info info, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse res) throws IOException {
+    public String toDetail(@RequestBody Info info, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (!info.getKeyword().isEmpty()) {
             request.getSession().setAttribute("keyword", info.getKeyword());
@@ -393,7 +390,7 @@ public class IndexController {
      */
     @RequestMapping("/detail")
     public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
-            httpServletRequest, HttpServletResponse res) throws IOException {
+            httpServletRequest) {
         String keyword = (String) httpServletRequest.getSession().getAttribute("keyword");
         List<Item> items = indexServiceImpl.searchItem(keyword);
         modelAndView.addObject("items", items);

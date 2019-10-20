@@ -3,6 +3,7 @@ package com.zjj.aisearch.controller;
 import com.zjj.aisearch.model.QueryForm;
 import com.zjj.aisearch.model.SystemLogList;
 import com.zjj.aisearch.service.QueryService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,12 +28,14 @@ public class QueryController {
 
     @RequestMapping("querySystemLog")
     @ResponseBody
+    @ApiOperation("querySystemLog")
     public List<SystemLogList> querySystemLog(@RequestBody QueryForm queryForm) {
         return queryServiceImpl.queryForm(queryForm);
     }
 
     @RequestMapping("querySystem")
     @ResponseBody
+    @ApiOperation("querySystem")
     public List<String> querySystem() {
         List<String> strings = queryServiceImpl.querySystem();
         return strings;
@@ -40,6 +43,7 @@ public class QueryController {
 
     @RequestMapping("queryDevice")
     @ResponseBody
+    @ApiOperation("queryDevice")
     public List<String> queryDevice() {
         List<String> strings = queryServiceImpl.queryDevice();
         return strings;
@@ -47,6 +51,7 @@ public class QueryController {
 
     @RequestMapping("queryBrowser")
     @ResponseBody
+    @ApiOperation("queryBrowser")
     public List<String> queryBrowser() {
         List<String> strings = queryServiceImpl.queryBrowser();
         return strings;

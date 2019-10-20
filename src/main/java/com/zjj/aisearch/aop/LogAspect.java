@@ -81,7 +81,7 @@ public class LogAspect {
             systemLog.setLoginLogId((Integer) request.getSession().getAttribute("loginLogId"));
             systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             indexServiceImpl.insertSystemLog(systemLog);
-            log.error("-------------->" + systemLog);
+            log.info("正在进行的操作-------------->" + systemLog);
             endTime = System.currentTimeMillis();
         }
     }

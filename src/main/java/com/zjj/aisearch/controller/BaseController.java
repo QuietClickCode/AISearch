@@ -2,7 +2,6 @@ package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
-import com.zjj.aisearch.utils.DateTimeUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,16 +74,8 @@ public class BaseController {
      */
     @GetMapping("/index")
     @ApiOperation("首页")
-    public String index(HttpServletRequest request, Model model) {
-
+    public String index() {
         Subject subject = SecurityUtils.getSubject();
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("index");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
-        model.addAttribute("msg", "你好," + ((User) subject.getPrincipal()).getUsername());
         log.info("[{}]进入首页", ((User) subject.getPrincipal()).getUsername());
         return "index";
     }
@@ -95,13 +84,8 @@ public class BaseController {
      * 退出日志列表
      */
     @GetMapping("/logoutloglist")
-    public String logoutLogList(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("logoutloglist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+    @ApiOperation("退出日志列表")
+    public String logoutLogList(Model model) {
         List<LogoutLogList> logoutLogList = indexServiceImpl.selectLogoutLogList();
         model.addAttribute("items", logoutLogList);
         return "logoutloglist";
@@ -113,13 +97,7 @@ public class BaseController {
     @GetMapping("/systemloglist")
     @RequiresPermissions("user:systemloglist")
     @ApiOperation("系统操作日志列表")
-    public String systemloglist(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("systemloglist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+    public String systemloglist(Model model) {
         List<SystemLogList> systemLogList = indexServiceImpl.selectSystemLogList();
         model.addAttribute("items", systemLogList);
         return "systemLogList";
@@ -129,13 +107,8 @@ public class BaseController {
      * 注册用户列表
      */
     @GetMapping("/userlist")
-    public String userList(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("userlist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+    @ApiOperation("注册用户列表")
+    public String userList(Model model) {
         List<UserLocation> userLocations = indexServiceImpl.selectUserLocation();
         model.addAttribute("items", userLocations);
         return "userlist";
@@ -145,13 +118,8 @@ public class BaseController {
      * 登录日志列表
      */
     @GetMapping("/loginloglist")
-    public String loginLogList(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("loginloglist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+    @ApiOperation("登录日志列表")
+    public String loginLogList(Model model) {
         List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
         model.addAttribute("items", loginLogLocation);
         return "loginloglist";
@@ -161,13 +129,8 @@ public class BaseController {
      * 搜索记录详情列表
      */
     @GetMapping("/list")
-    public String list(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("list");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+    @ApiOperation("搜索记录详情列表")
+    public String list(Model model) {
         List<SearchRecordList> searchRecordList = indexServiceImpl.selectSearchRecordList();
         model.addAttribute("items", searchRecordList);
         return "list";
@@ -177,13 +140,8 @@ public class BaseController {
      * 便签记录详情列表
      */
     @GetMapping("/ainote")
-    public String aiNotelist(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("ainote");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+    @ApiOperation("便签记录详情列表")
+    public String aiNotelist(Model model) {
         List<AiNoteList> aiNoteList = indexServiceImpl.selectAiNoteList();
         model.addAttribute("items", aiNoteList);
         return "ainotelist";
@@ -193,29 +151,19 @@ public class BaseController {
      * editor详情列表
      */
     @GetMapping("/editorlist")
-    public String editorList(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("editorlist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+    @ApiOperation("editor详情列表")
+    public String editorList(Model model) {
         List<EditorList> editorLists = indexServiceImpl.selectEditorList();
         model.addAttribute("items", editorLists);
         return "editorlist";
     }
 
     /**
-     * editor详情列表
+     * markdown详情列表
      */
     @GetMapping("/markdownlist")
-    public String markdownList(Model model, HttpServletRequest request) {
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("markdownlist");
-        systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+    @ApiOperation("markdown详情列表")
+    public String markdownList(Model model) {
         List<MarkDownList> markDownLists = indexServiceImpl.selectMarkDownList();
         model.addAttribute("items", markDownLists);
         return "markdownlist";
