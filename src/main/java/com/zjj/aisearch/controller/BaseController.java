@@ -39,6 +39,15 @@ public class BaseController {
     }
 
     /**
+     * 未授权
+     * @return
+     */
+    @GetMapping("/noAuth")
+    public String noAuth() {
+        return "noauth";
+    }
+
+    /**
      * 跳转到regist页面
      *
      * @return

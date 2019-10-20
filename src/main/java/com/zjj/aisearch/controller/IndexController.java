@@ -6,11 +6,17 @@ import com.zjj.aisearch.utils.DateTimeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -65,7 +71,20 @@ public class IndexController {
     @ResponseBody
     @ApiOperation(value = "tologin")
     public Object tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+
         String username = userInfo.getUser().getUsername();
+        String password = userInfo.getUser().getPassword();
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
+        try {
+            subject.login(usernamePasswordToken);
+        } catch (UnknownAccountException e) {
+            e.printStackTrace();
+            System.out.println("用户不存在");
+        } catch (IncorrectCredentialsException e) {
+            e.printStackTrace();
+            System.out.println("密码不正确");
+        }
         User isExistUser = indexServiceImpl.selectUserByUserName(username);
         ResponseResult responseResult = new ResponseResult();
         //如果用户存在,判断密码是否正确
@@ -202,9 +221,6 @@ public class IndexController {
         return responseResult;
 
     }
-
-
-
 
 
     /**

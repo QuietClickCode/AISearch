@@ -32,9 +32,15 @@ public class ShiroConfig {
          * role:角色
          */
         Map<String, String> filterMap = new LinkedHashMap<String, String>();
-        filterMap.put("/user/add", "authc");
+        filterMap.put("/login", "anon");
+        filterMap.put("/tologin", "anon");
+        filterMap.put("/noauth", "anon");
+        filterMap.put("/test", "anon");
+        filterMap.put("/user/add", "perms[user:add]");
         filterMap.put("/user/update", "authc");
+        filterMap.put("/*", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
+        shiroFilterFactoryBean.setUnauthorizedUrl("/noAuth");
         shiroFilterFactoryBean.setLoginUrl("/login");
         return shiroFilterFactoryBean;
     }
