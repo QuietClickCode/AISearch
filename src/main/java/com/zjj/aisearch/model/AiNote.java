@@ -5,10 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * @program: AISearch
  * @description: 记录所思所想的便签
@@ -20,20 +16,13 @@ import java.util.Date;
 @Data
 @ToString
 public class AiNote {
-    private Integer id;
-    private String content;
-    private String createtime;
-    private Integer loginLogId;
 
-    public void setCreatetime(String createtime) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date dd = null;
-        try {
-            dd = sdf.parse(createtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String d = sdf.format(dd);
-        this.createtime = d;
-    }
+    private Integer id;//主键id
+
+    private String content;//内容
+
+    private String createtime;//创建时间
+
+    private Integer loginLogId;//登录日志id
+
 }

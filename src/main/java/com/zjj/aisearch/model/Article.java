@@ -7,7 +7,7 @@ import lombok.ToString;
 
 /**
  * @program: AISearch
- * @description:
+ * @description: csdn文章
  * @author: zjj
  * @create: 2019-09-21 19:21:35
  **/
@@ -18,13 +18,13 @@ import lombok.ToString;
 @ToString
 public class Article {
 
-    private Integer id;
+    private Integer id;//主键Id
 
-    private String title;
+    private String title;//标题
 
-    private String content;
+    private String content;//内容
 
-    private String createtime;
+    private String createtime;//创建时间
 
 
 }

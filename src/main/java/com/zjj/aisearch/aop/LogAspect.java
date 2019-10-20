@@ -1,5 +1,4 @@
 package com.zjj.aisearch.aop;
-
 import com.zjj.aisearch.model.SystemLog;
 import com.zjj.aisearch.model.User;
 import com.zjj.aisearch.model.UserInfo;

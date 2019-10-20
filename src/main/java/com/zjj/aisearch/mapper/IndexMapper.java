@@ -51,4 +51,6 @@ public interface IndexMapper  {
     List<EditorList> selectEditorList();
 
     List<MarkDownList> selectMarkDownList();
+
+    int validateUsername(String username);
 }

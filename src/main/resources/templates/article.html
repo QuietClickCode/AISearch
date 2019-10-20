@@ -1,48 +1,135 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- 引入样式 -->
     <link rel="stylesheet" href="/css/element-ui.min.css">
     <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/my-select.css">
-    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/APlayer.min.css">
+    <style>
+        /*背景为护眼绿*/
+        body {
+            background-color: #C7EDCC;
+        }
+
+        /*中间内容设置上下间距*/
+        .content {
+            margin-bottom: 35px;
+        }
+
+        /*文本域,护眼绿*/
+        .el-textarea__inner {
+            background: #C7EDCC;
+        }
+
+        /*输入框,护眼绿*/
+        .el-input__inner {
+            background: #C7EDCC;
+            border: 1px solid #409EFF;
+            height:35px;
+        }
+
+        /*改变placeholder颜色*/
+        .el-input__inner::-webkit-input-placeholder {
+            /* WebKit browsers */
+            color: gray;
+        }
+    </style>
 </head>
 <body>
-<script type="text/javascript" th:inline="javascript">
-    var article = [[${article}]];
-</script>
-<div id="app" style="display: none">
-    <div style="display: block;text-align: center">
-        <el-button style="position:fixed; top:0; left:0;width:100%;height:30px;">{{article.title}}</el-button>
+<div id="app" style="display: none;">
+
+    <!--音乐播放器插件-->
+    <div class="aplayer" id="player" style="display: none;color:black"
+         data-id="402192905"
+         data-fixed="true"
+         data-server="netease"
+         data-volume="0.4"
+         data-type="playlist">
     </div>
-    {{article.content}}
-    <div style="display: block;text-align: center">
-        <el-link type="success">{{article.createtime}}</el-link>
+
+    <a href="#top" style="position:fixed;right:100px;bottom:100px"><i class="fa fa-2x fa-arrow-up"
+                                                                      aria-hidden="true"></i></a>
+    <a style="position:fixed;right:100px;top:100px"><i @click="music" class="fa fa-2x fa-music" aria-hidden="true"></i></a>
+    <a style="position:fixed;right:10px;bottom:5px;z-index: 10000"><span id="cg"></span></a>
+    <div style="margin-top:40px;">
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+        页面浏览时长
+        最近浏览:
+        时间轴:
+        目录:
+
+        每篇文章还可做标记,做评论什么的,后面考虑,富文本,字体大小,背景颜色,换主题,基于这个页面开发插件,各种功能插件设计成
+        可插拔,并且能与其他页面,其他系统很好的交互什么的
+
+        以后的一个开发模式可能就是:爬虫去爬几万条数据,然后基于这些数据做分析,统计,整理,浏览,查看等等,用上各种顺手的技术,各种
+        顺手的工具,各种顺手的库,一遍开发,一遍学习,一边记录自己的成长,
+        然后,隔断时间就重构一下,清除之前屎一般的代码,后面数据,业务复杂了多了,自然会用到分布式,es,微服务,hadoop,集群,代码生气器,
+        安卓,前端工程化都会涉及,这就是一个技术成长的过程,只做自己感兴趣的事,能学到东西的事,其他都是顺其自然的
+        最终做成几款成熟的产品,差不多也就功成名就了
+
+        每个功能都可以分析:有哪些扩展点,重构点,优化点
+
+        明天微信小程序,安卓,前端工程化,移动端搞起来,权限管理
+        nginx,nodejs.用起来,
     </div>
-    <div style="display: block;text-align: center">
-        <el-link type="warning">{{article.id}}</el-link>
+    <div id="top" style="display:inline">
+        <el-select v-model="platform" placeholder="请选择">
+            <el-option
+                    label="csdn"
+                    value="1">
+            </el-option>
+            <el-option
+                    label="简书"
+                    value="2">
+            </el-option>
+            <el-option
+                    label="知乎"
+                    value="3">
+            </el-option>
+        </el-select>
+        <el-input v-model="id" placeholder="输入文章编号" style="margin-bottom:5px;width: 200px"></el-input>
+        <el-input v-model="title" placeholder="输入文章标题" style="margin-bottom:5px;width: 200px"></el-input>
+        <el-input v-model="content" placeholder="输入文章内容" style="margin-bottom:5px;width: 200px"></el-input>
+        <i class="fa fa-x fa-arrow-left" style="font-size: 24px" aria-hidden="true"></i>
+        <span style="color: gray ">上一篇</span>
+        <span style="color: gray ">|</span>
+        <span style="color: gray ">下一篇</span>
+        <i class="fa fa-x fa-arrow-right" style="font-size: 24px" aria-hidden="true"></i>
     </div>
+    <!--<div style="color: #C7EDCC;">1</div>-->
     <div style="display: block;text-align: center">
-        <el-button style="position:fixed; bottom:0; left:0;width:100%;height:30px;" @click="refresh">下一篇</el-button>
+        <el-button @click="toggleFullScreen" style="position:fixed; top:0; left:0;width:100%;height:35px;"
+                   type="success">{{article.id}} | {{article.title}} | {{article.createtime}}
+        </el-button>
     </div>
+    <div class="content">
+        <el-input v-model="article.content" type="textarea" autosize readonly style="color: #C7EDCC;"></el-input>
+    </div>
+
+    <div style="display: block;text-align: center">
+        <a href="#topAnchor" style="position:fixed;right:0;bottom:0">回到顶部</a>
+        <el-button style="position:fixed; bottom:0; left:0;width:100%;height:35px;" @click="query" type="success">
+            随便看看
+        </el-button>
+    </div>
+
 
 </div>
 </body>
 <script src="/js/jquery-1.9.1.min.js"></script>
 <script src="/js/vue.min.js" type="text/javascript"></script>
 <script src="/js/element-ui.min.js" type="text/javascript"></script>
-<script src="/js/my-select.js" type="text/javascript"></script>
-
+<script src="/js/APlayer.min.js"></script>
+<script src="/js/Meting.min.js"></script>
 <script>
-
     var store = {
-        visible: false,
-        width: 0,
+        platform:"csdn",
+        article: "",
+        IsShow: false,
+        id: "",
         title: "",
-        article: article,
-        message: 'AISearch',
-        keyword: "",
-        isShow: true
+        content: ""
     };
     var app = new Vue({
         el: '#app',
@@ -50,17 +137,54 @@
         created: function () {
             this.width = $("#el-input").width();
             /*不加动画或者,时间太少,都回补了顶部,这个速度可以滑到顶部,并且不影响后面的手动下滑*/
-            $('html,body').animate({scrollTop:0},500)
-
+            $('html,body').animate({scrollTop: 0}, 500)
             $("#app").show();
+            this.query();
+            this.toggleFullScreen()
         },
         methods: {
-            refresh: function () {
-                window.location.reload(false);
+            music: function () {
+                /*window.location = "http://music.nbclass.com/"*/
+                this.IsShow = !this.IsShow;
+                if (this.IsShow) {
+                    $("#player").show();
+                } else {
+                    $("#player").hide();
+                }
+            },
+            toggleFullScreen: function () {
+                if (!document.fullscreenElement && // alternative standard method
+                    !document.mozFullScreenElement && !document.webkitFullscreenElement) {// current working methods
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                    }
+                } else {
+                    if (document.cancelFullScreen) {
+                        document.cancelFullScreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitCancelFullScreen) {
+                        document.webkitCancelFullScreen();
+                    }
+                }
+            },
+            query: function () {
+                $.ajax({
+                    url: "articledata",
+                    contentType: "json",
+                    success: function (data) {
+                        store.article = data.data;
+                    }
+                })
             }
         }
-
     })
 
+    /*显示时间*/
+    setInterval("cg.innerHTML=new Date().toLocaleString()", 1000);
 </script>
 </html>

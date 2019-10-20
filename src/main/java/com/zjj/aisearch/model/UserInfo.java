@@ -7,7 +7,7 @@ import lombok.ToString;
 
 /**
  * @program: AISearch
- * @description: 客户端提交的信息
+ * @description: 客户端提交的信息,包含浏览器传过来的所有信息
  * @author: zjj
  * @create: 2019-09-28 00:16:12
  **/

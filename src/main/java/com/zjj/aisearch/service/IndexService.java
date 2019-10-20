@@ -55,4 +55,6 @@ public interface IndexService {
     List<EditorList> selectEditorList();
 
     List<MarkDownList> selectMarkDownList();
+
+    int validateUsername(String username);
 }
