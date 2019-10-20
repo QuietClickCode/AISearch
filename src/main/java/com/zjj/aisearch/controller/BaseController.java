@@ -3,6 +3,7 @@ package com.zjj.aisearch.controller;
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
 import com.zjj.aisearch.utils.DateTimeUtil;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -73,7 +74,9 @@ public class BaseController {
      * 进入首页的唯一入口
      */
     @GetMapping("/index")
+    @ApiOperation("首页")
     public String index(HttpServletRequest request, Model model) {
+
         Subject subject = SecurityUtils.getSubject();
         Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
         SystemLog systemLog = new SystemLog();

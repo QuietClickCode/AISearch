@@ -43,21 +43,22 @@ public class LogAspect {
     IndexService indexServiceImpl;
 
     /**
-         execution(表达式)
-         表达式:
-         [方法访问修饰符] 方法返回值 包名.类名.方法名(方法的参数)
-         public * cn.itcast.spring.dao.*.*(..)
-         * cn.itcast.spring.dao.*.*(..)
-         * cn.itcast.spring.dao.UserDao+.*(..)
-         * cn.itcast.spring.dao..*.*(..)
-     * @param joinPoint
-     * 应用在所有修饰符的所有名字含有controller的包的所有类的不限制返回值的所有方法
+     * execution(表达式)
+     * 表达式:
+     * [方法访问修饰符] 方法返回值 包名.类名.方法名(方法的参数)
+     * public * cn.itcast.spring.dao.*.*(..)
+     * cn.itcast.spring.dao.*.*(..)
+     * cn.itcast.spring.dao.UserDao+.*(..)
+     * cn.itcast.spring.dao..*.*(..)
+     *
+     * @param joinPoint 应用在所有修饰符的所有名字含有controller的包的所有类的不限制返回值的所有方法
      */
     @Before("execution(* *..controller..*.*(..))")
     public void doBeforeInServiceLayer(JoinPoint joinPoint) {
         log.info("doBeforeInServiceLayer");
         startTime = System.currentTimeMillis();
     }
+
     @After("execution(* *..controller..*.*(..))")
     public void doAfterInServiceLayer(JoinPoint joinPoint) {
         log.info("doAfterInServiceLayer");
@@ -65,30 +66,35 @@ public class LogAspect {
 
     @Around("execution(* *..controller..*.*(..))")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
+
         // 获取request
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
         HttpServletRequest request = servletRequestAttributes.getRequest();
-
-        // 从注解中获取操作名称、获取响应结果
-
-        SystemLog systemLog = new SystemLog();
+        Object user = request.getSession().getAttribute("user");
         Object result = pjp.proceed();
-        Signature signature = pjp.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-        Method method = methodSignature.getMethod();
+        if (user != null) {
+            // 从注解中获取操作名称、获取响应结果
+            SystemLog systemLog = new SystemLog();
+            Signature signature = pjp.getSignature();
+            MethodSignature methodSignature = (MethodSignature) signature;
+            Method method = methodSignature.getMethod();
 
-        if (method.isAnnotationPresent(ApiOperation.class)) {
-            ApiOperation log = method.getAnnotation(ApiOperation.class);
-            systemLog.setOperation(log.value());
+            if (method.isAnnotationPresent(ApiOperation.class)) {
+                ApiOperation log = method.getAnnotation(ApiOperation.class);
+                systemLog.setOperation(log.value());
+            }
+            systemLog.setLoginLogId((Integer) request.getSession().getAttribute("loginLogId"));
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            indexServiceImpl.insertSystemLog(systemLog);
+            log.error("-------------->" + systemLog);
+            endTime = System.currentTimeMillis();
+            log.debug("doAround>>>result={},耗时：{}", result, endTime - startTime);
+            return result;
         }
-        systemLog.setLoginLogId((Integer) request.getSession().getAttribute("loginLogId"));
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        indexServiceImpl.insertSystemLog(systemLog);
-        log.error("-------------->" + systemLog);
-        endTime = System.currentTimeMillis();
-        log.debug("doAround>>>result={},耗时：{}", result, endTime - startTime);
         return result;
+
+
     }
 
 }
