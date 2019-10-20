@@ -76,78 +76,73 @@ public class IndexController {
         String password = userInfo.getUser().getPassword();
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
+        ResponseResult responseResult = new ResponseResult();
+
+        //登录验证
         try {
             subject.login(usernamePasswordToken);
         } catch (UnknownAccountException e) {
             e.printStackTrace();
-            System.out.println("用户不存在");
-        } catch (IncorrectCredentialsException e) {
-            e.printStackTrace();
-            System.out.println("密码不正确");
-        }
-        User isExistUser = indexServiceImpl.selectUserByUserName(username);
-        ResponseResult responseResult = new ResponseResult();
-        //如果用户存在,判断密码是否正确
-        if (isExistUser != null) {
-            boolean isEqual = userInfo.getUser().getPassword().equals(isExistUser.getPassword());
-            //密码正确
-            if (isEqual) {
-
-                //插入本次登录的浏览器信息:型号,版本,系统类型
-                BrowserInfo browserInfo = new BrowserInfo();
-                browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
-                browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
-                browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
-                indexServiceImpl.insertBrowserInfo(browserInfo);
-                //返回自动递增的ID
-                String browserInfoId = browserInfo.getBrowserInfoId();
-
-                //插入位置信息:X,Y,公网IP,地点,设备类型
-                Location location = new Location();
-                location.setIp(userInfo.getLocation()[0]);
-                location.setLocation(userInfo.getLocation()[1]);
-                location.setLocalIp(userInfo.getLocalIp());
-                location.setX(userInfo.getLocation()[2]);
-                location.setY(userInfo.getLocation()[3]);
-                location.setKeyword(userInfo.getPcOrPhone());
-                indexServiceImpl.insertLocation(location);
-                //返回自动递增的ID
-                String locationId = location.getLocationId();
-
-                //插入登录日志
-                Integer userId = isExistUser.getId();
-                LoginLog loginLog = new LoginLog();
-                loginLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                loginLog.setBrowserInfoId(browserInfoId);
-                loginLog.setLocationId(locationId);
-                loginLog.setUserId(userId);
-                indexServiceImpl.insertLoginLog(loginLog);
-                //返回本次登录日志id
-                Integer loginLogId = loginLog.getId();
-
-
-                log.info("[{}]正在登陆,登录ID为[{}]", username, loginLogId);
-
-                //往session存入用户数据,和登录loginLogId,用于判断是否登录
-                request.getSession().setAttribute("user", isExistUser);
-                request.getSession().setAttribute("loginLogId", loginLogId);
-
-                //插入系统日志
-                SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                systemLog.setOperation("login?" + "username=" + username);
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
-                responseResult.setUrl("index").setStatus(0);
-                return responseResult;
-            } else {
-                responseResult.setMsg("密码错误").setStatus(-1);
-                return responseResult;
-            }
-        } else {
+            log.error("用户不存在");
             responseResult.setMsg("用户不存在").setStatus(-1);
             return responseResult;
+
+        } catch (IncorrectCredentialsException e) {
+            e.printStackTrace();
+            log.error("密码错误");
+            responseResult.setMsg("密码错误").setStatus(-1);
+            return responseResult;
         }
+
+        User user = (User) subject.getPrincipal();
+
+        //插入本次登录的浏览器信息:型号,版本,系统类型
+        BrowserInfo browserInfo = new BrowserInfo();
+        browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
+        browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
+        browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
+        indexServiceImpl.insertBrowserInfo(browserInfo);
+        //返回自动递增的ID
+        String browserInfoId = browserInfo.getBrowserInfoId();
+
+        //插入位置信息:X,Y,公网IP,地点,设备类型
+        Location location = new Location();
+        location.setIp(userInfo.getLocation()[0]);
+        location.setLocation(userInfo.getLocation()[1]);
+        location.setLocalIp(userInfo.getLocalIp());
+        location.setX(userInfo.getLocation()[2]);
+        location.setY(userInfo.getLocation()[3]);
+        location.setKeyword(userInfo.getPcOrPhone());
+        indexServiceImpl.insertLocation(location);
+        //返回自动递增的ID
+        String locationId = location.getLocationId();
+
+        //插入登录日志
+        Integer userId = user.getId();
+        LoginLog loginLog = new LoginLog();
+        loginLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        loginLog.setBrowserInfoId(browserInfoId);
+        loginLog.setLocationId(locationId);
+        loginLog.setUserId(userId);
+        indexServiceImpl.insertLoginLog(loginLog);
+        //返回本次登录日志id
+        Integer loginLogId = loginLog.getId();
+
+
+        log.info("[{}]正在登陆,登录ID为[{}]", username, loginLogId);
+
+        //往session存入用户数据,和登录loginLogId,用于判断是否登录
+        request.getSession().setAttribute("user", user);
+        request.getSession().setAttribute("loginLogId", loginLogId);
+
+        //插入系统日志
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        systemLog.setOperation("login?" + "username=" + username);
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
+        responseResult.setUrl("index").setStatus(0);
+        return responseResult;
     }
 
 
