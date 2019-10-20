@@ -109,6 +109,7 @@ public class BaseController {
      * 系统操作日志列表
      */
     @GetMapping("/systemloglist")
+    @ApiOperation("系统操作日志列表")
     public String systemloglist(Model model, HttpServletRequest request) {
         Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
         SystemLog systemLog = new SystemLog();
