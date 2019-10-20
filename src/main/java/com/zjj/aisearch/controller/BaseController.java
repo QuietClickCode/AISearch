@@ -40,6 +40,7 @@ public class BaseController {
 
     /**
      * 未授权
+     *
      * @return
      */
     @GetMapping("/noAuth")
@@ -175,21 +176,15 @@ public class BaseController {
      */
     @GetMapping("/loginloglist")
     public String loginLogList(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("loginloglist");
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
-            model.addAttribute("items", loginLogLocation);
-            return "loginloglist";
-        } else {
-            model.addAttribute("msg", "请登录");
-            return "login";
-        }
+        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        systemLog.setOperation("loginloglist");
+        systemLog.setLoginLogId(loginLogId);
+        indexServiceImpl.insertSystemLog(systemLog);
+        List<LoginLogLocation> loginLogLocation = indexServiceImpl.selectLoginLocation();
+        model.addAttribute("items", loginLogLocation);
+        return "loginloglist";
     }
 
     /**

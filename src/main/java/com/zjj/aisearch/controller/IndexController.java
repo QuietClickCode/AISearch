@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -70,7 +71,7 @@ public class IndexController {
     @RequestMapping("/tologin")
     @ResponseBody
     @ApiOperation(value = "tologin")
-    public Object tologin(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+    public Object tologin(@RequestBody UserInfo userInfo) {
 
         String username = userInfo.getUser().getUsername();
         String password = userInfo.getUser().getPassword();
@@ -131,9 +132,10 @@ public class IndexController {
 
         log.info("[{}]正在登陆,登录ID为[{}]", username, loginLogId);
 
+        Session session = subject.getSession();
         //往session存入用户数据,和登录loginLogId,用于判断是否登录
-        request.getSession().setAttribute("user", user);
-        request.getSession().setAttribute("loginLogId", loginLogId);
+        session.setAttribute("user", user);
+        session.setAttribute("loginLogId", loginLogId);
 
         //插入系统日志
         SystemLog systemLog = new SystemLog();
