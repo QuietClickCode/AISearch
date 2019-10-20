@@ -9,6 +9,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
         }
+
         /*覆盖鼠标变成小手*/
         .el-select .el-input__inner {
             cursor: text;
@@ -27,13 +28,13 @@
                   v-model="store.keyword">
         </el-input>-->
         <el-select style="width: 500px;"
-                v-model="value"
-                filterable
-                remote
-                reserve-keyword
-                placeholder="请输入关键词"
-                :remote-method="remoteMethod"
-                :loading="loading">
+                   v-model="value"
+                   filterable
+                   remote
+                   reserve-keyword
+                   placeholder="请输入关键词"
+                   :remote-method="remoteMethod"
+                   :loading="loading">
             <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -89,11 +90,14 @@
         data: store,
         created: function () {
             $("#app").show();
+
         },
+
         mounted() {
             this.list = this.states.map(item => {
-                return { value: item, label: item };
-        });
+                return {value: item, label: item};
+            });
+            $(".el-input__inner").focus();
         },
         methods: {
             remoteMethod(query) {
