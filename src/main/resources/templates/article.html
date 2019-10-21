@@ -159,7 +159,7 @@
             this.toggleFullScreen();
 
         },
-        mounted:function () {
+        mounted: function () {
             $("#table").hide();
         },
         methods: {
@@ -201,10 +201,12 @@
                     }),
                     success: function (data) {
                         store.article = data;
-                        if(store.article.length == 1) {
-                            store.articledetail = store.article[0]
+                        if (store.article.length == 1) {
+                            store.articledetail = store.article[0];
+                            $("#table").hide();
+                        } else {
+                            $("#table").show();
                         }
-                        $("#table").show();
                     }
                 });
 
