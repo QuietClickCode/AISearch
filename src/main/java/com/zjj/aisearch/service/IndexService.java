@@ -3,6 +3,7 @@ package com.zjj.aisearch.service;
 import com.zjj.aisearch.model.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: aisearch
@@ -59,4 +60,6 @@ public interface IndexService {
     int validateUsername(String username);
 
     String selectPermission(Integer userId);
+
+    Article queryArticle(Map<String, String> map);
 }

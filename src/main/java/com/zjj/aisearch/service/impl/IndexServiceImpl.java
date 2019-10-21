@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: aisearch
@@ -146,6 +147,11 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public String selectPermission(Integer userId) {
         return indexMapper.selectPermission(userId);
+    }
+
+    @Override
+    public Article queryArticle(Map<String, String> map) {
+        return indexMapper.queryArticle(map);
     }
 
 }

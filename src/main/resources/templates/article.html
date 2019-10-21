@@ -53,7 +53,7 @@
 
     </div>
     <div id="top" style="display:inline">
-        <el-select v-model="platform" placeholder="请选择">
+        <el-select v-model="platform" filterable  placeholder="请选择">
             <el-option
                     label="csdn"
                     value="1">
@@ -63,7 +63,7 @@
                     value="2">
             </el-option>
             <el-option
-                    label="知乎"
+                    label="博客园"
                     value="3">
             </el-option>
         </el-select>
@@ -75,8 +75,8 @@
         <span style="color: gray ">|</span>
         <span style="color: gray ">下一篇</span>
         <i class="fa fa-x fa-arrow-right" style="font-size: 24px" aria-hidden="true"></i>
+        <el-button @click="queryArticle">查询</el-button>
     </div>
-    <!--<div style="color: #C7EDCC;">1</div>-->
     <div style="display: block;text-align: center">
         <el-button @click="toggleFullScreen" style="position:fixed; top:0; left:0;width:100%;height:35px;"
                    type="success">{{article.id}} | {{article.title}} | {{article.createtime}}
@@ -103,7 +103,7 @@
 <script src="/js/Meting.min.js"></script>
 <script>
     var store = {
-        platform:"csdn",
+        platform:"1",
         article: "",
         IsShow: false,
         id: "",
@@ -122,6 +122,23 @@
             this.toggleFullScreen()
         },
         methods: {
+            queryArticle:function () {
+                $.ajax({
+                    type: "post",
+                    url: "queryarticle",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "id": store.id,
+                        "keyword": store.keyword,
+                        "title": store.title,
+                        "content": store.content,
+                        "platform": store.platform
+                    }),
+                    success: function (data) {
+                        store.article = data
+                    }
+                });
+            },
             music: function () {
                 /*window.location = "http://music.nbclass.com/"*/
                 this.IsShow = !this.IsShow;
@@ -154,7 +171,7 @@
             query: function () {
                 $.ajax({
                     url: "articledata",
-                    contentType: "json",
+                    contentType: "application/json",
                     success: function (data) {
                         store.article = data.data;
                     }

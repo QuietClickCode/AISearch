@@ -474,6 +474,29 @@ public class IndexController {
         responseResult.setData(article);
         return responseResult;
     }
+
+    /**
+     * 查询文章功能
+     */
+    @PostMapping("/queryarticle")
+    @ApiOperation("查询文章功能")
+    public Object queryArticle(@RequestBody Map<String, String> map) {
+        Article article;
+        for (; ; ) {
+            article = indexServiceImpl.queryArticle(map);
+            if (article != null) {
+                Integer loginLogId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("loginLogId");
+                SystemLog systemLog = new SystemLog();
+                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+                systemLog.setOperation("article" + "?id=" + article.getId() + "&title=" + article.getTitle());
+                systemLog.setLoginLogId(loginLogId);
+                indexServiceImpl.insertSystemLog(systemLog);
+                break;
+            }
+        }
+        return article;
+    }
+
 }
 
 

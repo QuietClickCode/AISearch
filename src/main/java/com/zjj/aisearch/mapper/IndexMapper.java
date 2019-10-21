@@ -4,6 +4,7 @@ package com.zjj.aisearch.mapper;
 import com.zjj.aisearch.model.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IndexMapper  {
     User index();
@@ -55,4 +56,6 @@ public interface IndexMapper  {
     int validateUsername(String username);
 
     String selectPermission(Integer userId);
+
+    Article queryArticle(Map<String, String> map);
 }
