@@ -263,12 +263,10 @@
                 and id = #{id}
             </if>
             <if test="title != ''">
-                and title = #{title}
-            </if>
-            <if test="content != ''">
-                and content = #{content}
+                and title like "%"#{title}"%"
             </if>
         </where>
+        limit 0,100
     </select>
 
 
