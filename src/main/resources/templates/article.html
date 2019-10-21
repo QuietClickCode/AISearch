@@ -98,12 +98,12 @@
                 label="详情" min-width="100px"
         >
             <template slot-scope="scope">
-                <a href="viewarticle">查看</a>
+                <el-button @click.native.prevent="ddd" type="text" size="small">查看</el-button>
             </template>
         </el-table-column>
     </el-table>
     <div class="content">
-        <el-input v-model="article.content" type="textarea" autosize readonly style="color: #C7EDCC;"></el-input>
+        <el-input v-model="articledetail" type="textarea" autosize readonly style="color: #C7EDCC;"></el-input>
     </div>
 
     <div style="display: block;text-align: center">
@@ -123,6 +123,7 @@
 <script src="/js/Meting.min.js"></script>
 <script>
     var store = {
+        articledetail: "",
         article: "",
         IsShow: false,
         platform: "article",
@@ -141,6 +142,9 @@
             this.toggleFullScreen()
         },
         methods: {
+            ddd: function () {
+                alert("dd")
+            },
             highlight: function () {
                 var oBox = $("table")[1];
                 var oContent = oBox.innerHTML;
@@ -160,7 +164,7 @@
                 this.queryArticle();
             },
             queryArticle: function () {
-                var  vueThis = this;
+                var vueThis = this;
                 $.ajax({
                     type: "post",
                     url: "queryarticle",
@@ -174,9 +178,9 @@
                     }),
                     success: function (data) {
                         store.article = data
-                        setTimeout(function () {
+                       /* setTimeout(function () {
                             vueThis.highlight();
-                        },100)
+                        }, 100)*/
                     }
                 });
 
