@@ -248,6 +248,9 @@
     </insert>
     <!--插入系统日志-->
     <insert id="insertSystemLog" parameterType="SystemLog">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
          insert into ai_system_log(login_log_id,createtime,operation) values(#{loginLogId},#{createtime},#{operation})
     </insert>
 

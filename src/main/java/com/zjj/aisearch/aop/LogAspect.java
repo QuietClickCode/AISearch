@@ -82,7 +82,6 @@ public class LogAspect {
             systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
             indexServiceImpl.insertSystemLog(systemLog);
             log.info("正在进行的操作-------------->" + systemLog);
-            endTime = System.currentTimeMillis();
         }
     }
 
