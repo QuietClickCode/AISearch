@@ -218,13 +218,20 @@
                     data: JSON.stringify(vueThis.queryForm),
                     url: "/querySystemLog",
                     success: function (data) {
-
                         vueThis.items = data;
-                        alert(data.length)
                         vueThis.length = data.length
                     }
+                });
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(vueThis.queryForm),
+                    url: "/queryCount",
+                    success: function (data) {
+                        alert(data)
+                        vueThis.length = data
+                    }
                 })
-
             }
         }
 

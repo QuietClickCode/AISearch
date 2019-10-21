@@ -1,6 +1,7 @@
 package com.zjj.aisearch.mapper;
 
 import com.zjj.aisearch.model.QueryForm;
+import com.zjj.aisearch.model.SystemLogList;
 
 import java.util.List;
 
@@ -12,8 +13,9 @@ import java.util.List;
  **/
 public interface QueryMapper {
 
-    List<Object> queryForm(QueryForm queryForm);
+    List<SystemLogList> queryForm(QueryForm queryForm);
     List<String> querySystem();
     List<String> queryBrowser();
     List<String> queryDevice();
+    Integer queryCount(QueryForm queryForm);
 }
