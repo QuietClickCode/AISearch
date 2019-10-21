@@ -56,7 +56,6 @@ public class LogAspect {
     @Before("execution(* *..controller..*.*(..))")
     public void doBeforeInServiceLayer(JoinPoint joinPoint) {
         log.info("doBeforeInServiceLayer");
-        startTime = System.currentTimeMillis();
     }
 
     @After("execution(* *..controller..*.*(..))")
@@ -66,7 +65,8 @@ public class LogAspect {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
         HttpServletRequest request = servletRequestAttributes.getRequest();
-        Object user = request.getSession().getAttribute("user");
+        Object user = null;
+        user = request.getSession().getAttribute("user");
         if (user != null) {
             // 从注解中获取操作名称、获取响应结果
             SystemLog systemLog = new SystemLog();

@@ -60,27 +60,7 @@
             $("#app").show();
 
         },
-
-        mounted() {
-            this.list = this.states.map(item => {
-                return {value: item, label: item};
-            });
-        },
         methods: {
-            remoteMethod(query) {
-                if (query !== '') {
-                    this.loading = true;
-                    setTimeout(() => {
-                        this.loading = false;
-                        this.options = this.list.filter(item => {
-                            return item.label.toLowerCase()
-                                .indexOf(query.toLowerCase()) > -1;
-                        });
-                    }, 200);
-                } else {
-                    this.options = [];
-                }
-            },
             //enter激发
             enter: function (keyword) {
                 if (keyword != "") {
@@ -134,15 +114,20 @@
                         if (isEnd + 1 == keyword.length) {
                             store.pattern = ":" + command;
                             if (store.pattern == ":logout ") {
+                                alert("d")
                                 $.ajax({
                                     contentType: "application/json;charset=utf-8",
                                     url: "/logout",
                                     success: function (data) {
+                                        alert("dd")
                                         vueThis.$message(data.msg);
                                         setTimeout(function () {
                                                 window.location.href = data.url;
                                             }, 1000
                                         )
+                                    },
+                                    error: function () {
+                                        alert("ddd");
                                     }
                                 });
                             } else if ((store.pattern == ":clear ")) {

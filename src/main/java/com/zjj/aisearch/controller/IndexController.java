@@ -310,9 +310,10 @@ public class IndexController {
         logoutLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         logoutLog.setLoginLogId(loginLogId);
         indexServiceImpl.insertLogoutLog(logoutLog);
-
-        httpServletRequest.getSession().invalidate();
         responseResult.setUrl("login").setStatus(0).setMsg("退出成功");
+        SecurityUtils.getSubject().logout();
+        /*这儿退出交给shiro来管理,自己销毁session会报错*/
+        /*httpServletRequest.getSession().invalidate();*/
         return responseResult;
     }
 

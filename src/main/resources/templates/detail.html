@@ -23,12 +23,12 @@
               style="width: 100%">
         <el-table-column
                 prop="title"
-                label="标题"  min-width="100px"
+                label="标题" min-width="100px"
         >
         </el-table-column>
         <el-table-column
                 prop="sellPoint"
-                label="卖点"  min-width="100px">
+                label="卖点" min-width="100px">
         </el-table-column>
         <el-table-column
                 prop="price" width="100px"
@@ -82,8 +82,19 @@
             this.width = $("#el-input").width();
             $("#app").show();
         },
+        mounted: function () {
+
+        },
         methods: {}
 
+    })
+
+    $(function () {
+        var oBox = $("table")[1];
+        var oContent = oBox.innerHTML;
+        var val = "34";
+        var findText = oContent.split(val);
+        oBox.innerHTML = findText.join('<span style="color:red;">' + val + '</span> ');
     })
 
 </script>
