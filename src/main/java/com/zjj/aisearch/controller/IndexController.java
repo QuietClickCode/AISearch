@@ -391,7 +391,6 @@ public class IndexController {
     @PostMapping("/queryarticle")
     @ApiOperation("查询文章功能")
     public Object queryArticle(@RequestBody Map<String, String> map) {
-        log.error(map.toString());
         List<Article> articles = indexServiceImpl.queryArticle(map);
         return articles;
     }
