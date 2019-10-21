@@ -9,11 +9,6 @@
             top: 50%;
             transform: translate(-50%, -50%);
         }
-
-        /*覆盖鼠标变成小手*/
-        .el-select .el-input__inner {
-            cursor: text;
-        }
     </style>
 </head>
 <body>
@@ -46,12 +41,6 @@
         isSee: 'none',
         /*输入框内容*/
         keyword: "",
-
-
-        options: [],
-        value: [],
-        list: [],
-        loading: false
     };
     var app = new Vue({
         el: '#app',
@@ -114,20 +103,15 @@
                         if (isEnd + 1 == keyword.length) {
                             store.pattern = ":" + command;
                             if (store.pattern == ":logout ") {
-                                alert("d")
                                 $.ajax({
                                     contentType: "application/json;charset=utf-8",
                                     url: "/logout",
                                     success: function (data) {
-                                        alert("dd")
                                         vueThis.$message(data.msg);
                                         setTimeout(function () {
                                                 window.location.href = data.url;
                                             }, 1000
                                         )
-                                    },
-                                    error: function () {
-                                        alert("ddd");
                                     }
                                 });
                             } else if ((store.pattern == ":clear ")) {
@@ -144,7 +128,7 @@
                         data: JSON.stringify({
                             "keyword": keyword
                         }),
-                        success: function (data) {
+                        success: function () {
                             window.location.href = "detail";
                         }
                     });
@@ -162,28 +146,7 @@
                 if (isForward) {
                     /*开启命令模式*/
                 } else if (isCommand) {
-                    var index = keyword.indexOf(" ");
-                    if (index != -1) {
-                        var command = keyword.substring(1, index + 1);
-                        var title = keyword.substring(index + 1);
-                        var end = keyword.lastIndexOf(" ");
-                        if (end + 1 == keyword.length) {
-                            store.pattern = ":" + command;
-                            if (title != "") {
-                                this.isShow = true;
-                                $.ajax({
-                                    url: "/command",
-                                    data: {keyword: keyword.substring(1, keyword.length - 1)},
-                                    success: function (data) {
-                                        store.article = [];
-                                        for (var i = 0; i < data.length; i++) {
-                                            store.article.push(data[i]);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    }
+
                     /*开启便签模式*/
                 } else if (isNote) {
                     store.isSee = "block";
@@ -193,15 +156,7 @@
                     store.article = [];
                     /*正常模式,提交关键字到后台查询*/
                 } else {
-                    this.isShow = true;
-                    $.ajax({
-                        url: "/searchItem", data: {keyword: keyword}, success: function (data) {
-                            store.article = [];
-                            for (var i = 0; i < data.length; i++) {
-                                store.article.push(data[i]);
-                            }
-                        }
-                    })
+
                 }
             },
         }

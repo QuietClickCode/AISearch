@@ -66,7 +66,17 @@ public class BaseController {
      */
     @GetMapping("/noauth")
     public String noauth() {
+
         return "noauth";
+    }
+    /**
+     * 跳转到搜索详情页面
+     *
+     * @return
+     */
+    @GetMapping("/detail")
+    public String detail() {
+        return "detail";
     }
 
     /**

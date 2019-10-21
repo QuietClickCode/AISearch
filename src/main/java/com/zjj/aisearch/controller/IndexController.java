@@ -382,9 +382,9 @@ public class IndexController {
      */
     @RequestMapping("/todetail")
     @ApiOperation("重定向到搜索结果详情页")
-    public String toDetail(@RequestBody Info info, HttpServletRequest request) {
-        if (!info.getKeyword().isEmpty()) {
-            request.getSession().setAttribute("keyword", info.getKeyword());
+    public String toDetail(@RequestBody Map<String, String> map, HttpServletRequest request) {
+        if (!map.get("keyword").isEmpty()) {
+            request.getSession().setAttribute("keyword", map.get("keyword"));
             //不做任何事,避免生成两次记录
             return null;
         }
@@ -395,26 +395,31 @@ public class IndexController {
     /**
      * 进入搜索结果详情页
      */
-    @RequestMapping("/detail")
+    @RequestMapping("/detaillist")
     @ApiOperation("进入搜索结果详情页")
-    public ModelAndView detail(HttpServletRequest request, ModelAndView modelAndView, HttpServletRequest
+    public Object detail(HttpServletRequest request, HttpServletRequest
             httpServletRequest) {
         String keyword = (String) httpServletRequest.getSession().getAttribute("keyword");
         List<Item> items = indexServiceImpl.searchItem(keyword);
-        modelAndView.addObject("items", items);
-        modelAndView.setViewName("/detail");
+
         Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+
         SystemLog systemLog = new SystemLog();
         systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         systemLog.setOperation("detail" + "?keyword=" + keyword);
         systemLog.setLoginLogId(loginLogId);
+
         SearchRecord searchRecord = new SearchRecord();
         searchRecord.setKeyword(keyword);
         searchRecord.setSearchTime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         searchRecord.setLoginLogId(loginLogId);
         indexServiceImpl.insertSearchRecord(searchRecord);
         indexServiceImpl.insertSystemLog(systemLog);
-        return modelAndView;
+
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setData(items);
+        responseResult.setMsg(keyword);
+        return responseResult;
     }
 
     /**
