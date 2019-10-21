@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /***
  * @program: AISearch
@@ -232,36 +231,6 @@ public class IndexController {
         return null;
     }
 
-    /**
-     * 进入命令模式
-     */
-    @RequestMapping("/command")
-    @ResponseBody
-    @ApiOperation("进入命令模式")
-    public Object command(String keyword) {
-        User user = ((User) SecurityUtils.getSubject().getPrincipal());
-        int index = keyword.indexOf(" ");
-        if (index != -1) {
-            String substring = keyword.substring(0, index);
-            String title = keyword.substring(index + 1);
-            if (substring.equals("js")) {
-                log.info("[{}]正在简书搜索[{}]", user.getUsername(), title);
-                List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
-                return jianShuArticles;
-            }
-            if (substring.equals("csdn")) {
-                log.info("[{}]正在CSDN搜索[{}]", user.getUsername(), title);
-                List<Article> Articles = indexServiceImpl.searchArticle(title);
-                return Articles;
-            }
-            if (substring.equals("zh")) {
-                log.info("[{}]正在知乎搜索[{}]", user.getUsername(), title);
-                List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
-                return zhiHuArticles;
-            }
-        }
-        return "其他操作";
-    }
 
     /**
      * 定向搜索结果详情
@@ -317,40 +286,6 @@ public class IndexController {
         return responseResult;
     }
 
-    /**
-     * 进入定向搜索结果详情页
-     */
-    @RequestMapping("/commandlist")
-    @ApiOperation("进入定向搜索结果详情页")
-    public ModelAndView commandlist(ModelAndView modelAndView, HttpServletRequest
-            httpServletRequest) {
-        String command = (String) httpServletRequest.getSession().getAttribute("command");
-        String title = (String) httpServletRequest.getSession().getAttribute("title");
-        Integer loginLogId = (int) httpServletRequest.getSession().getAttribute("loginLogId");
-        if (command.equals("csdn")) {
-            List<Article> Articles = indexServiceImpl.searchArticle(title);
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation(":csdn" + "?keyword=" + title);
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            modelAndView.setViewName("commandlist");
-            modelAndView.addObject("items", Articles);
-            return modelAndView;
-        }
-        if (command.equals("js")) {
-            List<JianShuArticle> jianShuArticles = indexServiceImpl.searchJianShuArticle(title);
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation(":js" + "?keyword=" + title);
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            modelAndView.setViewName("commandlist");
-            modelAndView.addObject("items", jianShuArticles);
-            return modelAndView;
-        }
-        return null;
-    }
 
 
     /**
@@ -449,31 +384,6 @@ public class IndexController {
         return responseResult;
     }
 
-    /**
-     * 随机csdn文章功能
-     */
-    @GetMapping("/articledata")
-    @ApiOperation("随机csdn文章功能")
-    public Object article(HttpServletRequest request) {
-        ResponseResult responseResult = new ResponseResult();
-        Article article;
-        for (; ; ) {
-            Random r = new Random();
-            int id = r.nextInt(101268) + 1;
-            article = indexServiceImpl.search(id);
-            if (article != null) {
-                Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-                SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                systemLog.setOperation("article" + "?id=" + article.getId() + "&title=" + article.getTitle());
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
-                break;
-            }
-        }
-        responseResult.setData(article);
-        return responseResult;
-    }
 
     /**
      * 查询文章功能
@@ -482,18 +392,8 @@ public class IndexController {
     @ApiOperation("查询文章功能")
     public Object queryArticle(@RequestBody Map<String, String> map) {
         log.error(map.toString());
-
-        Article article;
-        article = indexServiceImpl.queryArticle(map);
-        if (article != null) {
-            Integer loginLogId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("loginLogId");
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation("article" + "?id=" + article.getId() + "&title=" + article.getTitle());
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-        }
-        return article;
+        List<Article> articles = indexServiceImpl.queryArticle(map);
+        return articles;
     }
 
 }

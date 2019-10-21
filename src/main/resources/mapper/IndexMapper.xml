@@ -255,10 +255,6 @@
     </insert>
 
 
-    <!--查询文章根据id-->
-    <select id="search" resultType="Article">
-        select * from article where id =  #{id}
-    </select>
     <!--查询文章多条件-->
     <select id="queryArticle" resultType="Article">
         select * from ${platform}

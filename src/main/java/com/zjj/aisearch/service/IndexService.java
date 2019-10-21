@@ -47,8 +47,6 @@ public interface IndexService {
 
     List<ZhiHuArticle> searchZhiHuArticle(String title);
 
-    List<Article> searchArticle(String title);
-
     List<AiNoteList> selectAiNoteList();
 
     List<SearchRecordList> selectSearchRecordList();
@@ -61,5 +59,5 @@ public interface IndexService {
 
     String selectPermission(Integer userId);
 
-    Article queryArticle(Map<String, String> map);
+    List<Article> queryArticle(Map<String, String> map);
 }

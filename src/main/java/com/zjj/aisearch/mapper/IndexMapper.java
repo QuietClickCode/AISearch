@@ -43,8 +43,6 @@ public interface IndexMapper  {
 
     List<ZhiHuArticle> searchZhiHuArticle(String title);
 
-    List<Article> searchArticle(String title);
-
     List<AiNoteList> selectAiNoteList();
 
     List<SearchRecordList> selectSearchRecordList();
@@ -57,5 +55,5 @@ public interface IndexMapper  {
 
     String selectPermission(Integer userId);
 
-    Article queryArticle(Map<String, String> map);
+    List<Article> queryArticle(Map<String, String> map);
 }

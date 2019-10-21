@@ -115,11 +115,6 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<Article> searchArticle(String title) {
-        return indexMapper.searchArticle(title);
-    }
-
-    @Override
     public List<AiNoteList> selectAiNoteList() {
         return indexMapper.selectAiNoteList();
     }
@@ -150,7 +145,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public Article queryArticle(Map<String, String> map) {
+    public List<Article> queryArticle(Map<String, String> map) {
         return indexMapper.queryArticle(map);
     }
 
