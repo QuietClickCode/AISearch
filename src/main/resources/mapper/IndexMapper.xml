@@ -273,7 +273,7 @@
 
     <!--查询商品详情-->
     <select id="searchItem" resultMap="itemMap">
-        select * from tb_item where title like "%"#{name}"%"
+        select * from tb_item where title like "%"#{name}"%" or sell_point like "%"#{name}"%"
     </select>
     <!--查询简书详情-->
     <select id="searchJianShuArticle" resultType="JianShuArticle">
