@@ -15,7 +15,6 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -232,33 +231,6 @@ public class IndexController {
     }
 
 
-    /**
-     * 定向搜索结果详情
-     */
-    @RequestMapping("/iscommand")
-    @ApiOperation("定向搜索结果详情")
-    public String isCommand(String keyword, HttpServletRequest httpServletRequest) {
-        int index = keyword.indexOf(" ");
-        if (index != -1) {
-            String substring = keyword.substring(0, index);
-            String title = keyword.substring(index + 1);
-            httpServletRequest.getSession().setAttribute("title", title);
-            if (substring.equals("js")) {
-                httpServletRequest.getSession().setAttribute("command", "js");
-                return null;
-            }
-            if (substring.equals("zh")) {
-                httpServletRequest.getSession().setAttribute("command", "zh");
-                return null;
-            }
-            if (substring.equals("csdn")) {
-                httpServletRequest.getSession().setAttribute("command", "csdn");
-                return null;
-            }
-        }
-        return null;
-
-    }
 
 
     @GetMapping("/logout")
@@ -288,29 +260,6 @@ public class IndexController {
 
 
 
-    /**
-     * 进入知乎定向搜索结果详情页
-     */
-    @RequestMapping("/zhihucommandlist")
-    @ApiOperation("进入知乎定向搜索结果详情页")
-    public ModelAndView zhihucommandlist(ModelAndView modelAndView, HttpServletRequest
-            httpServletRequest) {
-        String command = (String) httpServletRequest.getSession().getAttribute("command");
-        String title = (String) httpServletRequest.getSession().getAttribute("title");
-        Integer loginLogId = (int) httpServletRequest.getSession().getAttribute("loginLogId");
-        if (command.equals("zh")) {
-            List<ZhiHuArticle> zhiHuArticles = indexServiceImpl.searchZhiHuArticle(title);
-            SystemLog systemLog = new SystemLog();
-            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            systemLog.setOperation(":zh" + "?keyword=" + title);
-            systemLog.setLoginLogId(loginLogId);
-            indexServiceImpl.insertSystemLog(systemLog);
-            modelAndView.setViewName("zhihucommandlist");
-            modelAndView.addObject("items", zhiHuArticles);
-            return modelAndView;
-        }
-        return null;
-    }
 
     /**
      * 重定向到搜索结果详情页
@@ -393,6 +342,16 @@ public class IndexController {
     public Object queryArticle(@RequestBody Map<String, String> map) {
         List<Article> articles = indexServiceImpl.queryArticle(map);
         return articles;
+    }
+
+    /**
+     * 查询系统操作日志列表
+     */
+    @PostMapping("/selectsystemloglist")
+    @ApiOperation("系统操作日志列表")
+    public Integer selectsystemloglist() {
+       Integer count = indexServiceImpl.selectSystemLogList();
+        return count.intValue();
     }
 
 }

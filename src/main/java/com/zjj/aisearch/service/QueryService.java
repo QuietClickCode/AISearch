@@ -1,7 +1,6 @@
 package com.zjj.aisearch.service;
 
 import com.zjj.aisearch.model.QueryForm;
-import com.zjj.aisearch.model.SystemLogList;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public interface QueryService {
 
 
-    public List<SystemLogList> queryForm(QueryForm queryForm);
+    public List<Object> queryForm(QueryForm queryForm);
     public List<String> querySystem();
     public List<String> queryBrowser();
     public List<String> queryDevice();

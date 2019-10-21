@@ -38,7 +38,7 @@ public interface IndexMapper  {
 
     int insertSystemLog(SystemLog systemLog);
 
-    List<SystemLogList> selectSystemLogList();
+    Integer selectSystemLogList();
 
 
     List<ZhiHuArticle> searchZhiHuArticle(String title);

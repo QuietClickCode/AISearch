@@ -26,8 +26,9 @@
         </association>
     </resultMap>
     <!--查询系统操作日志详情-->
-    <select id="queryForm" resultMap="systemLogList">
+    <select id="queryForm" resultMap="systemLogList, recordCounts">
         SELECT
+        sql_calc_found_rows
         u.id uid,
         u.username,
         u.`password`,
@@ -69,7 +70,15 @@
                 and s.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
             </if>
         </where>
+        limit #{startpage} , 10;
+        select found_rows() count
+
     </select>
+
+
+    <resultMap id="recordCounts" type="java.lang.Long">
+        <result column="recordCounts" jdbcType="BIGINT"/>
+    </resultMap>
 
     <!--查询系统-->
     <select id="querySystem" resultType="String">

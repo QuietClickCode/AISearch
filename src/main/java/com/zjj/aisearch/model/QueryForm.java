@@ -18,6 +18,7 @@ import lombok.ToString;
 public class QueryForm {
 
     private String keyword;
+    private Integer startpage;
     private String location;
     private String system;
     private String device;

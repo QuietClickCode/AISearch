@@ -28,6 +28,17 @@ public class BaseController {
     @Autowired
     private IndexService indexServiceImpl;
 
+
+    /**
+     * 跳转系统操作日志列表
+     */
+    @GetMapping("/systemloglist")
+    @RequiresPermissions("user:systemloglist")
+    @ApiOperation("跳转系统操作日志列表")
+    public String systemloglist() {
+        return "systemloglist";
+    }
+
     /**
      * 跳转到login页面
      *
@@ -116,17 +127,6 @@ public class BaseController {
         return "logoutloglist";
     }
 
-    /**
-     * 系统操作日志列表
-     */
-    @GetMapping("/systemloglist")
-    @RequiresPermissions("user:systemloglist")
-    @ApiOperation("系统操作日志列表")
-    public String systemloglist(Model model) {
-        List<SystemLogList> systemLogList = indexServiceImpl.selectSystemLogList();
-        model.addAttribute("items", systemLogList);
-        return "systemLogList";
-    }
 
     /**
      * 注册用户列表

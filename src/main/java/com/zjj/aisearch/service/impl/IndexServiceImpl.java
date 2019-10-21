@@ -100,7 +100,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<SystemLogList> selectSystemLogList() {
+    public Integer selectSystemLogList() {
         return indexMapper.selectSystemLogList();
     }
 

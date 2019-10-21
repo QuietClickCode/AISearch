@@ -2,7 +2,6 @@ package com.zjj.aisearch.service.impl;
 
 import com.zjj.aisearch.mapper.QueryMapper;
 import com.zjj.aisearch.model.QueryForm;
-import com.zjj.aisearch.model.SystemLogList;
 import com.zjj.aisearch.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class QueryServiceImpl implements QueryService {
 
 
     @Override
-    public List<SystemLogList> queryForm(QueryForm queryForm) {
+    public List<Object> queryForm(QueryForm queryForm) {
         return queryMapper.queryForm(queryForm);
     }
 

@@ -41,7 +41,7 @@ public interface IndexService {
 
     int insertSystemLog(SystemLog systemLog);
 
-    List<SystemLogList> selectSystemLogList();
+    Integer selectSystemLogList();
 
     List<JianShuArticle> searchJianShuArticle(String keyword);
 

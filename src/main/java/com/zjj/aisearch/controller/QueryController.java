@@ -1,7 +1,6 @@
 package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.QueryForm;
-import com.zjj.aisearch.model.SystemLogList;
 import com.zjj.aisearch.service.QueryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,7 @@ public class QueryController {
     @RequestMapping("querySystemLog")
     @ResponseBody
     @ApiOperation("querySystemLog")
-    public List<SystemLogList> querySystemLog(@RequestBody QueryForm queryForm) {
+    public List<Object> querySystemLog(@RequestBody QueryForm queryForm) {
         return queryServiceImpl.queryForm(queryForm);
     }
 
