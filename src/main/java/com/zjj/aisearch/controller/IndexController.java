@@ -484,17 +484,14 @@ public class IndexController {
         log.error(map.toString());
 
         Article article;
-        for (; ; ) {
-            article = indexServiceImpl.queryArticle(map);
-            if (article != null) {
-                Integer loginLogId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("loginLogId");
-                SystemLog systemLog = new SystemLog();
-                systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                systemLog.setOperation("article" + "?id=" + article.getId() + "&title=" + article.getTitle());
-                systemLog.setLoginLogId(loginLogId);
-                indexServiceImpl.insertSystemLog(systemLog);
-                break;
-            }
+        article = indexServiceImpl.queryArticle(map);
+        if (article != null) {
+            Integer loginLogId = (Integer) SecurityUtils.getSubject().getSession().getAttribute("loginLogId");
+            SystemLog systemLog = new SystemLog();
+            systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            systemLog.setOperation("article" + "?id=" + article.getId() + "&title=" + article.getTitle());
+            systemLog.setLoginLogId(loginLogId);
+            indexServiceImpl.insertSystemLog(systemLog);
         }
         return article;
     }

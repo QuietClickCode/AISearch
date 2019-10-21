@@ -264,7 +264,7 @@
         select * from ${platform}
         <where>
             <if test="id != ''">
-                and id = #{title}
+                and id = #{id}
             </if>
             <if test="title != ''">
                 and title = #{title}
