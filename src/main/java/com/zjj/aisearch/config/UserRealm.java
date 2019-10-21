@@ -34,7 +34,6 @@ public class UserRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         Integer userId = ((User) SecurityUtils.getSubject().getPrincipal()).getId();
         String permissionUrl = indexServiceImpl.selectPermission(userId);
-        log.error(permissionUrl + "------------------>");
         simpleAuthorizationInfo.addStringPermission(permissionUrl);
 
 

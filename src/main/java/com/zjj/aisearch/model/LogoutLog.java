@@ -25,17 +25,7 @@ public class LogoutLog {
     private String createtime;
     private Integer loginLogId;
 
-    public void setCreatetime(String createtime) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date dd = null;
-        try {
-            dd = sdf.parse(createtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String d = sdf.format(dd);
-        this.createtime = d;
-    }
+
 
 
 }
