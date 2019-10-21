@@ -71,7 +71,7 @@
     </div>
 
 
-    <el-table height="445"
+    <el-table height="430"
               :data="items"
     >
         <el-table-column
@@ -166,10 +166,10 @@
         data: store,
         created: function () {
             $("#app").show();
-            this.query();
+            this.init()
         },
         mounted: function () {
-            this.init()
+            this.query();
         },
         methods: {
             handleCurrentChange(val) {
@@ -219,7 +219,6 @@
                     url: "/querySystemLog",
                     success: function (data) {
                         vueThis.items = data;
-                        vueThis.length = data.length
                     }
                 });
                 $.ajax({
@@ -228,7 +227,6 @@
                     data: JSON.stringify(vueThis.queryForm),
                     url: "/queryCount",
                     success: function (data) {
-                        alert(data)
                         vueThis.length = data
                     }
                 })
