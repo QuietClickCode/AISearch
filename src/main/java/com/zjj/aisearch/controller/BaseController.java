@@ -70,6 +70,15 @@ public class BaseController {
         return "noauth";
     }
     /**
+     * 跳转到404页面
+     *
+     * @return
+     */
+    @GetMapping("/error")
+    public String error() {
+        return "error";
+    }
+    /**
      * 跳转到搜索详情页面
      *
      * @return
