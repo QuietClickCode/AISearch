@@ -34,6 +34,7 @@ public class BaseController {
      * @return
      */
     @GetMapping("/login")
+    @ApiOperation("跳转到login页面")
     public String login() {
         return "login";
     }
@@ -45,6 +46,7 @@ public class BaseController {
      * @return
      */
     @GetMapping("/regist")
+    @ApiOperation("跳转到regist页面")
     public String regist() {
         return "regist";
     }
@@ -55,6 +57,7 @@ public class BaseController {
      * @return
      */
     @GetMapping("/article")
+    @ApiOperation("跳转到随机文章页面")
     public String article() {
         return "article";
     }
@@ -65,6 +68,7 @@ public class BaseController {
      * @return
      */
     @GetMapping("/noauth")
+    @ApiOperation("跳转到未授权页面")
     public String noauth() {
 
         return "noauth";
@@ -75,6 +79,7 @@ public class BaseController {
      * @return
      */
     @GetMapping("/error")
+    @ApiOperation("跳转到404页面")
     public String error() {
         return "error";
     }
@@ -84,6 +89,7 @@ public class BaseController {
      * @return
      */
     @GetMapping("/detail")
+    @ApiOperation("跳转到搜索详情页面")
     public String detail() {
         return "detail";
     }

@@ -56,15 +56,15 @@
         <el-select v-model="platform" filterable  placeholder="请选择">
             <el-option
                     label="csdn"
-                    value="1">
+                    value="article">
             </el-option>
             <el-option
                     label="简书"
-                    value="2">
+                    value="jianshu_article">
             </el-option>
             <el-option
                     label="博客园"
-                    value="3">
+                    value="bky_article">
             </el-option>
         </el-select>
         <el-input v-model="id" placeholder="输入文章编号" style="margin-bottom:5px;width: 200px"></el-input>
@@ -103,9 +103,9 @@
 <script src="/js/Meting.min.js"></script>
 <script>
     var store = {
-        platform:"1",
         article: "",
         IsShow: false,
+        platform:"article",
         id: "",
         title: "",
         content: ""

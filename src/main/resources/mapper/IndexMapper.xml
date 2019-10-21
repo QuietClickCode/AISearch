@@ -261,7 +261,18 @@
     </select>
     <!--查询文章多条件-->
     <select id="queryArticle" resultType="Article">
-        select * from article where id =  #{id}
+        select * from ${platform}
+        <where>
+            <if test="id != ''">
+                and id = #{title}
+            </if>
+            <if test="title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != ''">
+                and content = #{content}
+            </if>
+        </where>
     </select>
 
 
