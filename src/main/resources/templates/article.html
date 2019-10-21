@@ -31,6 +31,20 @@
             /* WebKit browsers */
             color: gray;
         }
+
+        /*网上找的方法实现,高度控制,最小41px*/
+        /*https://www.cnblogs.com/secretAngel/p/10241791.html*/
+        .el-table__header tr,
+        .el-table__header th {
+            padding: 0;
+            height: 20px;
+        }
+
+        .el-table__body tr,
+        .el-table__body td {
+            padding: 0;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
@@ -75,44 +89,45 @@
         <span style="color: gray ">下一篇</span>
         <i @click="next" class="fa fa-x fa-arrow-right" style="font-size: 24px" aria-hidden="true"></i>
         <el-button @click="queryArticle">查询</el-button>
-    </div>
-    <div style="display: block;text-align: center">
-        <el-button @click="toggleFullScreen" style="position:fixed; top:0; left:0;width:100%;height:35px;"
-                   type="success">{{article.id}} | {{article.title}} | {{article.createtime}}
-        </el-button>
-    </div>
+        <div style="display: block;text-align: center">
+            <el-button @click="toggleFullScreen" style="position:fixed; top:0; left:0;width:100%;height:35px;"
+                       type="success">{{articledetail.id}} | {{articledetail.title}} | {{articledetail.createtime}}
+            </el-button>
+        </div>
 
-    <el-table height="550"
-              :data="article"
-              style="width: 100%">
-        <el-table-column
-                prop="id"
-                label="id" min-width="50px"
-        ></el-table-column>
-        <el-table-column
-                prop="title"
-                label="标题" min-width="100px"
-        >
-        </el-table-column>
-        <el-table-column
-                label="详情" min-width="100px"
-        >
-            <template slot-scope="scope">
-                <el-button @click.native.prevent="ddd" type="text" size="small">查看</el-button>
-            </template>
-        </el-table-column>
-    </el-table>
-    <div class="content">
-        <el-input v-model="articledetail" type="textarea" autosize readonly style="color: #C7EDCC;"></el-input>
-    </div>
+        <el-table max-height="250" id="table"
+                  :data="article"
+                  :row-style="rowstyle"
+                  style="width: 100%">
+            <el-table-column
+                    prop="id"
+                    label="id" min-width="50px"
+            ></el-table-column>
+            <el-table-column
+                    prop="title"
+                    label="标题" min-width="100px"
+            >
+            </el-table-column>
+            <el-table-column
+                    label="详情" min-width="100px"
+            >
+                <template slot-scope="scope">
+                    <el-button @click="view(scope.row.id)" type="text">查看</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="content">
+            <el-input v-model="articledetail.content" type="textarea" autosize readonly
+                      style="color: #C7EDCC;"></el-input>
+        </div>
 
-    <div style="display: block;text-align: center">
-        <a href="#topAnchor" style="position:fixed;right:0;bottom:0">回到顶部</a>
-        <el-button style="position:fixed; bottom:0; left:0;width:100%;height:35px;" @click="query" type="success">
-            随便看看
-        </el-button>
+        <div style="display: block;text-align: center">
+            <a href="#topAnchor" style="position:fixed;right:0;bottom:0">回到顶部</a>
+            <el-button style="position:fixed; bottom:0; left:0;width:100%;height:35px;" type="success"
+                       @click="closetable">文章列表
+            </el-button>
+        </div>
     </div>
-
 
 </div>
 </body>
@@ -128,7 +143,10 @@
         IsShow: false,
         platform: "article",
         id: "",
-        title: ""
+        title: "",
+        rowstyle: {
+            height: 50
+        }
     };
     var app = new Vue({
         el: '#app',
@@ -139,18 +157,24 @@
             $('html,body').animate({scrollTop: 0}, 500)
             $("#app").show();
             this.query();
-            this.toggleFullScreen()
+            this.toggleFullScreen();
+
+        },
+        mounted:function () {
+            $("#table").hide();
         },
         methods: {
-            ddd: function () {
-                alert("dd")
+            closetable: function () {
+                if ($("#table").css("display") == "none") {
+                    $("#table").show();
+                } else {
+                    $("#table").hide();
+                }
             },
-            highlight: function () {
-                var oBox = $("table")[1];
-                var oContent = oBox.innerHTML;
-                var val = store.title;
-                var findText = oContent.split(val);
-                oBox.innerHTML = findText.join('<span style="color:red;">' + val + '</span> ');
+            view: function (id) {
+                var result = store.article.filter(item => item.id == id)
+                store.articledetail = result[0];
+                $("#table").hide();
             },
             next: function () {
                 store.id++;
@@ -177,10 +201,8 @@
                         "platform": store.platform
                     }),
                     success: function (data) {
-                        store.article = data
-                       /* setTimeout(function () {
-                            vueThis.highlight();
-                        }, 100)*/
+                        store.article = data;
+                        $("#table").show();
                     }
                 });
 
@@ -213,16 +235,6 @@
                         document.webkitCancelFullScreen();
                     }
                 }
-            },
-            query: function () {
-                $.ajax({
-                    url: "articledata",
-                    contentType: "application/json",
-                    success: function (data) {
-                        store.article = data.data;
-                        store.id = data.data.id;
-                    }
-                })
             }
         }
     })
