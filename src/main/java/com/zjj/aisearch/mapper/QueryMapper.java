@@ -30,4 +30,20 @@ public interface QueryMapper {
     List<SystemLogList> queryList(QueryForm queryForm);
 
     Integer queryListCount(QueryForm queryForm);
+
+    Integer queryLoginLogListCount(QueryForm queryForm);
+
+    List<SystemLogList> queryLoginLogList(QueryForm queryForm);
+
+    List<SystemLogList> queryLogoutLogList(QueryForm queryForm);
+
+    Integer queryLogoutLogListCount(QueryForm queryForm);
+
+    List<SystemLogList> queryMarkdownList(QueryForm queryForm);
+
+    Integer queryMarkdownListCount(QueryForm queryForm);
+
+    List<SystemLogList> queryUserList(QueryForm queryForm);
+
+    Integer queryUserListCount(QueryForm queryForm);
 }

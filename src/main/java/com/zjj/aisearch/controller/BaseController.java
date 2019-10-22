@@ -64,6 +64,33 @@ public class BaseController {
     }
 
     /**
+     * 跳转退出日志列表
+     */
+    @GetMapping("/logoutloglist")
+    @ApiOperation("跳转退出日志列表")
+    public String logoutloglist() {
+        return "logoutloglist";
+    }
+
+    /**
+     * 跳转markdown日志列表
+     */
+    @GetMapping("/markdownlist")
+    @ApiOperation("跳转markdown日志列表")
+    public String markdownlist() {
+        return "markdownlist";
+    }
+
+    /**
+     * 跳转注册用户列表
+     */
+    @GetMapping("/userlist")
+    @ApiOperation("跳转注册用户列表")
+    public String userlist() {
+        return "userlist";
+    }
+
+    /**
      * 跳转editor记录列表
      */
     @GetMapping("/editorlist")

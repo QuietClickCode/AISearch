@@ -75,4 +75,44 @@ public class QueryServiceImpl implements QueryService {
     public List<SystemLogList> queryList(QueryForm queryForm) {
         return queryMapper.queryList(queryForm);
     }
+
+    @Override
+    public List<SystemLogList> queryLoginLogList(QueryForm queryForm) {
+        return queryMapper.queryLoginLogList(queryForm);
+    }
+
+    @Override
+    public Integer queryLoginLogListCount(QueryForm queryForm) {
+        return queryMapper.queryLoginLogListCount(queryForm);
+    }
+
+    @Override
+    public List<SystemLogList> queryLogoutLogList(QueryForm queryForm) {
+        return queryMapper.queryLogoutLogList(queryForm);
+    }
+
+    @Override
+    public Integer queryLogoutLogListCount(QueryForm queryForm) {
+        return queryMapper.queryLogoutLogListCount(queryForm);
+    }
+
+    @Override
+    public Integer queryMarkdownListCount(QueryForm queryForm) {
+        return queryMapper.queryMarkdownListCount(queryForm);
+    }
+
+    @Override
+    public List<SystemLogList> queryMarkdownList(QueryForm queryForm) {
+        return queryMapper.queryMarkdownList(queryForm);
+    }
+
+    @Override
+    public Integer queryUserListCount(QueryForm queryForm) {
+        return queryMapper.queryUserListCount(queryForm);
+    }
+
+    @Override
+    public List<SystemLogList> queryUserList(QueryForm queryForm) {
+        return queryMapper.queryUserList(queryForm);
+    }
 }

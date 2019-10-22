@@ -95,9 +95,54 @@ public class QueryController {
 
     @RequestMapping("queryLoginLogListCount")
     @ResponseBody
-    @ApiOperation("根据条件查询登录日志记录数据")
+    @ApiOperation("根据条件查询登录日志记录数据总条数")
     public Integer queryLoginLogListCount(@RequestBody QueryForm queryForm) {
         Integer count = queryServiceImpl.queryLoginLogListCount(queryForm);
+        return count;
+    }
+
+    @RequestMapping("queryLogoutLogList")
+    @ResponseBody
+    @ApiOperation("根据条件查询退出日志记录数据")
+    public List<SystemLogList> queryLogoutLogList(@RequestBody QueryForm queryForm) {
+        return queryServiceImpl.queryLogoutLogList(queryForm);
+    }
+
+    @RequestMapping("queryLogoutLogListCount")
+    @ResponseBody
+    @ApiOperation("根据条件查询退出日志记录数据总条数")
+    public Integer queryLogoutLogListCount(@RequestBody QueryForm queryForm) {
+        Integer count = queryServiceImpl.queryLogoutLogListCount(queryForm);
+        return count;
+    }
+
+    @RequestMapping("queryMarkdownList")
+    @ResponseBody
+    @ApiOperation("根据条件查询Markdown日志记录数据")
+    public List<SystemLogList> queryMarkdownList(@RequestBody QueryForm queryForm) {
+        return queryServiceImpl.queryMarkdownList(queryForm);
+    }
+
+    @RequestMapping("queryMarkdownListCount")
+    @ResponseBody
+    @ApiOperation("根据条件查询Markdown日志记录数据总条数")
+    public Integer queryMarkdownListCount(@RequestBody QueryForm queryForm) {
+        Integer count = queryServiceImpl.queryMarkdownListCount(queryForm);
+        return count;
+    }
+
+    @RequestMapping("queryUserList")
+    @ResponseBody
+    @ApiOperation("根据条件查询用户记录数据")
+    public List<SystemLogList> queryUserList(@RequestBody QueryForm queryForm) {
+        return queryServiceImpl.queryUserList(queryForm);
+    }
+
+    @RequestMapping("queryUserListCount")
+    @ResponseBody
+    @ApiOperation("根据条件查询用户记录数据总条数")
+    public Integer queryUserListCount(@RequestBody QueryForm queryForm) {
+        Integer count = queryServiceImpl.queryUserListCount(queryForm);
         return count;
     }
 

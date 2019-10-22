@@ -31,4 +31,20 @@ public interface QueryService {
     Integer queryListCount(QueryForm queryForm);
 
     List<SystemLogList> queryList(QueryForm queryForm);
+
+    List<SystemLogList> queryLoginLogList(QueryForm queryForm);
+
+    Integer queryLoginLogListCount(QueryForm queryForm);
+
+    List<SystemLogList> queryLogoutLogList(QueryForm queryForm);
+
+    Integer queryLogoutLogListCount(QueryForm queryForm);
+
+    Integer queryMarkdownListCount(QueryForm queryForm);
+
+    List<SystemLogList> queryMarkdownList(QueryForm queryForm);
+
+    Integer queryUserListCount(QueryForm queryForm);
+
+    List<SystemLogList> queryUserList(QueryForm queryForm);
 }
