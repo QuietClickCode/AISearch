@@ -1,13 +1,11 @@
 package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.model.User;
-import com.zjj.aisearch.service.IndexService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -20,11 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @Slf4j
 public class BaseController {
-
-
-    @Autowired
-    private IndexService indexServiceImpl;
-
 
     /**
      * 跳转系统操作日志列表
