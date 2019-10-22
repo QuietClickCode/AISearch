@@ -174,15 +174,6 @@
             init: function () {
                 var vueThis = this;
                 $.ajax({
-                    type: "post",
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify(vueThis.queryForm),
-                    url: "/selectelistlength",
-                    success: function (data) {
-                        vueThis.length = data;
-                    }
-                })
-                $.ajax({
                     contentType: "application/json;charset=utf-8",
                     url: "/queryBrowser",
                     success: function (data) {
@@ -215,7 +206,7 @@
                     type: "post",
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(vueThis.queryForm),
-                    url: "/queryList",
+                    url: "/queryLoginLogList",
                     success: function (data) {
                         vueThis.items = data;
                     }
@@ -224,7 +215,7 @@
                     type: "post",
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(vueThis.queryForm),
-                    url: "/queryListCount",
+                    url: "/queryLoginLogListCount",
                     success: function (data) {
                         vueThis.length = data
                     }
@@ -238,7 +229,7 @@
                     type: "post",
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(vueThis.queryForm),
-                    url: "/queryList",
+                    url: "/queryLoginLogList",
                     success: function (data) {
                         vueThis.items = data;
                     }
@@ -247,7 +238,7 @@
                     type: "post",
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(vueThis.queryForm),
-                    url: "/queryListCount",
+                    url: "/queryLoginLogListCount",
                     success: function (data) {
                         vueThis.length = data
                     }

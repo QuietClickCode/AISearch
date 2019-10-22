@@ -86,6 +86,21 @@ public class QueryController {
         return count;
     }
 
+    @RequestMapping("queryLoginLogList")
+    @ResponseBody
+    @ApiOperation("根据条件查询登录日志记录数据")
+    public List<SystemLogList> queryLoginLogList(@RequestBody QueryForm queryForm) {
+        return queryServiceImpl.queryLoginLogList(queryForm);
+    }
+
+    @RequestMapping("queryLoginLogListCount")
+    @ResponseBody
+    @ApiOperation("根据条件查询登录日志记录数据")
+    public Integer queryLoginLogListCount(@RequestBody QueryForm queryForm) {
+        Integer count = queryServiceImpl.queryLoginLogListCount(queryForm);
+        return count;
+    }
+
     @RequestMapping("querySystem")
     @ResponseBody
     @ApiOperation("querySystem")
