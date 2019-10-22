@@ -2,11 +2,11 @@ package com.zjj.aisearch;
 
 /**
  * @program: AISearch
- * @description: demo
+ * @description: Demo
  * @author: zjj
  * @create: 2019-10-11 19:24:32
  **/
-public class demo {
+public class Demo {
     /**
      * spring:ioc,aop,事务控制
      *
