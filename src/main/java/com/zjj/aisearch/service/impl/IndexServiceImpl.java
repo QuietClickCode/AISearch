@@ -149,4 +149,9 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.queryArticle(map);
     }
 
+    @Override
+    public Integer selectainotelistlength() {
+        return indexMapper.selectainotelistlength();
+    }
+
 }

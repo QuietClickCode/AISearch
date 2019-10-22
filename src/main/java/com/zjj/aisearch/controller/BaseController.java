@@ -40,6 +40,15 @@ public class BaseController {
     }
 
     /**
+     * 跳转便签记录列表
+     */
+    @GetMapping("/ainotelist")
+    @ApiOperation("跳转便签记录列表")
+    public String ainotelist() {
+        return "ainotelist";
+    }
+
+    /**
      * 跳风景美食网站
      */
     @GetMapping("/website")

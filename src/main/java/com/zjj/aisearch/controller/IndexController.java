@@ -344,12 +344,22 @@ public class IndexController {
     }
 
     /**
-     * 查询系统操作日志列表
+     * 查询系统操作日志列表总条数
      */
     @PostMapping("/selectsystemloglist")
-    @ApiOperation("系统操作日志列表")
+    @ApiOperation("查询系统操作日志列表总条数")
     public Integer selectsystemloglist() {
        Integer count = indexServiceImpl.selectSystemLogList();
+        return count.intValue();
+    }
+
+    /**
+     * 查询便签列表总条数
+     */
+    @PostMapping("/selectainotelistlength")
+    @ApiOperation("查询便签列表总条数")
+    public Integer selectainotelistlength() {
+       Integer count = indexServiceImpl.selectainotelistlength();
         return count.intValue();
     }
 

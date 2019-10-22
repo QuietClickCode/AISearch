@@ -56,4 +56,6 @@ public interface IndexMapper  {
     String selectPermission(Integer userId);
 
     List<Article> queryArticle(Map<String, String> map);
+
+    Integer selectainotelistlength();
 }

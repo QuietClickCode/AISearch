@@ -28,16 +28,31 @@ public class QueryController {
 
     @RequestMapping("querySystemLog")
     @ResponseBody
-    @ApiOperation("querySystemLog")
+    @ApiOperation("根据条件查询系统操作日志数据")
     public List<SystemLogList> querySystemLog(@RequestBody QueryForm queryForm) {
         return queryServiceImpl.queryForm(queryForm);
     }
 
     @RequestMapping("queryCount")
     @ResponseBody
-    @ApiOperation("queryCount")
+    @ApiOperation("根据条件查询系统操作日志数据总条数")
     public Integer queryCount(@RequestBody QueryForm queryForm) {
         Integer count = queryServiceImpl.queryCount(queryForm);
+        return count;
+    }
+
+    @RequestMapping("queryAiNote")
+    @ResponseBody
+    @ApiOperation("根据条件查询便签记录数据")
+    public List<SystemLogList> queryAiNote(@RequestBody QueryForm queryForm) {
+        return queryServiceImpl.queryAiNote(queryForm);
+    }
+
+    @RequestMapping("queryAiNoteCount")
+    @ResponseBody
+    @ApiOperation("根据条件查询便签记录数据总条数")
+    public Integer queryAiNoteCount(@RequestBody QueryForm queryForm) {
+        Integer count = queryServiceImpl.queryAiNoteCount(queryForm);
         return count;
     }
 

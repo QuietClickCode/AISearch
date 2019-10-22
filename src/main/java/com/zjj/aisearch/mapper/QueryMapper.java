@@ -18,4 +18,8 @@ public interface QueryMapper {
     List<String> queryBrowser();
     List<String> queryDevice();
     Integer queryCount(QueryForm queryForm);
+
+    Integer queryAiNoteCount(QueryForm queryForm);
+
+    List<SystemLogList> queryAiNote(QueryForm queryForm);
 }

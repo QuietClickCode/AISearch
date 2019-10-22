@@ -60,4 +60,6 @@ public interface IndexService {
     String selectPermission(Integer userId);
 
     List<Article> queryArticle(Map<String, String> map);
+
+    Integer selectainotelistlength();
 }

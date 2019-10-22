@@ -20,4 +20,7 @@ public interface QueryService {
     public List<String> queryDevice();
     public Integer queryCount(QueryForm queryForm);
 
+    Integer queryAiNoteCount(QueryForm queryForm);
+
+    List<SystemLogList> queryAiNote(QueryForm queryForm);
 }
