@@ -152,7 +152,6 @@ public class IndexController {
      * 前端传过来为null,就会出问题
      */
     @RequestMapping("/toregist")
-    @ResponseBody
     @ApiOperation("注册")
     public Object toregist(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         //插入本次登录的浏览器信息:型号,版本,系统类型
@@ -220,7 +219,6 @@ public class IndexController {
      * ajax实时搜索
      */
     @RequestMapping("/searchItem")
-    @ResponseBody
     @ApiOperation("ajax实时搜索")
     public Object searchItem(String keyword) {
         if (!keyword.isEmpty()) {
@@ -310,7 +308,6 @@ public class IndexController {
      * 便签模式
      */
     @PostMapping("/note")
-    @ResponseBody
     @ApiOperation("便签模式")
     public Object note(@RequestBody Map<String, String> map, HttpServletRequest request) {
         log.info("便签内容为:[{}]", map.get("content"));
