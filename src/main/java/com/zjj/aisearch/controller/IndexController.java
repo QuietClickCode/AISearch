@@ -345,46 +345,6 @@ public class IndexController {
         return articles;
     }
 
-    /**
-     * 查询系统操作日志列表总条数
-     */
-    @PostMapping("/selectsystemloglist")
-    @ApiOperation("查询系统操作日志列表总条数")
-    public Integer selectsystemloglist() {
-       Integer count = indexServiceImpl.selectSystemLogList();
-        return count.intValue();
-    }
-
-    /**
-     * 查询便签列表总条数
-     */
-    @PostMapping("/selectainotelistlength")
-    @ApiOperation("查询便签列表总条数")
-    public Integer selectainotelistlength() {
-       Integer count = indexServiceImpl.selectainotelistlength();
-        return count.intValue();
-    }
-
-    /**
-     * 查询editor列表总条数
-     */
-    @PostMapping("/selecteditorlistlength")
-    @ApiOperation("查询editor列表总条数")
-    public Integer selecteditorlistlength() {
-       Integer count = indexServiceImpl.selecteditorlistlength();
-        return count.intValue();
-    }
-
-    /**
-     * 查询搜索记录列表总条数
-     */
-    @PostMapping("/selectlistlength")
-    @ApiOperation("查询搜索记录列表总条数")
-    public Integer selectlistlength() {
-       Integer count = indexServiceImpl.selectlistlength();
-        return count.intValue();
-    }
-
 }
 
 
