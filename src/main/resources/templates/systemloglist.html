@@ -146,7 +146,7 @@
         </el-pagination>
     </div>
     <div style="text-align: center">
-        <el-button @click="query">查询</el-button>
+        <el-button @click="btnquery">查询</el-button>
     </div>
 </div>
 </body>
@@ -171,7 +171,7 @@
             this.init()
         },
         mounted: function () {
-            this.query();
+            this.btnquery();
         },
         methods: {
             handleCurrentChange(val) {
@@ -214,6 +214,29 @@
             },
             query: function () {
                 var vueThis = this;
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(vueThis.queryForm),
+                    url: "/querySystemLog",
+                    success: function (data) {
+                        vueThis.items = data;
+                    }
+                });
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(vueThis.queryForm),
+                    url: "/queryCount",
+                    success: function (data) {
+                        vueThis.length = data
+                    }
+                })
+            },
+            btnquery: function () {
+                var vueThis = this;
+                /*条件查询就要清空起始页这个查询条件,不然会出问题*/
+                store.queryForm.startpage = 0;
                 $.ajax({
                     type: "post",
                     contentType: "application/json;charset=utf-8",

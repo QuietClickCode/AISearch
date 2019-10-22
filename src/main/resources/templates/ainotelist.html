@@ -94,7 +94,7 @@
                          prop="content"
                          label="内容"
         ></el-table-column>
-        <el-table-column width="120px"
+        <el-table-column width="130px"
                          prop="location.ip"
                          label="外网IP">
         </el-table-column>
@@ -145,7 +145,7 @@
         </el-pagination>
     </div>
     <div style="text-align: center">
-        <el-button @click="query">查询</el-button>
+        <el-button @click="btnquery">查询</el-button>
     </div>
 </div>
 </body>
@@ -213,6 +213,29 @@
             },
             query: function () {
                 var vueThis = this;
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(vueThis.queryForm),
+                    url: "/queryAiNote",
+                    success: function (data) {
+                        vueThis.items = data;
+                    }
+                });
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(vueThis.queryForm),
+                    url: "/queryAiNoteCount",
+                    success: function (data) {
+                        vueThis.length = data
+                    }
+                })
+            },
+            btnquery: function () {
+                var vueThis = this;
+                /*条件查询就要清空起始页这个查询条件,不然会出问题*/
+                store.queryForm.startpage = 0;
                 $.ajax({
                     type: "post",
                     contentType: "application/json;charset=utf-8",
