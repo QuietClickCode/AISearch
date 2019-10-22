@@ -34,7 +34,6 @@ public class IndexController {
 
     @Autowired
     private IndexService indexServiceImpl;
-
     /**
      * 异步校验用户名
      *
