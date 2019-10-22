@@ -55,4 +55,24 @@ public class QueryServiceImpl implements QueryService {
     public List<SystemLogList> queryAiNote(QueryForm queryForm) {
         return queryMapper.queryAiNote(queryForm);
     }
+
+    @Override
+    public List<SystemLogList> queryEditor(QueryForm queryForm) {
+        return queryMapper.queryEditor(queryForm);
+    }
+
+    @Override
+    public Integer queryEditorCount(QueryForm queryForm) {
+        return queryMapper.queryEditorCount(queryForm);
+    }
+
+    @Override
+    public Integer queryListCount(QueryForm queryForm) {
+        return queryMapper.queryListCount(queryForm);
+    }
+
+    @Override
+    public List<SystemLogList> queryList(QueryForm queryForm) {
+        return queryMapper.queryList(queryForm);
+    }
 }

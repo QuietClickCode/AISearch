@@ -56,6 +56,36 @@ public class QueryController {
         return count;
     }
 
+    @RequestMapping("queryEditor")
+    @ResponseBody
+    @ApiOperation("根据条件查询editor记录数据")
+    public List<SystemLogList> queryEditor(@RequestBody QueryForm queryForm) {
+        return queryServiceImpl.queryEditor(queryForm);
+    }
+
+    @RequestMapping("queryEditorCount")
+    @ResponseBody
+    @ApiOperation("根据条件查询editor记录数据总条数")
+    public Integer queryEditorCount(@RequestBody QueryForm queryForm) {
+        Integer count = queryServiceImpl.queryEditorCount(queryForm);
+        return count;
+    }
+
+    @RequestMapping("queryList")
+    @ResponseBody
+    @ApiOperation("根据条件查询搜索记录数据")
+    public List<SystemLogList> queryList(@RequestBody QueryForm queryForm) {
+        return queryServiceImpl.queryList(queryForm);
+    }
+
+    @RequestMapping("queryListCount")
+    @ResponseBody
+    @ApiOperation("根据条件查询搜索记录数据总条数")
+    public Integer queryListCount(@RequestBody QueryForm queryForm) {
+        Integer count = queryServiceImpl.queryListCount(queryForm);
+        return count;
+    }
+
     @RequestMapping("querySystem")
     @ResponseBody
     @ApiOperation("querySystem")

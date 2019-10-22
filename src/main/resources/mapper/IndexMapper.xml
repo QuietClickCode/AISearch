@@ -9,56 +9,9 @@
         <result property="price" column="price"/>
     </resultMap>
 
-    <!--搜索记录详情-->
-    <resultMap id="searchRecordList" type="SearchRecordList">
-        <id property="id" column="id"></id>
-        <result property="keyword" column="keyword"></result>
-        <result property="searchTime" column="searchtime"></result>
-        <association property="location" javaType="Location">
-            <result property="X" column="X"></result>
-            <result property="Y" column="Y"></result>
-            <result property="location" column="location"></result>
-            <result property="ip" column="ip"></result>
-            <result property="keyword" column="pcOrPhone"></result>
-            <result property="localIp" column="local_ip"></result>
-        </association>
-        <association property="browserInfo" javaType="BrowserInfo">
-            <result property="system" column="system"></result>
-            <result property="browserType" column="browser_type"></result>
-            <result property="browserVersion" column="browser_version"></result>
-        </association>
-        <association property="user" javaType="User">
-            <result property="id" column="uid"></result>
-            <result property="username" column="username"></result>
-            <result property="password" column="password"></result>
-        </association>
-    </resultMap>
 
-    <!--editor记录详情-->
-    <resultMap id="editorList" type="EditorList">
-        <id property="id" column="id"></id>
-        <result property="content" column="content"></result>
-        <result property="title" column="title"></result>
-        <result property="createtime" column="createtime"></result>
-        <association property="location" javaType="Location">
-            <result property="X" column="X"></result>
-            <result property="Y" column="Y"></result>
-            <result property="location" column="location"></result>
-            <result property="ip" column="ip"></result>
-            <result property="keyword" column="pcOrPhone"></result>
-            <result property="localIp" column="local_ip"></result>
-        </association>
-        <association property="browserInfo" javaType="BrowserInfo">
-            <result property="system" column="system"></result>
-            <result property="browserType" column="browser_type"></result>
-            <result property="browserVersion" column="browser_version"></result>
-        </association>
-        <association property="user" javaType="User">
-            <result property="id" column="uid"></result>
-            <result property="username" column="username"></result>
-            <result property="password" column="password"></result>
-        </association>
-    </resultMap>
+
+
     <!--markdown记录详情-->
     <resultMap id="markdownList" type="MarkDownList">
         <id property="id" column="id"></id>
@@ -245,33 +198,9 @@
         select * from article where title like "%"#{name}"%" limit 0,10
     </select>
 
-    <!--查询搜索记录详情-->
-    <select id="selectSearchRecordList" resultMap="searchRecordList">
-            SELECT
-	u.id uid,
-	u.username,
-	u.`password`,
-	ss.id,
-	ss.searchtime,
-	ss.keyword,
-	b.browser_type,
-	b.browser_version,
-	b.system,
-	l.ip,
-	l.keyword pcOrPhone,
-	l.local_ip,
-	l.location,
-	l.X,
-	l.Y
-FROM
-	searchrecord ss
-LEFT JOIN login_log ll ON ss.login_log_id = ll.id
-LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
-LEFT JOIN location l ON l.location_id = ll.location_id
-LEFT JOIN USER u ON u.id = ll.user_id
-    </select>
 
-    <!--查询editor记录详情-->
+
+    <!--查询markdown记录详情-->
     <select id="selectMarkDownList" resultMap="markdownList">
           SELECT
 	u.id uid,
@@ -341,6 +270,14 @@ LEFT JOIN USER u ON u.id = ll.user_id
     <!--查询便签总条数-->
     <select id="selectainotelistlength" resultType="integer">
   SELECT count(*) from ai_note
+    </select>
+    <!--查询editor总条数-->
+    <select id="selecteditorlistlength" resultType="integer">
+  SELECT count(*) from ai_editor
+    </select>
+    <!--查询搜索记录总条数-->
+    <select id="selectlistlength" resultType="integer">
+  SELECT count(*) from searchrecord
     </select>
 
 

@@ -15,6 +15,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
@@ -333,6 +334,7 @@ public class IndexController {
     }
 
 
+
     /**
      * 查询文章功能
      */
@@ -360,6 +362,26 @@ public class IndexController {
     @ApiOperation("查询便签列表总条数")
     public Integer selectainotelistlength() {
        Integer count = indexServiceImpl.selectainotelistlength();
+        return count.intValue();
+    }
+
+    /**
+     * 查询editor列表总条数
+     */
+    @PostMapping("/selecteditorlistlength")
+    @ApiOperation("查询editor列表总条数")
+    public Integer selecteditorlistlength() {
+       Integer count = indexServiceImpl.selecteditorlistlength();
+        return count.intValue();
+    }
+
+    /**
+     * 查询搜索记录列表总条数
+     */
+    @PostMapping("/selectlistlength")
+    @ApiOperation("查询搜索记录列表总条数")
+    public Integer selectlistlength() {
+       Integer count = indexServiceImpl.selectlistlength();
         return count.intValue();
     }
 

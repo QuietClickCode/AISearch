@@ -51,8 +51,59 @@
         </association>
     </resultMap>
 
+    <!--editor记录详情-->
+    <resultMap id="editorList" type="EditorList">
+        <id property="id" column="id"></id>
+        <result property="content" column="content"></result>
+        <result property="title" column="title"></result>
+        <result property="createtime" column="createtime"></result>
+        <association property="location" javaType="Location">
+            <result property="X" column="X"></result>
+            <result property="Y" column="Y"></result>
+            <result property="location" column="location"></result>
+            <result property="ip" column="ip"></result>
+            <result property="keyword" column="pcOrPhone"></result>
+            <result property="localIp" column="local_ip"></result>
+        </association>
+        <association property="browserInfo" javaType="BrowserInfo">
+            <result property="system" column="system"></result>
+            <result property="browserType" column="browser_type"></result>
+            <result property="browserVersion" column="browser_version"></result>
+        </association>
+        <association property="user" javaType="User">
+            <result property="id" column="uid"></result>
+            <result property="username" column="username"></result>
+            <result property="password" column="password"></result>
+        </association>
+    </resultMap>
+
+    <!--搜索记录详情-->
+    <resultMap id="searchRecordList" type="SearchRecordList">
+        <id property="id" column="id"></id>
+        <result property="keyword" column="keyword"></result>
+        <result property="searchTime" column="searchtime"></result>
+        <association property="location" javaType="Location">
+            <result property="X" column="X"></result>
+            <result property="Y" column="Y"></result>
+            <result property="location" column="location"></result>
+            <result property="ip" column="ip"></result>
+            <result property="keyword" column="pcOrPhone"></result>
+            <result property="localIp" column="local_ip"></result>
+        </association>
+        <association property="browserInfo" javaType="BrowserInfo">
+            <result property="system" column="system"></result>
+            <result property="browserType" column="browser_type"></result>
+            <result property="browserVersion" column="browser_version"></result>
+        </association>
+        <association property="user" javaType="User">
+            <result property="id" column="uid"></result>
+            <result property="username" column="username"></result>
+            <result property="password" column="password"></result>
+        </association>
+    </resultMap>
+
     <!--查询便签记录详情-->
-    <select id="queryAiNote" parameterType="QueryForm" resultMap="aiNoteList">
+    <select id="queryAiNote" parameterType="QueryForm" resultMap="editorList">
         SELECT
         u.id uid,
         u.username,
@@ -77,7 +128,7 @@
         LEFT JOIN USER u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
-                operation like "%"#{keyword}"%"
+                content like "%"#{keyword}"%"
             </if>
             <if test="location != ''">
                 and location like "%"#{location}"%"
@@ -92,7 +143,7 @@
                 and l.keyword  = #{device}
             </if>
             <if test="createtime.length != 0">
-                and s.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
+                and an.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
             </if>
         </where>
         limit #{startpage} , 10
@@ -110,7 +161,7 @@
         LEFT JOIN USER u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
-                operation like "%"#{keyword}"%"
+                content like "%"#{keyword}"%"
             </if>
             <if test="location != ''">
                 and location like "%"#{location}"%"
@@ -125,12 +176,12 @@
                 and l.keyword  = #{device}
             </if>
             <if test="createtime.length != 0">
-                and s.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
+                and an.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
             </if>
         </where>
     </select>
     <!--查询editor记录详情-->
-    <!--<select id="selectEditorList" resultMap="editorList">
+    <select id="queryEditor" parameterType="QueryForm" resultMap="aiNoteList">
         SELECT
         u.id uid,
         u.username,
@@ -154,8 +205,139 @@
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
         LEFT JOIN USER u ON u.id = ll.user_id
+        <where>
+            <if test="keyword != ''">
+                content like "%"#{keyword}"%"
+            </if>
+            <if test="location != ''">
+                and location like "%"#{location}"%"
+            </if>
+            <if test="system != ''">
+                and system  = #{system}
+            </if>
+            <if test="browser != ''">
+                and b.browser_type = #{browser}
+            </if>
+            <if test="device != ''">
+                and l.keyword  = #{device}
+            </if>
+            <if test="createtime.length != 0">
+                and e.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
+            </if>
+        </where>
+        limit #{startpage} , 10
+    </select>
 
-    </select>-->
+    <!--查询editor记录详情总条数-->
+    <select id="queryEditorCount" parameterType="QueryForm" resultType="integer">
+        SELECT
+       count(*)
+        FROM
+        ai_editor e
+        LEFT JOIN login_log ll ON e.login_log_id = ll.id
+        LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
+        LEFT JOIN location l ON l.location_id = ll.location_id
+        LEFT JOIN USER u ON u.id = ll.user_id
+        <where>
+            <if test="keyword != ''">
+                content like "%"#{keyword}"%"
+            </if>
+            <if test="location != ''">
+                and location like "%"#{location}"%"
+            </if>
+            <if test="system != ''">
+                and system  = #{system}
+            </if>
+            <if test="browser != ''">
+                and b.browser_type = #{browser}
+            </if>
+            <if test="device != ''">
+                and l.keyword  = #{device}
+            </if>
+            <if test="createtime.length != 0">
+                and e.createtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
+            </if>
+        </where>
+    </select>
+
+    <!--查询搜索记录详情-->
+    <select id="queryList" parameterType="QueryForm" resultMap="searchRecordList">
+        SELECT
+        u.id uid,
+        u.username,
+        u.`password`,
+        ss.id,
+        ss.searchtime,
+        ss.keyword,
+        b.browser_type,
+        b.browser_version,
+        b.system,
+        l.ip,
+        l.keyword pcOrPhone,
+        l.local_ip,
+        l.location,
+        l.X,
+        l.Y
+        FROM
+        searchrecord ss
+        LEFT JOIN login_log ll ON ss.login_log_id = ll.id
+        LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
+        LEFT JOIN location l ON l.location_id = ll.location_id
+        LEFT JOIN USER u ON u.id = ll.user_id
+        <where>
+            <if test="keyword != ''">
+                ss.keyword like "%"#{keyword}"%"
+            </if>
+            <if test="location != ''">
+                and location like "%"#{location}"%"
+            </if>
+            <if test="system != ''">
+                and system  = #{system}
+            </if>
+            <if test="browser != ''">
+                and b.browser_type = #{browser}
+            </if>
+            <if test="device != ''">
+                and l.keyword  = #{device}
+            </if>
+            <if test="createtime.length != 0">
+                and ss.searchtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
+            </if>
+        </where>
+        limit #{startpage} , 10
+    </select>
+
+    <!--查询搜索记录详情总条数-->
+    <select id="queryListCount" parameterType="QueryForm" resultType="integer">
+        SELECT
+        count(*)
+        FROM
+        searchrecord ss
+        LEFT JOIN login_log ll ON ss.login_log_id = ll.id
+        LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
+        LEFT JOIN location l ON l.location_id = ll.location_id
+        LEFT JOIN USER u ON u.id = ll.user_id
+        <where>
+            <if test="keyword != ''">
+                ss.keyword like "%"#{keyword}"%"
+            </if>
+            <if test="location != ''">
+                and location like "%"#{location}"%"
+            </if>
+            <if test="system != ''">
+                and system  = #{system}
+            </if>
+            <if test="browser != ''">
+                and b.browser_type = #{browser}
+            </if>
+            <if test="device != ''">
+                and l.keyword  = #{device}
+            </if>
+            <if test="createtime.length != 0">
+                and ss.searchtime between #{createtime[0],javaType=STRING} and #{createtime[1],javaType=STRING}
+            </if>
+        </where>
+    </select>
 
     <!--查询系统操作日志详情-->
     <select id="queryForm" parameterType="QueryForm" resultMap="systemLogList">

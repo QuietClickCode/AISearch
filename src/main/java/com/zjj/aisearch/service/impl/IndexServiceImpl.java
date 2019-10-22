@@ -154,4 +154,14 @@ public class IndexServiceImpl implements IndexService {
         return indexMapper.selectainotelistlength();
     }
 
+    @Override
+    public Integer selecteditorlistlength() {
+        return indexMapper.selecteditorlistlength();
+    }
+
+    @Override
+    public Integer selectlistlength() {
+        return indexMapper.selectlistlength();
+    }
+
 }

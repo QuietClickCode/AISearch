@@ -23,4 +23,12 @@ public interface QueryService {
     Integer queryAiNoteCount(QueryForm queryForm);
 
     List<SystemLogList> queryAiNote(QueryForm queryForm);
+
+    List<SystemLogList> queryEditor(QueryForm queryForm);
+
+    Integer queryEditorCount(QueryForm queryForm);
+
+    Integer queryListCount(QueryForm queryForm);
+
+    List<SystemLogList> queryList(QueryForm queryForm);
 }

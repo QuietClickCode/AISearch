@@ -58,4 +58,9 @@ public interface IndexMapper  {
     List<Article> queryArticle(Map<String, String> map);
 
     Integer selectainotelistlength();
+
+    Integer selecteditorlistlength();
+
+    Integer selectlistlength();
+
 }

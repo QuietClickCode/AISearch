@@ -22,4 +22,12 @@ public interface QueryMapper {
     Integer queryAiNoteCount(QueryForm queryForm);
 
     List<SystemLogList> queryAiNote(QueryForm queryForm);
+
+    List<SystemLogList> queryEditor(QueryForm queryForm);
+
+    Integer queryEditorCount(QueryForm queryForm);
+
+    List<SystemLogList> queryList(QueryForm queryForm);
+
+    Integer queryListCount(QueryForm queryForm);
 }
