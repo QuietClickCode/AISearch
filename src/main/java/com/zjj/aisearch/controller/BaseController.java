@@ -177,9 +177,4 @@ public class BaseController {
         log.info("[{}]进入首页", ((User) subject.getPrincipal()).getUsername());
         return "index";
     }
-
-
-
-
-
 }
