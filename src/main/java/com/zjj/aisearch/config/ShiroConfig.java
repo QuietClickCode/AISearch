@@ -17,7 +17,7 @@ import java.util.Properties;
 
 /**
  * @program: AISearch
- * @description:
+ * @description: Shiro相关配置
  * @author: zjj
  * @create: 2019-10-20 15:38:59
  **/
