@@ -20,11 +20,11 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.zjj.aisearch.controller"))
                 .paths(PathSelectors.any())
                 .build().apiInfo(new ApiInfoBuilder()
-                        .title("SpringBoot整合Swagger")
-                        .description("SpringBoot整合Swagger，详细信息......")
-                        .version("9.0")
+                        .title("AiSearch")
+                        .description("一个智能的搜索引擎")
+                        .version("0.1")
                         .license("The Apache License")
-                        .licenseUrl("http://www.baidu.com")
+                        .licenseUrl("http://www.myznsh.com")
                         .build());
     }
 }

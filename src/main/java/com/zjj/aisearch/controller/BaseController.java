@@ -40,6 +40,15 @@ public class BaseController {
     }
 
     /**
+     * 跳风景美食网站
+     */
+    @GetMapping("/website")
+    @ApiOperation("跳风景美食网站")
+    public String website() {
+        return "website";
+    }
+
+    /**
      * 跳转到login页面
      *
      * @return
