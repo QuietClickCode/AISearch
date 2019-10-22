@@ -182,6 +182,7 @@
             init: function () {
                 var vueThis = this;
                 $.ajax({
+                    type: "post",
                     contentType: "application/json;charset=utf-8",
                     url: "/queryBrowser",
                     success: function (data) {
@@ -189,6 +190,7 @@
                     }
                 });
                 $.ajax({
+                    type: "post",
                     contentType: "application/json;charset=utf-8",
                     url: "/querySystem",
                     success: function (data) {
@@ -197,6 +199,7 @@
                 });
 
                 $.ajax({
+                    type: "post",
                     contentType: "application/json;charset=utf-8",
                     url: "/queryDevice",
                     success: function (data) {

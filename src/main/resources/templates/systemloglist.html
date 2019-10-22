@@ -184,20 +184,13 @@
                 $.ajax({
                     type: "post",
                     contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify(vueThis.queryForm),
-                    url: "/selectsystemloglist",
-                    success: function (data) {
-                        vueThis.length = data;
-                    }
-                })
-                $.ajax({
-                    contentType: "application/json;charset=utf-8",
                     url: "/queryBrowser",
                     success: function (data) {
                         vueThis.browser = data;
                     }
                 });
                 $.ajax({
+                    type: "post",
                     contentType: "application/json;charset=utf-8",
                     url: "/querySystem",
                     success: function (data) {
@@ -206,6 +199,7 @@
                 });
 
                 $.ajax({
+                    type: "post",
                     contentType: "application/json;charset=utf-8",
                     url: "/queryDevice",
                     success: function (data) {
