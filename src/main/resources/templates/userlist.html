@@ -61,6 +61,7 @@
                         value="">
                 </el-option>
                 <el-option
+                        :current-page="currentpage"
                         v-for="item in device"
                         :key="item"
                         :label="item"
@@ -130,6 +131,7 @@
     </el-table>
     <div class="block" style="text-align: center">
         <el-pagination
+                :current-page.sync = "currentpage"
                 layout="prev, pager, next"
                 :total="length"
                 @current-change="handleCurrentChange"
@@ -147,6 +149,7 @@
 
 <script>
     var store = {
+        currentpage:1,
         queryForm: {keyword: "", startpage: 0, location: "", system: "", createtime: [], browser: "", device: ""},
         system: [],
         browser: [],
@@ -203,6 +206,7 @@
                     url: "/queryUserList",
                     success: function (data) {
                         vueThis.items = data;
+
                     }
                 });
                 $.ajax({
@@ -226,7 +230,7 @@
                     url: "/queryUserList",
                     success: function (data) {
                         vueThis.items = data;
-                    }
+                    },
                 });
                 $.ajax({
                     type: "post",
@@ -234,7 +238,8 @@
                     data: JSON.stringify(vueThis.queryForm),
                     url: "/queryUserListCount",
                     success: function (data) {
-                        vueThis.length = data
+                        vueThis.length = data;
+                        vueThis.currentpage = 1;
                     }
                 })
             }
