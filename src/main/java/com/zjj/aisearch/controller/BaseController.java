@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @program: AISearch
- * @description: 查询
+ * @description: 跳转Controller,前后端分离可以用nginx或者node.js替代,唯一作用就是跳转页面
  * @author: zjj
  * @create: 2019-10-05 02:46:49
  **/
