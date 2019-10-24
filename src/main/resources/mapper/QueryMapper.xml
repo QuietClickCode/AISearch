@@ -200,7 +200,7 @@
     </resultMap>
 
     <!--查询便签记录详情-->
-    <select id="queryAiNote" parameterType="QueryForm" resultMap="editorList">
+    <select id="queryAiNote" parameterType="QueryForm" resultMap="aiNoteList">
         SELECT
         u.id uid,
         u.username,
@@ -278,7 +278,7 @@
         </where>
     </select>
     <!--查询editor记录详情-->
-    <select id="queryEditor" parameterType="QueryForm" resultMap="aiNoteList">
+    <select id="queryEditor" parameterType="QueryForm" resultMap="editorList">
         SELECT
         u.id uid,
         u.username,

@@ -2,16 +2,18 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8" />
-    <title>Simple example - Editor.md examples</title>
+    <title>MarkDown编辑器</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="/editor.md-master/css/editormd.min.css" />
-    <script src="js/jquery.min.js"></script>
-    <script src="/editor.md-master/editormd.min.js"></script>
+    <link rel="stylesheet" href="/css/element-ui.min.css">
 </head>
 <body>
+<div id="app" style="display: none">
 <div id="layout">
     <header>
-        <h1>标题</h1>
+        <div style="text-align: center">
+        <h3>标题</h3>
+        </div>
     </header>
     <div class="editormd" id="title">
         <textarea class="editormd-markdown-textarea" name="title"></textarea>
@@ -19,7 +21,9 @@
         <textarea class="editormd-html-textarea" name="title"></textarea>
     </div>
     <header>
-        <h1>正文</h1>
+        <div style="text-align: center">
+        <h3>正文</h3>
+        </div>
     </header>
     <div class="editormd" id="test-editormd">
         <textarea class="editormd-markdown-textarea" name="test-editormd-markdown-doc"></textarea>
@@ -27,8 +31,15 @@
         <textarea class="editormd-html-textarea" name="text"></textarea>
     </div>
 
-    <button onclick="save()">保存</button>
+    <div style="text-align: center">
+        <el-button @click="save">保存</el-button>
+    </div>
 </div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="/js/vue.min.js" type="text/javascript"></script>
+<script src="/js/element-ui.min.js" type="text/javascript"></script>
+<script src="/editor.md-master/editormd.min.js"></script>
 <script type="text/javascript">
 
     $(function() {
@@ -48,7 +59,7 @@
     $(function() {
         editormd("title", {
             width : "90%",
-            height : 640,
+            height : 200,
             syncScrolling : "single",
             //你的lib目录的路径，和你引入js,css路径一样
             path    : "/editor.md-master/lib/",
@@ -59,20 +70,34 @@
             imageUploadURL : "/upload/image"
         });
     });
-    
-    function save() {
-        var title = $("textarea[name='title']").val();
-        var content = $("textarea[name='test-editormd-markdown-doc']").val();
-        $.ajax({
-            type: 'post',
-            url: "/savemarkdown",
-            contentType:"application/json",
-            data: JSON.stringify({"title": title, "content": content}),
-            success:function (data) {
-                alert(data)
+
+    var store = {
+    };
+    var app = new Vue({
+        el: '#app',
+        data: store,
+        created: function () {
+            $("#app").show();
+        },
+        methods: {
+            save: function () {
+                var title = $("textarea[name='title']").val();
+                var content = $("textarea[name='test-editormd-markdown-doc']").val();
+                var vueThis = this;
+                if (title != "" && content != "") {
+                    $.ajax({
+                        type: 'post',
+                        url: "/savemarkdown",
+                        contentType:"application/json",
+                        data: JSON.stringify({"title": title, "content": content}),
+                        success:function (data) {
+                            vueThis.$message(data);
+                        }
+                    });
+                }
             }
-        });
-    }
+        }
+    })
 </script>
 </body>
 </html>
