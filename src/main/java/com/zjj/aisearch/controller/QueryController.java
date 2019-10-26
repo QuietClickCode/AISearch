@@ -5,6 +5,7 @@ import com.zjj.aisearch.service.QueryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -168,5 +169,17 @@ public class QueryController {
             responseResult.setStatus(0);
             return responseResult;
         }
+    }
+
+    /**
+     * 判断是否有查看系统操作日志列表的权限
+     */
+    @PostMapping("/issystemloglistpermission")
+    @RequiresPermissions("user:systemloglist")
+    @ApiOperation("判断是否有查看系统操作日志列表的权限")
+    public ResponseResult systemloglist() {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setStatus(0);
+        return responseResult;
     }
 }

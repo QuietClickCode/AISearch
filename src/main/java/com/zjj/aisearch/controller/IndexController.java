@@ -341,8 +341,6 @@ public class IndexController {
         return articles;
     }
 
-
-
 }
 
 
