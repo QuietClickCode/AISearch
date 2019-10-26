@@ -9,11 +9,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * @program: AISearch
@@ -24,16 +22,16 @@ import java.util.Properties;
 @Configuration
 public class ShiroConfig {
 
-    @Bean
+   /* @Bean
     public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
         SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
         Properties properties = new Properties();
 
-        /*未授权处理页*/
+        *//*未授权处理页*//*
         properties.setProperty("org.apache.shiro.authz.UnauthorizedException", "/noauth");
         resolver.setExceptionMappings(properties);
         return resolver;
-    }
+    }*/
 
     /**
      * *
@@ -77,9 +75,13 @@ public class ShiroConfig {
          */
         Map<String, String> filterMap = new LinkedHashMap<String, String>();
         filterMap.put("/login", "anon");
+        filterMap.put("/regist", "anon");
+        filterMap.put("/toregist", "anon");
+        filterMap.put("/validateUsername", "anon");
         filterMap.put("/tologin", "anon");
         filterMap.put("/noauth", "anon");
         filterMap.put("/test", "anon");
+        filterMap.put("/islogin", "anon");
         filterMap.put("/user/add", "perms[user:add]");
         filterMap.put("/user/update", "authc");
         filterMap.put("/*", "authc");

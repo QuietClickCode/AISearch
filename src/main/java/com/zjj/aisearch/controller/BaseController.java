@@ -1,5 +1,6 @@
 package com.zjj.aisearch.controller;
 
+import com.zjj.aisearch.model.ResponseResult;
 import com.zjj.aisearch.model.User;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @program: AISearch
@@ -140,11 +142,26 @@ public class BaseController {
      *
      * @return
      */
-    @GetMapping("/noauth")
+   /* @GetMapping("/noauth")
     @ApiOperation("跳转到未授权页面")
     public String noauth() {
 
         return "noauth";
+    }*/
+
+    /**
+     * 为了适配前后端分离模式
+     * @return
+     */
+    @GetMapping("/noauth")
+    @ApiOperation("跳转到未授权页面")
+    @ResponseBody
+    public ResponseResult noauth() {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setStatus(-1);
+        responseResult.setMsg("未授权");
+        log.error(responseResult.toString());
+        return responseResult;
     }
     /**
      * 跳转到404页面

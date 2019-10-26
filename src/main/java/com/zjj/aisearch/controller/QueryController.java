@@ -1,16 +1,18 @@
 package com.zjj.aisearch.controller;
 
-import com.zjj.aisearch.model.QueryForm;
-import com.zjj.aisearch.model.SystemLogList;
+import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.QueryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: AISearch
@@ -53,7 +55,7 @@ public class QueryController {
 
     @PostMapping("queryEditor")
     @ApiOperation("根据条件查询editor记录数据")
-    public List<SystemLogList> queryEditor(@RequestBody QueryForm queryForm) {
+    public List<EditorList> queryEditor(@RequestBody QueryForm queryForm) {
         return queryServiceImpl.queryEditor(queryForm);
     }
 
@@ -148,5 +150,36 @@ public class QueryController {
     public List<String> queryBrowser() {
         List<String> strings = queryServiceImpl.queryBrowser();
         return strings;
+    }
+
+    /**
+     * 查询是否登录
+     */
+    @PostMapping("/islogin")
+    @ApiOperation("查询是否登录")
+    public ResponseResult islogin(@RequestBody Map<String, String> map) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ResponseResult responseResult = new ResponseResult();
+        if (user == null) {
+            responseResult.setMsg("请登录");
+            responseResult.setStatus(-1);
+            return responseResult;
+        } else {
+            responseResult.setMsg(map.get("path"));
+            responseResult.setStatus(0);
+            return responseResult;
+        }
+    }
+
+    /**
+     * 判断是否有查看系统操作日志列表的权限
+     */
+    @PostMapping("/issystemloglistpermission")
+    @RequiresPermissions("user:systemloglist")
+    @ApiOperation("判断是否有查看系统操作日志列表的权限")
+    public ResponseResult systemloglist() {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setStatus(0);
+        return responseResult;
     }
 }
