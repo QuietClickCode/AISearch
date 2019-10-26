@@ -83,6 +83,7 @@ public class ShiroConfig {
         filterMap.put("/tologin", "anon");
         filterMap.put("/noauth", "anon");
         filterMap.put("/test", "anon");
+        filterMap.put("/islogin", "anon");
         filterMap.put("/user/add", "perms[user:add]");
         filterMap.put("/user/update", "authc");
         filterMap.put("/*", "authc");

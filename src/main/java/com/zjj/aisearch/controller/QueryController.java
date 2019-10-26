@@ -1,17 +1,17 @@
 package com.zjj.aisearch.controller;
 
-import com.zjj.aisearch.model.EditorList;
-import com.zjj.aisearch.model.QueryForm;
-import com.zjj.aisearch.model.SystemLogList;
+import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.QueryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: AISearch
@@ -149,5 +149,24 @@ public class QueryController {
     public List<String> queryBrowser() {
         List<String> strings = queryServiceImpl.queryBrowser();
         return strings;
+    }
+
+    /**
+     * 查询是否登录
+     */
+    @PostMapping("/islogin")
+    @ApiOperation("查询是否登录")
+    public ResponseResult islogin(@RequestBody Map<String, String> map) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ResponseResult responseResult = new ResponseResult();
+        if (user == null) {
+            responseResult.setMsg("请登录");
+            responseResult.setStatus(-1);
+            return responseResult;
+        } else {
+            responseResult.setMsg(map.get("path"));
+            responseResult.setStatus(0);
+            return responseResult;
+        }
     }
 }
