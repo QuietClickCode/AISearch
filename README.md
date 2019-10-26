@@ -13,3 +13,6 @@
 
 2019年10月22日
 shiro做登录,授权,系统日志记录用AOP实现,分页完成,各个列表的查询完成,基本实现前后端分离
+
+2019年10月26日
+aisearch前后端分离完成,这是前端工程vue-cli地址https://github.com/QuietClickCode/my-vuecli,并做了一些用户体验上的优化,修复一些小bug,比如分页问题,查询问题等
