@@ -1,5 +1,6 @@
 package com.zjj.aisearch.mapper;
 
+import com.zjj.aisearch.model.EditorList;
 import com.zjj.aisearch.model.QueryForm;
 import com.zjj.aisearch.model.SystemLogList;
 
@@ -23,7 +24,7 @@ public interface QueryMapper {
 
     List<SystemLogList> queryAiNote(QueryForm queryForm);
 
-    List<SystemLogList> queryEditor(QueryForm queryForm);
+    List<EditorList> queryEditor(QueryForm queryForm);
 
     Integer queryEditorCount(QueryForm queryForm);
 

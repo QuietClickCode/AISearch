@@ -1,5 +1,6 @@
 package com.zjj.aisearch.controller;
 
+import com.zjj.aisearch.model.EditorList;
 import com.zjj.aisearch.model.QueryForm;
 import com.zjj.aisearch.model.SystemLogList;
 import com.zjj.aisearch.service.QueryService;
@@ -53,7 +54,7 @@ public class QueryController {
 
     @PostMapping("queryEditor")
     @ApiOperation("根据条件查询editor记录数据")
-    public List<SystemLogList> queryEditor(@RequestBody QueryForm queryForm) {
+    public List<EditorList> queryEditor(@RequestBody QueryForm queryForm) {
         return queryServiceImpl.queryEditor(queryForm);
     }
 
