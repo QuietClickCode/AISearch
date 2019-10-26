@@ -20,7 +20,6 @@ public class AiNote {
     private Integer id;//主键id
 
     private String content;//内容
-    private String title;//内容
 
     private String createtime;//创建时间
 
