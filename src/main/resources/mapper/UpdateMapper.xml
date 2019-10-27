@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjj.aisearch.mapper.UpdateMapper">
+
+    <!--更新editor-->
+    <update id="updateEditor" parameterType="Editor">
+        update ai_editor set content = #{content},title = #{title} where id = #{id};
+    </update>
+    <!--删除editor-->
+    <delete id="deleteEditor" parameterType="integer">
+        delete from ai_editor where id = #{id};
+    </delete>
+    <!--更新editor-->
+    <update id="updateMarkdown" parameterType="MarkDown">
+        update ai_markdown set content = #{content},title = #{title} where id = #{id};
+    </update>
+    <!--删除editor-->
+    <delete id="deleteMarkdown" parameterType="integer">
+        delete from ai_markdown where id = #{id};
+    </delete>
+</mapper>
