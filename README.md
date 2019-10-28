@@ -21,3 +21,6 @@ aisearch前后端分离完成,这是前端工程vue-cli地址https://github.com/
 
 2019年10月28日
 利用elasticsearch完成豆瓣电影搜索
+
+2019年10月28日
+利用elasticsearch完成csdn,简书,博客园搜索
