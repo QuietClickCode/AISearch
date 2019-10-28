@@ -18,3 +18,6 @@ shiro做登录,授权,系统日志记录用AOP实现,分页完成,各个列表�
 aisearch前后端分离完成,这是前端工程vue-cli地址https://github.com/QuietClickCode/my-vuecli
 
 并做了一些用户体验上的优化,包括布局样式,操作体验,修复一些小bug,比如分页问题,查询问题等
+
+2019年10月28日
+利用elasticsearch完成豆瓣电影搜索
