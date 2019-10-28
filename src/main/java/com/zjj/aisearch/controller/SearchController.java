@@ -48,7 +48,7 @@ public class SearchController {
         responseResult.setStatus(0);
         responseResult.setData(page);
         responseResult.setMsg(queryString);
-        return page;
+        return responseResult;
     }
 
     @GetMapping("/detail/{id}")
