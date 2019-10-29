@@ -79,7 +79,7 @@ public class SearchController {
     }
     @RequestMapping("/searchbky")
     @ResponseBody
-    @ApiOperation("elasticsearch简书搜索")
+    @ApiOperation("elasticsearch博客园搜索")
     public Object searchBKY(
             @RequestParam("wd") String queryString,
             @RequestParam(value = "pn", required = false, defaultValue = "1") int pageNo,
@@ -95,7 +95,7 @@ public class SearchController {
     }
     @RequestMapping("/searchcsdn")
     @ResponseBody
-    @ApiOperation("elasticsearch简书搜索")
+    @ApiOperation("elasticsearchCSDN搜索")
     public Object searchCSDN(
             @RequestParam("wd") String queryString,
             @RequestParam(value = "pn", required = false, defaultValue = "1") int pageNo,
