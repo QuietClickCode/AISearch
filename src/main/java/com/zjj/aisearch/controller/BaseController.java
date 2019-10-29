@@ -151,6 +151,7 @@ public class BaseController {
 
     /**
      * 为了适配前后端分离模式
+     *
      * @return
      */
     @GetMapping("/noauth")
@@ -163,6 +164,7 @@ public class BaseController {
         log.error(responseResult.toString());
         return responseResult;
     }
+
     /**
      * 跳转到404页面
      *
@@ -173,6 +175,7 @@ public class BaseController {
     public String error() {
         return "error";
     }
+
     /**
      * 跳转到搜索详情页面
      *
