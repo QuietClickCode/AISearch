@@ -9,7 +9,8 @@ package com.zjj.aisearch.demo.patternDesign.factory;
 public class FactoryDemo {
 
     /**
-     * 可以这样理解工厂模式:创建对象和 使用对象是分开的
+     * 可以这样理解工厂模式:创建对象和 使用对象是分开的,
+     * 需要用什么就new 一个工厂,把想要的传给工厂,工厂内部帮你创建出来
      */
 
     public static void main(String[] args) {
