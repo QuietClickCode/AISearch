@@ -12,7 +12,6 @@ public class PrototypePatternDemo  {
      * 用于创建重复对象,还能保证性能,
      */
 
-
     public static void main(String[] args) {
         ShapeCache.loadCache();
 
