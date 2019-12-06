@@ -61,6 +61,7 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public User selectUserByUserName(String username) {
+        System.out.println("------------------------");
         return indexMapper.selectUserByUserName(username);
     }
 

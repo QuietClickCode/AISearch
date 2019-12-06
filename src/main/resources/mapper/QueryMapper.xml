@@ -222,7 +222,7 @@
         LEFT JOIN login_log ll ON an.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 content like "%"#{keyword}"%"
@@ -255,7 +255,7 @@
         LEFT JOIN login_log ll ON an.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 content like "%"#{keyword}"%"
@@ -301,7 +301,7 @@
         LEFT JOIN login_log ll ON e.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 content like "%"#{keyword}"%"
@@ -334,7 +334,7 @@
         LEFT JOIN login_log ll ON e.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 content like "%"#{keyword}"%"
@@ -380,7 +380,7 @@
         LEFT JOIN login_log ll ON ss.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 ss.keyword like "%"#{keyword}"%"
@@ -413,7 +413,7 @@
         LEFT JOIN login_log ll ON ss.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 ss.keyword like "%"#{keyword}"%"
@@ -495,8 +495,6 @@
     </select>
 
 
-
-
     <!--查询退出日志详情-->
     <select id="queryLogoutLogList" parameterType="QueryForm" resultMap="logoutLogList">
         SELECT
@@ -519,7 +517,7 @@
         LEFT JOIN login_log ll ON outs.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 ss.keyword like "%"#{keyword}"%"
@@ -546,13 +544,13 @@
     <!--查询退出日志详情总条数-->
     <select id="queryLogoutLogListCount" parameterType="QueryForm" resultType="integer">
         SELECT
-       count(*)
+        count(*)
         FROM
         logout_log outs
         LEFT JOIN login_log ll ON outs.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 ss.keyword like "%"#{keyword}"%"
@@ -600,7 +598,7 @@
         LEFT JOIN login_log ll ON m.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 ss.keyword like "%"#{keyword}"%"
@@ -627,13 +625,13 @@
     <!--查询查询Markdown日志详情总条数-->
     <select id="queryMarkdownListCount" parameterType="QueryForm" resultType="integer">
         SELECT
-       count(*)
+        count(*)
         FROM
         ai_markdown m
         LEFT JOIN login_log ll ON m.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 ss.keyword like "%"#{keyword}"%"
@@ -657,13 +655,12 @@
     </select>
 
 
-
-
-
     <!--查询注册用户详情-->
     <select id="queryUserList" parameterType="QueryForm" resultMap="userLocation">
-        select u.id,u.username,u.password,u.createtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip, b.system,b.browser_type,b.browser_version from `user` u
-        left JOIN `location` l ON u.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = u.browser_info_id
+        select u.id,u.username,u.password,u.createtime,l.ip,l.location,l.X,l.Y,l.keyword pcOrPhone,l.local_ip,
+        b.system,b.browser_type,b.browser_version from `user` u
+        left JOIN `location` l ON u.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id =
+        u.browser_info_id
         <where>
             <if test="keyword != ''">
                 ss.keyword like "%"#{keyword}"%"
@@ -690,7 +687,8 @@
     <!--查询注册用户详情总条数-->
     <select id="queryUserListCount" parameterType="QueryForm" resultType="integer">
         select count(*) from `user` u
-        left JOIN `location` l ON u.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id = u.browser_info_id
+        left JOIN `location` l ON u.location_id = l.location_id left JOIN `browser_info` b ON b.browser_info_id =
+        u.browser_info_id
         <where>
             <if test="keyword != ''">
                 ss.keyword like "%"#{keyword}"%"
@@ -736,7 +734,7 @@
         LEFT JOIN login_log ll ON s.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 operation like "%"#{keyword}"%"
@@ -768,7 +766,7 @@
         LEFT JOIN login_log ll ON s.login_log_id = ll.id
         LEFT JOIN browser_info b ON ll.browser_info_id = b.browser_info_id
         LEFT JOIN location l ON l.location_id = ll.location_id
-        LEFT JOIN USER u ON u.id = ll.user_id
+        LEFT JOIN user u ON u.id = ll.user_id
         <where>
             <if test="keyword != ''">
                 operation like "%"#{keyword}"%"

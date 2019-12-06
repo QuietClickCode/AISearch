@@ -189,6 +189,10 @@
             queryArticle: function () {
                 var vueThis = this;
                 $.ajax({
+                    headers: {
+                        'token': localStorage.getItem("token"),
+                        /*'token': "ddd",*/
+                    },
                     type: "post",
                     url: "queryarticle",
                     contentType: "application/json",

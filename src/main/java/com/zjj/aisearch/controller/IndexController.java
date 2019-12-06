@@ -1,5 +1,7 @@
 package com.zjj.aisearch.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
 import com.zjj.aisearch.utils.DateTimeUtil;
@@ -34,6 +36,7 @@ public class IndexController {
 
     @Autowired
     private IndexService indexServiceImpl;
+
     /**
      * 异步校验用户名
      *
@@ -90,9 +93,15 @@ public class IndexController {
         }
 
         User user = (User) subject.getPrincipal();
-
+        //定义token
+        String token = "";
+        token = JWT.create().withAudience(user.getUsername())
+                .sign(Algorithm.HMAC256(user.getPassword()));
+        log.error(token);
         //插入本次登录的浏览器信息:型号,版本,系统类型
-        BrowserInfo browserInfo = new BrowserInfo();
+       /* BrowserInfo browserInfo = new BrowserInfo();
+
+
         browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
         browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
         browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
@@ -124,20 +133,21 @@ public class IndexController {
         Integer loginLogId = loginLog.getId();
 
 
-        log.info("[{}]正在登陆,登录ID为[{}]", username, loginLogId);
+        log.info("[{}]正在登陆,登录ID为[{}]", username, loginLogId);*/
 
         Session session = subject.getSession();
         //往session存入用户数据,和登录loginLogId,用于判断是否登录
         session.setAttribute("user", user);
-        session.setAttribute("loginLogId", loginLogId);
+        /*session.setAttribute("loginLogId", loginLogId);
 
         //插入系统日志
         SystemLog systemLog = new SystemLog();
         systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         systemLog.setOperation("login?" + "username=" + username);
         systemLog.setLoginLogId(loginLogId);
-        indexServiceImpl.insertSystemLog(systemLog);
+        indexServiceImpl.insertSystemLog(systemLog);*/
         responseResult.setUrl("index").setStatus(0);
+        responseResult.setMsg(token);
         return responseResult;
     }
 
@@ -228,8 +238,6 @@ public class IndexController {
     }
 
 
-
-
     @GetMapping("/logout")
     @ApiOperation("logout")
     public Object logout(HttpServletRequest httpServletRequest) {
@@ -254,8 +262,6 @@ public class IndexController {
         /*httpServletRequest.getSession().invalidate();*/
         return responseResult;
     }
-
-
 
 
     /**
@@ -328,7 +334,6 @@ public class IndexController {
         responseResult.setStatus(0).setData(map.get("content"));
         return responseResult;
     }
-
 
 
     /**

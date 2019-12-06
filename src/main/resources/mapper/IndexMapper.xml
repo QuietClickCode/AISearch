@@ -133,6 +133,6 @@ FROM
 LEFT JOIN role_permission ON permission.id = role_permission.permission_id
 LEFT JOIN role ON role_permission.role_id = role.id
 LEFT JOIN user_role ON user_role.role_id = role.id
-LEFT JOIN USER ON user.id = user_role.user_id  where `user`.id = #{userId}
+LEFT JOIN user ON user.id = user_role.user_id  where `user`.id = #{userId}
     </select>
 </mapper>
