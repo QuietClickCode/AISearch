@@ -1,9 +1,11 @@
 package com.zjj.aisearch.config;
 
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,22 @@ import java.util.Map;
  **/
 @Configuration
 public class ShiroConfig {
+    //配置session过期时间
+    @Bean(name = "sessionManager")
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        // 设置session过期时间3600s
+        sessionManager.setGlobalSessionTimeout(36000000L);
+        return sessionManager;
+    }
+
+    @Bean
+    public SecurityManager securityManager() {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        //securityManager.setRealm(shiroRealm());
+        securityManager.setSessionManager(sessionManager());
+        return securityManager;
+    }
 
    /* @Bean
     public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {

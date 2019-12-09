@@ -6,6 +6,7 @@ import com.zjj.aisearch.model.SystemLog;
 import com.zjj.aisearch.model.User;
 import com.zjj.aisearch.service.IndexService;
 import com.zjj.aisearch.service.WriteService;
+import com.zjj.aisearch.utils.DateTimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,47 +40,50 @@ public class WriteController {
         if (user != null) {
 
             return "markdown";
-        }else {
+        } else {
             attributes.addFlashAttribute("msg", "请登录");
             return "redirect:login";
         }
     }
+
     @RequestMapping("editor")
     public String editor(RedirectAttributes attributes, HttpServletRequest httpServletRequest) {
         User user = (User) httpServletRequest.getSession().getAttribute("user");
         if (user != null) {
 
             return "editor";
-        }else {
+        } else {
             attributes.addFlashAttribute("msg", "请登录");
             return "redirect:login";
         }
     }
+
     @RequestMapping("/savemarkdown")
     @ResponseBody
     public String saveMarkDown(@RequestBody MarkDown markDown, HttpServletRequest request) {
         Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
         log.info("保存markdown" + ":" + markDown.toString());
-        markDown.setCreatetime(new Date().toLocaleString());
+        markDown.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         markDown.setLoginLogId(loginLogId);
         writeServiceImpl.saveMarkDown(markDown);
         SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         systemLog.setOperation(":savemarkdown" + "?detail=" + markDown.toString());
         systemLog.setLoginLogId(loginLogId);
         indexServiceImpl.insertSystemLog(systemLog);
         return "success";
     }
+
     @RequestMapping("/saveeditor")
     @ResponseBody
     public String saveEditor(@RequestBody Editor editor, HttpServletRequest request) {
         Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
         log.info("保存editor" + ":" + editor.toString());
-        editor.setCreatetime(new Date().toLocaleString());
+        editor.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         editor.setLoginLogId(loginLogId);
         writeServiceImpl.saveEditor(editor);
         SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(new Date().toLocaleString());
+        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         systemLog.setOperation(":saveeditor" + "?detail=" + editor.toString());
         systemLog.setLoginLogId(loginLogId);
         indexServiceImpl.insertSystemLog(systemLog);

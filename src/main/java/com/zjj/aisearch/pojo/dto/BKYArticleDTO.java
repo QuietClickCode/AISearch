@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * @author zjj
  * @description
@@ -25,6 +23,6 @@ public class BKYArticleDTO {
 
     private String content;
 
-    private Date createtime;
+    private String createtime;
 
 }

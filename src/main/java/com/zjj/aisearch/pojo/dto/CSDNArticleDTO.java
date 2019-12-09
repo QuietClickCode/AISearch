@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 
 /**
  * @author zjj
@@ -25,6 +24,6 @@ public class CSDNArticleDTO {
 
     private String content;
 
-    private Date createtime;
+    private String createtime;
 
 }
