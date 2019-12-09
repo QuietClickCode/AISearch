@@ -269,11 +269,13 @@ public class IndexController {
      */
     @RequestMapping("/todetail")
     @ApiOperation("重定向到搜索结果详情页")
-    public String toDetail(@RequestBody Map<String, String> map, HttpServletRequest request) {
+    public ResponseResult toDetail(@RequestBody Map<String, String> map, HttpServletRequest request) {
+        ResponseResult responseResult = new ResponseResult();
         if (!map.get("keyword").isEmpty()) {
             request.getSession().setAttribute("keyword", map.get("keyword"));
             //不做任何事,避免生成两次记录
-            return null;
+            responseResult.setUrl("detail");
+            return responseResult;
         }
         return null;
     }
