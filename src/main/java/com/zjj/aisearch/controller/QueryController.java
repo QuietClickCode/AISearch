@@ -132,21 +132,18 @@ public class QueryController {
     }
 
     @PostMapping("querySystem")
-    @ApiOperation("querySystem")
     public List<String> querySystem() {
         List<String> strings = queryServiceImpl.querySystem();
         return strings;
     }
 
     @PostMapping("queryDevice")
-    @ApiOperation("queryDevice")
     public List<String> queryDevice() {
         List<String> strings = queryServiceImpl.queryDevice();
         return strings;
     }
 
     @PostMapping("queryBrowser")
-    @ApiOperation("queryBrowser")
     public List<String> queryBrowser() {
         List<String> strings = queryServiceImpl.queryBrowser();
         return strings;
@@ -156,7 +153,6 @@ public class QueryController {
      * 查询是否登录
      */
     @PostMapping("/islogin")
-    @ApiOperation("查询是否登录")
     public ResponseResult islogin(@RequestBody Map<String, String> map) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         ResponseResult responseResult = new ResponseResult();
@@ -176,7 +172,6 @@ public class QueryController {
      */
     @PostMapping("/issystemloglistpermission")
     @RequiresPermissions("user:systemloglist")
-    @ApiOperation("判断是否有查看系统操作日志列表的权限")
     public ResponseResult systemloglist() {
         ResponseResult responseResult = new ResponseResult();
         responseResult.setStatus(0);

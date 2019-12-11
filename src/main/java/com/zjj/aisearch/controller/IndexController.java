@@ -43,7 +43,6 @@ public class IndexController {
      * @return
      */
     @GetMapping("/validateUsername")
-    @ApiOperation("异步校验用户名")
     public Object validateUsername(String username) {
         int result = indexServiceImpl.validateUsername(username);
         ResponseResult responseResult = new ResponseResult();
@@ -228,7 +227,6 @@ public class IndexController {
      * ajax实时搜索
      */
     @RequestMapping("/searchItem")
-    @ApiOperation("ajax实时搜索")
     public Object searchItem(String keyword) {
         if (!keyword.isEmpty()) {
             List<Item> items = indexServiceImpl.searchItem(keyword);
@@ -268,7 +266,6 @@ public class IndexController {
      * 重定向到搜索结果详情页
      */
     @RequestMapping("/todetail")
-    @ApiOperation("重定向到搜索结果详情页")
     public ResponseResult toDetail(@RequestBody Map<String, String> map, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         if (!map.get("keyword").isEmpty()) {
@@ -342,7 +339,6 @@ public class IndexController {
      * 查询文章功能
      */
     @PostMapping("/queryarticle")
-    @ApiOperation("查询文章功能")
     public Object queryArticle(@RequestBody Map<String, String> map) {
         List<Article> articles = indexServiceImpl.queryArticle(map);
         return articles;
