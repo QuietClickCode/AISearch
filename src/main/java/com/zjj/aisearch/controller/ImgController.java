@@ -1,5 +1,6 @@
 package com.zjj.aisearch.controller;
 
+import com.zjj.aisearch.config.ConfigBean;
 import com.zjj.aisearch.model.ResponseResult;
 import com.zjj.aisearch.service.ImgService;
 import io.swagger.annotations.ApiOperation;
@@ -29,12 +30,15 @@ public class ImgController {
     @Autowired
     private ImgService imgService;
 
+    @Autowired
+    private ConfigBean configBean;
+
     @ApiOperation("上传图片")
     @PostMapping("/uploadImg")
     public ResponseResult uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
         log.error(file.getContentType());
         Map resultMap = new HashMap();
-        String uploadPath = "I:/img";
+        String uploadPath = configBean.getImgDir();
         String fileName = uploadFile(uploadPath, file);
         log.error(fileName);
         return null;
