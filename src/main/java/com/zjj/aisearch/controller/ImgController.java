@@ -1,8 +1,10 @@
 package com.zjj.aisearch.controller;
 
 import com.zjj.aisearch.config.ConfigBean;
+import com.zjj.aisearch.model.Img;
 import com.zjj.aisearch.model.ResponseResult;
 import com.zjj.aisearch.service.ImgService;
+import com.zjj.aisearch.utils.DateTimeUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +38,24 @@ public class ImgController {
     @ApiOperation("上传图片")
     @PostMapping("/uploadImg")
     public ResponseResult uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
-        log.error(file.getContentType());
         Map resultMap = new HashMap();
         String uploadPath = configBean.getImgDir();
         String fileName = uploadFile(uploadPath, file);
-        log.error(fileName);
-        return null;
+        Img img = new Img();
+
+        img.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        img.setImgOriginName(file.getOriginalFilename());
+        img.setImgNewName(fileName);
+        img.setLocation(uploadPath);
+        img.setSize(file.getSize());
+        img.setType(file.getContentType());
+        imgService.save(img);
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setStatus(0);
+        responseResult.setMsg("上传成功");
+        responseResult.setUrl(fileName);
+        responseResult.setData(fileName);
+        return responseResult;
     }
 
     private String uploadFile(String uploadPath, MultipartFile file) {
