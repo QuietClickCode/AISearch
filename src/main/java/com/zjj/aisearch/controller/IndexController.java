@@ -2,6 +2,7 @@ package com.zjj.aisearch.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.zjj.aisearch.config.ConfigBean;
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.IndexService;
 import com.zjj.aisearch.utils.DateTimeUtil;
@@ -37,6 +38,9 @@ public class IndexController {
     @Autowired
     private IndexService indexServiceImpl;
 
+    @Autowired
+    ConfigBean configBean;
+
     /**
      * 异步校验用户名
      *
@@ -68,7 +72,7 @@ public class IndexController {
     @RequestMapping("/tologin")
     @ApiOperation(value = "登录")
     public Object tologin(@RequestBody UserInfo userInfo) {
-
+        log.error(configBean.getImgDir());
         String username = userInfo.getUser().getUsername();
         String password = userInfo.getUser().getPassword();
         Subject subject = SecurityUtils.getSubject();
