@@ -49,10 +49,10 @@ public class ImgController {
         img.setLocation(uploadPath);
         img.setSize(file.getSize());
         img.setType(file.getContentType());
-        imgService.save(img);
+        int result = imgService.save(img);
         ResponseResult responseResult = new ResponseResult();
         responseResult.setStatus(0);
-        responseResult.setMsg("上传成功");
+        responseResult.setMsg("上传成功,这是第" + img.getId() + "张图片");
         responseResult.setUrl(fileName);
         responseResult.setData(fileName);
         return responseResult;
