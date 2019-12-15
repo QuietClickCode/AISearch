@@ -1,5 +1,6 @@
 package com.zjj.aisearch.config;
 
+import com.zjj.aisearch.filter.ShiroLoginFilter;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -91,6 +93,8 @@ public class ShiroConfig {
          * perms:权限
          * role:角色
          */
+        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
+        filters.put("authc", new ShiroLoginFilter());
         Map<String, String> filterMap = new LinkedHashMap<String, String>();
         filterMap.put("/login", "anon");
         filterMap.put("/regist", "anon");
@@ -105,7 +109,7 @@ public class ShiroConfig {
         filterMap.put("/*", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         shiroFilterFactoryBean.setUnauthorizedUrl("/noauth");
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        /*shiroFilterFactoryBean.setLoginUrl("/login");*/
         return shiroFilterFactoryBean;
     }
 
