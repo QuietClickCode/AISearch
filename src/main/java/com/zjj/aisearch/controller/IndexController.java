@@ -240,7 +240,7 @@ public class IndexController {
     }
 
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     @ApiOperation("logout")
     public Object logout(HttpServletRequest httpServletRequest) {
         User user = ((User) SecurityUtils.getSubject().getPrincipal());
