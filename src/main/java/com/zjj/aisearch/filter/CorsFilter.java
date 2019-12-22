@@ -12,6 +12,7 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*", filterName = "CorsFilter")
 public class CorsFilter implements Filter {
 
+    //解决element ui图片上传跨域问题
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
