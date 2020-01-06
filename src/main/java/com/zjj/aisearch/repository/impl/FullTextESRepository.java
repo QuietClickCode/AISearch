@@ -73,7 +73,7 @@ public class FullTextESRepository implements FullTextRepository{
             fullTextDTO.setFileContent(fullTextFile.getFileContent());
             fullTextDTO.setCreateuser(fullTextFile.getCreateuser());
             fullTextDTO.setCreatetime(fullTextFile.getCreatetime());
-            Index index = new Index.Builder(fullTextDTO).index(INDEX).type(TYPE).build();
+            Index index = new Index.Builder(fullTextFile).index(INDEX).type(TYPE).build();
             try {
                 JestResult jestResult = client.execute(index);
                 log.info("save返回结果{}", jestResult.getJsonString());
