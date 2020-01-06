@@ -87,7 +87,7 @@ public class ImgController {
 
 
         uploadFileServiceImpl.save(fullTextDTO);
-        fullTextESRepository.save();
+        fullTextESRepository.save(fullTextDTO);
         ResponseResult responseResult = new ResponseResult();
         responseResult.setStatus(0);
         responseResult.setMsg("上传成功,这是第" + img.getId() + "张图片");

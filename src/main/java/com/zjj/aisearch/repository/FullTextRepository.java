@@ -7,7 +7,7 @@ import com.zjj.aisearch.pojo.entity.QueryDTO;
 
 public interface FullTextRepository {
 
-    boolean save();
+    boolean save(FullTextDTO fullTextDTO);
 
     Page<FullTextDTO> query(String queryString, int pageNo, int size);
 

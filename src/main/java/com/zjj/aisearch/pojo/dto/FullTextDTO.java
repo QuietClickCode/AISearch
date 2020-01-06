@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FullTextDTO {
     //相当于数据库的列字段
+    //控制es中的_id=这个id;
     @JestId
     private Integer id;
 

@@ -1,36 +1,30 @@
 package com.zjj.aisearch.repository.impl;
 
-import com.zjj.aisearch.model.FullTextFile;
 import com.zjj.aisearch.pojo.dto.FullTextDTO;
 import com.zjj.aisearch.pojo.entity.Page;
 import com.zjj.aisearch.pojo.entity.QueryDTO;
 import com.zjj.aisearch.repository.FullTextRepository;
-import com.zjj.aisearch.utils.DateTimeUtil;
 import com.zjj.aisearch.utils.JDBCUtils;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Index;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
 
 /**
-* @Description: 全文搜索
-* @Param:  
-* @return:  
-* @Author: zjj
-* @Date: 2020/1/6 
-*/ 
+ * @Description: 全文搜索
+ * @Param:
+ * @return:
+ * @Author: zjj
+ * @Date: 2020/1/6
+ */
 @Repository
 @Slf4j
-public class FullTextESRepository implements FullTextRepository{
+public class FullTextESRepository implements FullTextRepository {
 
     //索引名称 数据库
     public static final String INDEX = "fulltextfile";
@@ -41,12 +35,12 @@ public class FullTextESRepository implements FullTextRepository{
     @Autowired
     private JestClient client;
     private static QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());
+
     //数据库导入到索引库
     @Override
-    public boolean save() {
+    public boolean save(FullTextDTO fullTextDTO) {
         System.out.println("-------------------------------");
-        FullTextFile fullTextFile = new FullTextFile();
-        FullTextDTO fullTextDTO = new FullTextDTO();
+        /*FullTextFile fullTextFile = new FullTextFile();
         String sql = null;
         String sql2 = null;
         sql = "select * from ai_file";
@@ -80,8 +74,16 @@ public class FullTextESRepository implements FullTextRepository{
             } catch (IOException e) {
                 log.error("save异常", e);
             }
+        }*/
+        Index index = new Index.Builder(fullTextDTO).index(INDEX).type(TYPE).build();
+        JestResult jestResult = null;
+        try {
+            jestResult = client.execute(index);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-            return true;
+        log.info("save返回结果{}", jestResult.getJsonString());
+        return true;
 
     }
 
@@ -167,7 +169,7 @@ public class FullTextESRepository implements FullTextRepository{
             log.error("get异常", e);
             return null;
         }*/
-       return null;
+        return null;
     }
 
     private int from(int pageNo, int size) {
