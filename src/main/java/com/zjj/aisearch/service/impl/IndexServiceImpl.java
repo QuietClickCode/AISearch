@@ -40,7 +40,11 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public List<Item> searchItem(String keyword) {
 
-        return indexMapper.searchItem(keyword);
+        //查询elasticsearch
+
+        return null;
+        //查询商品表
+        /*return indexMapper.searchItem(keyword);*/
     }
 
     @Override

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjj.aisearch.mapper.UploadFileMapper">
+
+    <!--  &lt;!&ndash;更新editor&ndash;&gt;
+      <update id="updateEditor" parameterType="Editor">
+          update ai_editor set content = #{content},title = #{title} where id = #{id};
+      </update>
+      &lt;!&ndash;删除editor&ndash;&gt;
+      <delete id="deleteEditor" parameterType="integer">
+          delete from ai_editor where id = #{id};
+      </delete>
+      &lt;!&ndash;更新editor&ndash;&gt;
+      <update id="updateMarkdown" parameterType="MarkDown">
+          update ai_markdown set content = #{content},title = #{title} where id = #{id};
+      </update>
+      &lt;!&ndash;删除editor&ndash;&gt;
+      <delete id="deleteMarkdown" parameterType="integer">
+          delete from ai_markdown where id = #{id};
+      </delete>-->
+    <insert id="save" parameterType="FullTextFile">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
+        insert into ai_file(file_name,file_type,file_size,file_content,file_path,createuser,createtime)
+        values (#{fileName},#{fileType},#{fileSize},#{fileContent},#{filePath},#{createuser},#{createtime});
+    </insert>
+
+    <!--<insert id="save" parameterType="Img">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
+        insert into ai_img(img_origin_name,img_new_name,size,location,createtime,type)
+        values(#{imgOriginName},#{imgNewName},#{size},#{location},#{createtime},#{type})
+    </insert>-->
+</mapper>
