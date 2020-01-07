@@ -7,13 +7,21 @@ import com.zjj.aisearch.repository.FullTextRepository;
 import com.zjj.aisearch.utils.JDBCUtils;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.Index;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbutils.QueryRunner;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @Description: 全文搜索
@@ -87,15 +95,33 @@ public class FullTextESRepository implements FullTextRepository {
 
     }
 
+
+    //删除文档
+    /**
+     * 根据主键删除文档
+     * @param index 待操作的库
+     * @param type  待操作的表
+     * @param id    待操作的主键id
+     * @return
+     */
+    public JestResult deleteDocument(String index, String type, String id) {
+        Delete delete = new Delete.Builder(id).index(index).type(type).build();
+        JestResult result = null ;
+        try {
+            result = client.execute(delete);
+            log.info("deleteDocument == " + result.getJsonString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+
     @Override
     public Page<FullTextDTO> query(String queryString, int pageNo, int size) {
-        /*SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false).tagsSchema("default");
-        searchSourceBuilder.highlighter(highlightBuilder);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         QueryStringQueryBuilder queryStringQueryBuilder = new QueryStringQueryBuilder(queryString);
-        queryStringQueryBuilder
-                .field("title", 10)
-                .field("content");
         searchSourceBuilder.query(queryStringQueryBuilder).from(from(pageNo, size)).size(size);
         log.info("搜索DSL:{}", searchSourceBuilder.toString());
         Search search = new Search.Builder(searchSourceBuilder.toString())
@@ -105,6 +131,14 @@ public class FullTextESRepository implements FullTextRepository {
         try {
             SearchResult result = client.execute(search);
             List<SearchResult.Hit<FullTextDTO, Void>> hits = result.getHits(FullTextDTO.class);
+            List<FullTextDTO> articles = hits.stream().map(hit -> {
+                FullTextDTO article = hit.source;
+                return article;
+            }).collect(toList());
+            int took = result.getJsonObject().get("took").getAsInt();
+            Page<FullTextDTO> page = Page.<FullTextDTO>builder().list(articles).pageNo(pageNo).size(size).total(result.getTotal()).took(took).build();
+            return page;
+            /*List<SearchResult.Hit<FullTextDTO, Void>> hits = result.getHits(FullTextDTO.class);
             List<FullTextDTO> articles = hits.stream().map(hit -> {
                 FullTextDTO article = hit.source;
                 Map<String, List<String>> highlight = hit.highlight;
@@ -118,13 +152,11 @@ public class FullTextESRepository implements FullTextRepository {
             }).collect(toList());
             int took = result.getJsonObject().get("took").getAsInt();
             Page<FullTextDTO> page = Page.<FullTextDTO>builder().list(articles).pageNo(pageNo).size(size).total(result.getTotal()).took(took).build();
-            return page;
+            return page;*/
         } catch (IOException e) {
             log.error("search异常", e);
             return null;
-        }*/
-        return null;
-
+        }
     }
 
     @Override
