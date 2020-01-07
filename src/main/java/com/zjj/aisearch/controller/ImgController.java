@@ -106,6 +106,7 @@ public class ImgController {
 
         JestResult jestResult = fullTextESRepository.deleteDocument("fulltextfile", "file", param.get("deleteid"));
         System.out.println(jestResult.getJsonString());
+
         return null;
     }
     @ApiOperation("查询文档")
@@ -114,7 +115,10 @@ public class ImgController {
 
         Page<FullTextDTO> jestResult = fullTextESRepository.query(param.get("keyword"), 1, 20);
         System.out.println(jestResult);
-        return null;
+        System.out.println(jestResult.getList().toString());
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setData(jestResult.getList());
+        return responseResult;
     }
 
 
