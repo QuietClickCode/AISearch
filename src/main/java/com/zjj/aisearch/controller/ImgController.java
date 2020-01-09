@@ -109,18 +109,31 @@ public class ImgController {
 
         return null;
     }
+
+    @ApiOperation("跳转详情")
+    @PostMapping("/toqueryDocument")
+    public ResponseResult toqueryDocument(@RequestBody Map<String, String> map, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        ResponseResult responseResult = new ResponseResult();
+        if (!map.get("keyword").isEmpty()) {
+            request.getSession().setAttribute("keyword", map.get("keyword"));
+            //不做任何事,避免生成两次记录
+            responseResult.setUrl("detail");
+            return responseResult;
+        }
+        return null;
+    }
+
     @ApiOperation("查询文档")
     @PostMapping("/queryDocument")
-    public ResponseResult queryDocument(@RequestBody Map<String, String> param) throws IOException {
-
-        Page<FullTextDTO> jestResult = fullTextESRepository.query(param.get("keyword"), 1, 20);
+    public ResponseResult queryDocument(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        String keyword = (String) request.getSession().getAttribute("keyword");
+        Page<FullTextDTO> jestResult = fullTextESRepository.query(keyword, 1, 20);
         System.out.println(jestResult);
         System.out.println(jestResult.getList().toString());
         ResponseResult responseResult = new ResponseResult();
         responseResult.setData(jestResult.getList());
         return responseResult;
     }
-
 
 
     private String uploadFile(String uploadPath, MultipartFile file) {

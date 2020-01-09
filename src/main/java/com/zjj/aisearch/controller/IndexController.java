@@ -20,6 +20,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -287,12 +288,12 @@ public class IndexController {
      */
     @RequestMapping("/detaillist")
     @ApiOperation("进入搜索结果详情页")
-    public Object detail(HttpServletRequest request, HttpServletRequest
-            httpServletRequest) {
+    public Object detail(HttpServletRequest httpServletRequest, HttpServletResponse
+            response) {
         String keyword = (String) httpServletRequest.getSession().getAttribute("keyword");
         List<Item> items = indexServiceImpl.searchItem(keyword);
 
-        Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
+        Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
 
         SystemLog systemLog = new SystemLog();
         systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
