@@ -24,3 +24,7 @@ aisearch前后端分离完成,这是前端工程vue-cli地址https://github.com/
 
 2019年10月28日
 利用elasticsearch完成csdn,简书,博客园搜索
+
+
+2020年1月14日
+文件上传解析为文本,导入到es中实现高亮搜索
