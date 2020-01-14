@@ -28,3 +28,7 @@ aisearch前后端分离完成,这是前端工程vue-cli地址https://github.com/
 
 2020年1月14日
 文件上传解析为文本,导入到es中实现高亮搜索
+
+
+2020年1月14日
+集成vue-element-admin做AISearch的后台管理
