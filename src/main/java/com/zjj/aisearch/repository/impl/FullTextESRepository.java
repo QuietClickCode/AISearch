@@ -15,11 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbutils.QueryRunner;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -85,6 +87,8 @@ public class FullTextESRepository implements FullTextRepository {
     @Override
     public Page<FullTextDTO> query(String queryString, int pageNo, int size) {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false).tagsSchema("default");
+        searchSourceBuilder.highlighter(highlightBuilder);
         QueryStringQueryBuilder queryStringQueryBuilder = new QueryStringQueryBuilder(queryString);
         searchSourceBuilder.query(queryStringQueryBuilder).from(from(pageNo, size)).size(size);
         log.info("搜索DSL:{}", searchSourceBuilder.toString());
@@ -97,6 +101,10 @@ public class FullTextESRepository implements FullTextRepository {
             List<SearchResult.Hit<FullTextDTO, Void>> hits = result.getHits(FullTextDTO.class);
             List<FullTextDTO> articles = hits.stream().map(hit -> {
                 FullTextDTO article = hit.source;
+                Map<String, List<String>> highlight = hit.highlight;
+                if (highlight.containsKey("fileContent")) {
+                    article.setFileContent(highlight.get("fileContent").get(0) + " [score]-->" + hit.score);
+                }
                 return article;
             }).collect(toList());
             int took = result.getJsonObject().get("took").getAsInt();
