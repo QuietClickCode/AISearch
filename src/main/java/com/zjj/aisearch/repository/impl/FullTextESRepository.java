@@ -105,6 +105,9 @@ public class FullTextESRepository implements FullTextRepository {
                 if (highlight.containsKey("fileContent")) {
                     article.setFileContent(highlight.get("fileContent").get(0) + " [score]-->" + hit.score);
                 }
+                if (highlight.containsKey("fileName")) {
+                    article.setFileName(highlight.get("fileName").get(0));
+                }
                 return article;
             }).collect(toList());
             int took = result.getJsonObject().get("took").getAsInt();
