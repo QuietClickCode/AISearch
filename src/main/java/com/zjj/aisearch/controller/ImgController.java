@@ -123,6 +123,16 @@ public class ImgController {
         return null;
     }
 
+    @ApiOperation("获取关键字keyword")
+    @PostMapping("/getKeyword")
+    public ResponseResult getKeyword(HttpServletRequest request){
+        String keyword = (String) request.getSession().getAttribute("keyword");
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setMsg(keyword);
+
+        return responseResult;
+    }
+
     @ApiOperation("查询文档")
     @PostMapping("/queryDocument")
     public ResponseResult queryDocument(HttpServletResponse response, HttpServletRequest request) throws IOException {
