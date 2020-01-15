@@ -32,3 +32,7 @@ aisearch前后端分离完成,这是前端工程vue-cli地址https://github.com/
 
 2020年1月14日
 集成vue-element-admin做AISearch的后台管理
+
+
+2020年1月15日17:21:32
+搜索引擎图像化改造完成
