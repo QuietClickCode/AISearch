@@ -75,7 +75,7 @@ public class CSDNArticleESRepository implements ICSDNArticleRepository {
                     article.setTitle(highlight.get("title").get(0) + " [score]-->" + hit.score);
                 }
                 if (highlight.containsKey("content")) {
-                    article.setContent(highlight.get("content").get(0));
+                    article.setContent(highlight.get("content").get(0)+ " [score]-->" + hit.score);
                 }
                 return article;
             }).collect(toList());

@@ -72,16 +72,13 @@ public class JianShuArticleESRepository implements IJianShuArticleRepository {
             System.out.println("#####################hists" + hits.toString());
             List<JianShuArticleDTO> articles = hits.stream().map(hit -> {
                 JianShuArticleDTO article = hit.source;
-            System.out.println("#####################JianShuArticleDTO" + article.toString());
                 Map<String, List<String>> highlight = hit.highlight;
-            System.out.println("#####################highlight" + highlight.toString());
                 if (highlight.containsKey("title")) {
                     article.setTitle(highlight.get("title").get(0) + " [score]-->" + hit.score);
                 }
                 if (highlight.containsKey("content")) {
-                    article.setContent(highlight.get("content").get(0));
+                    article.setContent(highlight.get("content").get(0)+ " [score]-->" + hit.score);
                 }
-                System.out.println("#####################article" + article.toString());
                 return article;
             }).collect(toList());
             int took = result.getJsonObject().get("took").getAsInt();
