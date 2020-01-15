@@ -72,10 +72,12 @@ public class CSDNArticleESRepository implements ICSDNArticleRepository {
                 CSDNArticleDTO article = hit.source;
                 Map<String, List<String>> highlight = hit.highlight;
                 if (highlight.containsKey("title")) {
-                    article.setTitle(highlight.get("title").get(0) + " [score]-->" + hit.score);
+                    /*article.setTitle(highlight.get("title").get(0) + " [score]-->" + hit.score);*/
+                    article.setTitle(highlight.get("title").get(0));
                 }
                 if (highlight.containsKey("content")) {
-                    article.setContent(highlight.get("content").get(0)+ " [score]-->" + hit.score);
+                    /*article.setContent(highlight.get("content").get(0)+ " [score]-->" + hit.score);*/
+                    article.setContent(highlight.get("content").get(0));
                 }
                 return article;
             }).collect(toList());

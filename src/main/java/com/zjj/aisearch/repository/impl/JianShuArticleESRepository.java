@@ -67,17 +67,17 @@ public class JianShuArticleESRepository implements IJianShuArticleRepository {
                 .build();
         try {
             SearchResult result = client.execute(search);
-            System.out.println("#####################searchresult" + result.toString());
             List<SearchResult.Hit<JianShuArticleDTO, Void>> hits = result.getHits(JianShuArticleDTO.class);
-            System.out.println("#####################hists" + hits.toString());
             List<JianShuArticleDTO> articles = hits.stream().map(hit -> {
                 JianShuArticleDTO article = hit.source;
                 Map<String, List<String>> highlight = hit.highlight;
                 if (highlight.containsKey("title")) {
-                    article.setTitle(highlight.get("title").get(0) + " [score]-->" + hit.score);
+                    /*article.setTitle(highlight.get("title").get(0) + " [score]-->" + hit.score);*/
+                    article.setTitle(highlight.get("title").get(0));
                 }
                 if (highlight.containsKey("content")) {
-                    article.setContent(highlight.get("content").get(0)+ " [score]-->" + hit.score);
+                    /*article.setContent(highlight.get("content").get(0)+ " [score]-->" + hit.score);*/
+                    article.setContent(highlight.get("content").get(0));
                 }
                 return article;
             }).collect(toList());

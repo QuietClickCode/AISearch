@@ -74,7 +74,8 @@ public class DouBanMovieESRepository implements IDouBanMovieRepository {
                 DouBanMovieDTO movie = hit.source;
                 Map<String, List<String>> highlight = hit.highlight;
                 if (highlight.containsKey("title")) {
-                    movie.setTitle(highlight.get("title").get(0) + " [score]-->" + hit.score);
+                    movie.setTitle(highlight.get("title").get(0));
+                    /*movie.setTitle(highlight.get("title").get(0) + " [score]-->" + hit.score);*/
                 }
                 if (highlight.containsKey("actors")) {
                     movie.setActors(highlight.get("actors"));

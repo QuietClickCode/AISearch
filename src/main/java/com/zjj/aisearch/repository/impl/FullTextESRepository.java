@@ -103,10 +103,12 @@ public class FullTextESRepository implements FullTextRepository {
                 FullTextDTO article = hit.source;
                 Map<String, List<String>> highlight = hit.highlight;
                 if (highlight.containsKey("fileContent")) {
-                    article.setFileContent(highlight.get("fileContent").get(0) + " [score]-->" + hit.score);
+                    /*article.setFileContent(highlight.get("fileContent").get(0) + " [score]-->" + hit.score);*/
+                    article.setFileContent(highlight.get("fileContent").get(0));
                 }
                 if (highlight.containsKey("fileName")) {
-                    article.setFileName(highlight.get("fileName").get(0) + " [score]-->" + hit.score);
+                    /*article.setFileName(highlight.get("fileName").get(0) + " [score]-->" + hit.score);*/
+                    article.setFileName(highlight.get("fileName").get(0));
                 }
                 return article;
             }).collect(toList());
