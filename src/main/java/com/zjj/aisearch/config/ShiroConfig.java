@@ -106,7 +106,8 @@ public class ShiroConfig {
         filterMap.put("/islogin", "anon");
         filterMap.put("/user/add", "perms[user:add]");
         filterMap.put("/user/update", "authc");
-        filterMap.put("/*", "authc");
+        //暂时不做登录
+        /*filterMap.put("/*", "authc");*/
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         shiroFilterFactoryBean.setUnauthorizedUrl("/noauth");
         /*shiroFilterFactoryBean.setLoginUrl("/login");*/

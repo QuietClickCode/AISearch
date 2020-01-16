@@ -1,10 +1,5 @@
 package com.zjj.aisearch.interceptor;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.zjj.aisearch.model.User;
 import com.zjj.aisearch.service.IndexService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +18,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
-        String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
+        /*String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
         if (token != null) {
-            System.out.println(token + "99999999999999999999999999999999");
             String username = JWT.decode(token).getAudience().get(0);
-            System.out.println(username);
-            System.out.println(username);
-            System.out.println(indexServiceImpl);
             User isExistUser = indexServiceImpl.selectUserByUserName(username);
-            System.out.println("------------------------"+isExistUser);
             // 验证 token
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(isExistUser.getPassword())).build();
             try {
@@ -41,7 +31,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             }
         } else {
             throw new JWTVerificationException("401");
-        }
+        }*/
         return true;
     }
 
