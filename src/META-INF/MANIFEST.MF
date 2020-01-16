@@ -1,58 +1,84 @@
 Manifest-Version: 1.0
-Class-Path: spring-jcl-5.0.6.RELEASE.jar logback-classic-1.2.3.jar log
- back-core-1.2.3.jar springfox-spi-2.4.0.jar commons-dbcp-1.2.2.jar sh
- iro-crypto-core-1.4.0.jar mapper-spring-boot-starter-2.1.5.jar jboss-
- logging-3.3.2.Final.jar springfox-swagger-common-2.4.0.jar commons-la
- ng-2.5.jar spring-core-5.0.6.RELEASE.jar tomcat-embed-core-8.5.31.jar
-  jackson-databind-2.9.5.jar jopt-simple-5.0.2.jar mapper-base-1.1.5.j
- ar lucene-analyzers-common-6.6.1.jar spring-boot-devtools-2.0.2.RELEA
- SE.jar securesm-1.2.jar jna-4.4.0-1.jar lucene-core-6.6.1.jar lucene-
- join-6.6.1.jar shiro-config-ogdl-1.4.0.jar spring-boot-starter-web-2.
- 0.2.RELEASE.jar spring-tx-5.0.6.RELEASE.jar junit-4.12.jar jackson-mo
- dule-parameter-names-2.9.5.jar thymeleaf-3.0.9.RELEASE.jar classmate-
- 1.3.4.jar spring-web-5.0.6.RELEASE.jar jackson-dataformat-cbor-2.9.5.
- jar tomcat-embed-el-8.5.31.jar unbescape-1.1.5.RELEASE.jar springfox-
- schema-2.4.0.jar shiro-lang-1.4.0.jar httpclient-4.5.6.jar mapper-cor
- e-1.1.5.jar spring-boot-starter-jdbc-2.0.2.RELEASE.jar c3p0-0.9.1.1.j
- ar log4j-api-2.10.0.jar spring-jdbc-5.0.6.RELEASE.jar commons-codec-1
- .11.jar thymeleaf-spring5-3.0.9.RELEASE.jar hibernate-validator-6.0.9
- .Final.jar swagger-annotations-1.5.6.jar swagger-models-1.5.6.jar luc
- ene-misc-6.6.1.jar validation-api-2.0.1.Final.jar spring-boot-2.0.2.R
- ELEASE.jar spring-boot-starter-2.0.2.RELEASE.jar json-20170516.jar sp
- ring-plugin-metadata-1.2.0.RELEASE.jar jest-5.3.3.jar tomcat-embed-we
- bsocket-8.5.31.jar lucene-spatial-extras-6.6.1.jar commons-collection
- s-3.2.1.jar shiro-spring-1.4.0.jar shiro-event-1.4.0.jar commons-bean
- utils-1.9.3.jar jackson-dataformat-yaml-2.9.5.jar lucene-suggest-6.6.
- 1.jar persistence-api-1.0.jar httpcore-4.4.9.jar jsoup-1.11.3.jar gua
- va-18.0.jar spring-boot-test-2.1.3.RELEASE.jar commons-lang3-3.9.jar 
- hamcrest-core-1.3.jar druid-1.1.10.jar spring-boot-starter-json-2.0.2
- .RELEASE.jar jest-common-5.3.3.jar HdrHistogram-2.1.9.jar spring-webm
- vc-5.0.6.RELEASE.jar thymeleaf-extras-java8time-3.0.1.RELEASE.jar spr
- ingfox-swagger-ui-2.4.0.jar ezmorph-1.0.6.jar shiro-cache-1.4.0.jar l
- ucene-memory-6.6.1.jar aspectjweaver-1.8.13.jar springfox-core-2.4.0.
- jar springfox-swagger2-2.4.0.jar lucene-queries-6.6.1.jar spring-boot
- -starter-tomcat-2.0.2.RELEASE.jar shiro-core-1.4.0.jar mysql-connecto
- r-java-5.1.46.jar elasticsearch-5.6.9.jar jackson-datatype-jsr310-2.9
- .5.jar spring-test-5.1.5.RELEASE.jar lucene-queryparser-6.6.1.jar map
- per-weekend-1.1.5.jar javax.annotation-api-1.3.2.jar fastjson-1.2.59.
- jar jackson-core-2.9.5.jar lucene-grouping-6.6.1.jar slf4j-api-1.7.25
- .jar joda-time-2.9.9.jar lucene-spatial3d-6.6.1.jar springfox-spring-
- web-2.4.0.jar shiro-crypto-cipher-1.4.0.jar attoparser-2.0.4.RELEASE.
- jar spring-aop-5.0.6.RELEASE.jar t-digest-3.0.jar mapper-spring-1.1.5
- .jar mapper-spring-boot-autoconfigure-2.1.5.jar lucene-sandbox-6.6.1.
- jar shiro-crypto-hash-1.4.0.jar snakeyaml-1.19.jar jackson-datatype-j
- dk8-2.9.5.jar spring-boot-starter-aop-2.0.2.RELEASE.jar spring-contex
- t-5.0.6.RELEASE.jar gson-2.8.5.jar lucene-highlighter-6.6.1.jar mybat
- is-3.4.6.jar spring-beans-5.0.6.RELEASE.jar commons-dbutils-1.7.jar l
- og4j-to-slf4j-2.10.0.jar lucene-spatial-6.6.1.jar spring-boot-starter
- -logging-2.0.2.RELEASE.jar hppc-0.7.1.jar lucene-backward-codecs-6.6.
- 1.jar java-jwt-3.4.0.jar spring-boot-starter-thymeleaf-2.0.2.RELEASE.
- jar HikariCP-2.7.9.jar commons-pool-1.6.jar json-lib-2.4-jdk15.jar ht
- tpasyncclient-4.1.3.jar commons-logging-1.1.1.jar spring-expression-5
- .0.6.RELEASE.jar spring-plugin-core-1.2.0.RELEASE.jar httpcore-nio-4.
- 4.9.jar jul-to-slf4j-1.7.25.jar jackson-annotations-2.9.0.jar jackson
- -dataformat-smile-2.9.5.jar shiro-web-1.4.0.jar mybatis-spring-1.3.2.
- jar mapper-extra-1.1.5.jar shiro-config-core-1.4.0.jar spring-boot-au
- toconfigure-2.0.2.RELEASE.jar
+Class-Path: java-jwt-3.4.0.jar tomcat-embed-el-8.5.31.jar thymeleaf-3.
+ 0.9.RELEASE.jar commons-logging-api-1.1.jar sis-storage-0.6.jar bcmai
+ l-jdk15on-1.54.jar unbescape-1.1.5.RELEASE.jar mapper-extra-1.1.5.jar
+  lucene-highlighter-6.6.1.jar xz-1.5.jar vorbis-java-core-0.8.jar jes
+ t-5.3.3.jar apache-mime4j-dom-0.7.2.jar bzip2-0.9.1.jar httpcore-nio-
+ 4.4.9.jar junit-4.12.jar shiro-lang-1.4.0.jar javax.annotation-api-1.
+ 3.2.jar fontbox-2.0.1.jar cxf-rt-rs-client-3.0.3.jar spring-boot-star
+ ter-web-2.0.2.RELEASE.jar thymeleaf-extras-java8time-3.0.1.RELEASE.ja
+ r lucene-backward-codecs-6.6.1.jar mapper-core-1.1.5.jar springfox-sp
+ ring-web-2.4.0.jar httpservices-4.5.5.jar mapper-spring-boot-starter-
+ 2.1.5.jar jsr-275-0.9.3.jar shiro-crypto-cipher-1.4.0.jar thymeleaf-s
+ pring5-3.0.9.RELEASE.jar geoapi-3.0.0.jar lucene-queries-6.6.1.jar ht
+ tpcore-4.4.9.jar tomcat-embed-websocket-8.5.31.jar httpmime-4.5.5.jar
+  jackcess-encrypt-2.1.1.jar maven-scm-api-1.4.jar spring-boot-autocon
+ figure-2.0.2.RELEASE.jar springfox-swagger-ui-2.4.0.jar spring-boot-d
+ evtools-2.0.2.RELEASE.jar lucene-spatial3d-6.6.1.jar fastjson-1.2.59.
+ jar javax.ws.rs-api-2.0.1.jar mapper-spring-boot-autoconfigure-2.1.5.
+ jar mybatis-3.4.6.jar commons-csv-1.0.jar mapper-weekend-1.1.5.jar sp
+ ring-boot-starter-tomcat-2.0.2.RELEASE.jar httpclient-4.5.6.jar commo
+ ns-compress-1.11.jar jackson-datatype-jsr310-2.9.5.jar securesm-1.2.j
+ ar maven-scm-provider-svn-commons-1.4.jar springfox-swagger2-2.4.0.ja
+ r maven-scm-provider-svnexe-1.4.jar ezmorph-1.0.6.jar log4j-to-slf4j-
+ 2.10.0.jar bcpkix-jdk15on-1.54.jar hamcrest-core-1.3.jar jul-to-slf4j
+ -1.7.25.jar udunits-4.5.5.jar bcprov-jdk15on-1.54.jar lucene-sandbox-
+ 6.6.1.jar spring-aop-5.0.6.RELEASE.jar stax-api-1.0.1.jar httpasynccl
+ ient-4.1.3.jar cxf-rt-transports-http-3.0.3.jar stax2-api-3.1.4.jar x
+ mpcore-5.1.2.jar logback-classic-1.2.3.jar rome-utils-1.5.1.jar grib-
+ 4.5.5.jar jdom2-2.0.6.jar boilerpipe-1.1.0.jar json-20170516.jar comm
+ ons-collections-3.2.1.jar netcdf4-4.5.5.jar spring-core-5.0.6.RELEASE
+ .jar jwnl-1.3.3.jar swagger-annotations-1.5.6.jar jmatio-1.0.jar sis-
+ referencing-0.6.jar shiro-event-1.4.0.jar lucene-spatial-6.6.1.jar sp
+ ring-boot-starter-aop-2.0.2.RELEASE.jar mapper-spring-1.1.5.jar sprin
+ g-boot-test-2.1.3.RELEASE.jar commons-lang3-3.9.jar commons-pool-1.6.
+ jar jsoup-1.11.3.jar swagger-models-1.5.6.jar cxf-core-3.0.3.jar mapp
+ er-base-1.1.5.jar spring-boot-2.0.2.RELEASE.jar jna-4.4.0-1.jar jboss
+ -logging-3.3.2.Final.jar shiro-config-ogdl-1.4.0.jar cxf-rt-frontend-
+ jaxrs-3.0.3.jar commons-logging-1.1.1.jar spring-jdbc-5.0.6.RELEASE.j
+ ar rome-1.5.1.jar opennlp-maxent-3.0.3.jar springfox-core-2.4.0.jar l
+ ucene-memory-6.6.1.jar jest-common-5.3.3.jar java-libpst-0.8.1.jar sp
+ ring-test-5.1.5.RELEASE.jar druid-1.1.10.jar shiro-crypto-hash-1.4.0.
+ jar mybatis-spring-1.3.2.jar shiro-cache-1.4.0.jar pdfbox-2.0.1.jar s
+ lf4j-api-1.7.25.jar spring-boot-starter-logging-2.0.2.RELEASE.jar spr
+ ing-web-5.0.6.RELEASE.jar jackcess-2.1.3.jar HdrHistogram-2.1.9.jar l
+ og4j-api-2.10.0.jar spring-beans-5.0.6.RELEASE.jar joda-time-2.9.9.ja
+ r logback-core-1.2.3.jar t-digest-3.0.jar spring-plugin-metadata-1.2.
+ 0.RELEASE.jar shiro-web-1.4.0.jar isoparser-1.1.18.jar tagsoup-1.2.1.
+ jar commons-codec-1.11.jar lucene-spatial-extras-6.6.1.jar vorbis-jav
+ a-tika-0.8.jar elasticsearch-5.6.9.jar classmate-1.3.4.jar jackson-co
+ re-2.9.5.jar aspectjweaver-1.8.13.jar lucene-analyzers-common-6.6.1.j
+ ar spring-plugin-core-1.2.0.RELEASE.jar xmlbeans-2.6.0.jar lucene-gro
+ uping-6.6.1.jar shiro-config-core-1.4.0.jar protobuf-java-2.5.0.jar j
+ j2000-5.2.jar commons-io-2.4.jar asm-5.0.4.jar spring-boot-starter-2.
+ 0.2.RELEASE.jar hibernate-validator-6.0.9.Final.jar HikariCP-2.7.9.ja
+ r shiro-crypto-core-1.4.0.jar spring-context-5.0.6.RELEASE.jar lucene
+ -misc-6.6.1.jar sis-metadata-0.6.jar ehcache-core-2.6.2.jar poi-ooxml
+ -3.13.jar jackson-dataformat-yaml-2.9.5.jar commons-dbcp-1.2.2.jar c3
+ p0-0.9.1.1.jar springfox-spi-2.4.0.jar apache-mime4j-core-0.7.2.jar s
+ pringfox-schema-2.4.0.jar spring-boot-starter-thymeleaf-2.0.2.RELEASE
+ .jar regexp-1.3.jar attoparser-2.0.4.RELEASE.jar sis-utility-0.6.jar 
+ pdfbox-tools-2.0.1.jar json-lib-2.4-jdk15.jar jcip-annotations-1.0.ja
+ r jackson-dataformat-cbor-2.9.5.jar junrar-0.7.jar spring-tx-5.0.6.RE
+ LEASE.jar mchange-commons-java-0.2.11.jar springfox-swagger-common-2.
+ 4.0.jar commons-lang-2.5.jar spring-webmvc-5.0.6.RELEASE.jar validati
+ on-api-2.0.1.Final.jar snakeyaml-1.19.jar gson-2.8.5.jar jna-4.5.1.ja
+ r jcommander-1.35.jar lucene-core-6.6.1.jar spring-boot-starter-jdbc-
+ 2.0.2.RELEASE.jar lucene-queryparser-6.6.1.jar commons-exec-1.3.jar p
+ ersistence-api-1.0.jar sis-netcdf-0.6.jar woodstox-core-asl-4.4.1.jar
+  hppc-0.7.1.jar mysql-connector-java-5.1.46.jar jackson-datatype-jdk8
+ -2.9.5.jar jackson-databind-2.9.5.jar json-simple-1.1.1.jar commons-v
+ fs2-2.0.jar plexus-utils-1.5.6.jar spring-jcl-5.0.6.RELEASE.jar sprin
+ g-expression-5.0.6.RELEASE.jar quartz-2.3.0.jar jackson-module-parame
+ ter-names-2.9.5.jar jempbox-1.8.12.jar lucene-join-6.6.1.jar junivers
+ alchardet-1.0.3.jar commons-beanutils-1.9.3.jar jhighlight-1.0.2.jar 
+ metadata-extractor-2.8.1.jar shiro-spring-1.4.0.jar tika-core-1.13.ja
+ r opennlp-tools-1.5.3.jar cdm-4.5.5.jar tika-parsers-1.13.jar commons
+ -dbutils-1.7.jar jackson-dataformat-smile-2.9.5.jar spring-boot-start
+ er-json-2.0.2.RELEASE.jar jopt-simple-5.0.2.jar lucene-suggest-6.6.1.
+ jar pdfbox-debugger-2.0.1.jar guava-18.0.jar poi-3.13.jar tomcat-embe
+ d-core-8.5.31.jar poi-ooxml-schemas-3.13.jar poi-scratchpad-3.15-beta
+ 1.jar shiro-core-1.4.0.jar jackson-annotations-2.9.0.jar xmlschema-co
+ re-2.1.0.jar
 Main-Class: com.zjj.aisearch.SpringbootApplication
 
