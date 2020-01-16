@@ -9,9 +9,11 @@ import com.zjj.aisearch.repository.FullTextRepository;
 import com.zjj.aisearch.service.ImgService;
 import com.zjj.aisearch.service.UploadFileService;
 import com.zjj.aisearch.utils.DateTimeUtil;
+import com.zjj.aisearch.utils.MultipartFileToFile;
 import io.searchbox.client.JestResult;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,7 +53,7 @@ public class ImgController {
 
     @ApiOperation("上传图片")
     @PostMapping("/uploadImg")
-    public ResponseResult uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResponseResult uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map resultMap = new HashMap();
         String uploadPath = configBean.getImgDir();
         String fileName = uploadFile(uploadPath, file);
@@ -69,7 +71,9 @@ public class ImgController {
         //提取文件信息进入数据库
         FullTextDTO fullTextDTO = new FullTextDTO();
 
-        InputStream inputStream = file.getInputStream();
+        long size = file.getSize();
+        //只支持文本文件
+        /*InputStream inputStream = file.getInputStream();
         long size = file.getSize();
         StringBuffer sb = new StringBuffer();
         byte[] tempbytes = new byte[1024];
@@ -78,11 +82,20 @@ public class ImgController {
             //必须加GBK字符编码,不然数据库乱码
             String s = new String(tempbytes, 0, byteread, "GBK");
             sb.append(s);
-        }
+        }*/
+
+        //tika支持各种类型的文件,doc,java,js,html,md,excel,pdf等
+
+        Tika tika = new Tika();
+        File file1 = MultipartFileToFile.multipartFileToFile(file);
+        String filecontent = tika.parseToString(file1);
+        MultipartFileToFile.delteTempFile(file1);
         fullTextDTO.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         //应该存用户id,暂时写死
         fullTextDTO.setCreateuser("zjj");
-        fullTextDTO.setFileContent(sb.toString());
+        /*fullTextDTO.setFileContent(sb.toString());*/
+
+        fullTextDTO.setFileContent(filecontent);
         fullTextDTO.setFileName(fileName);
         fullTextDTO.setFilePath(uploadPath);
         fullTextDTO.setFileSize(size);

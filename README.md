@@ -36,3 +36,6 @@ aisearch前后端分离完成,这是前端工程vue-cli地址https://github.com/
 
 2020年1月15日17:21:32
 搜索引擎图像化改造完成
+
+2020年1月16日11:53:53
+tika支持各种类型的文件,doc,java,js,html,md,excel,pdf等
