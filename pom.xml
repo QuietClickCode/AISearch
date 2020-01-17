@@ -179,7 +179,7 @@
             <optional>true</optional>
             <scope>true</scope>
         </dependency>
-<!--tika-->
+        <!--tika-->
 
 
         <dependency>
@@ -228,7 +228,7 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <compilerArguments>
-                        <bootclasspath>${java.home}/lib/rt.jar;${java.home}/lib/jce.jar</bootclasspath>
+                        <bootclasspath>${java.home}/lib/rt.jar:${java.home}/lib/jce.jar</bootclasspath>
                     </compilerArguments>
                 </configuration>
             </plugin>
