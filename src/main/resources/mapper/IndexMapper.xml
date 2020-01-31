@@ -22,7 +22,7 @@
         insert into db_article(title, content, createtime) values(#{title},#{content},#{createTime})
     </insert>
     <insert id="insertZhihuArticle" parameterType="com.zjj.aisearch.model.ZhihuArticle">
-        insert into zhihu_article(answer, question,question_info, createtime) values(#{answer},#{question},#{questionInfo},#{createTime})
+        insert into zhihu_article_copy(answer, question,question_info, createtime) values(#{answer},#{question},#{questionInfo},#{createTime})
     </insert>
 
 </mapper>

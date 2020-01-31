@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 /**
  * @program: aisearch
- * @description: 入口
+ * @description: 知乎爬虫
  * @author: zjj
  * @create: 2019-09-07 16:53:15
  **/
