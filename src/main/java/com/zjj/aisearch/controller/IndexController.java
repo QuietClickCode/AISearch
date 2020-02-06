@@ -244,14 +244,15 @@ public class IndexController {
     @PostMapping("/logout")
     @ApiOperation("logout")
     public Object logout(HttpServletRequest httpServletRequest) {
-        User user = ((User) SecurityUtils.getSubject().getPrincipal());
+        //去除登录校验之后,没有保存user,所以会报错
+        //User user = ((User) SecurityUtils.getSubject().getPrincipal());
         ResponseResult responseResult = new ResponseResult();
 
         Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
 
         SystemLog systemLog = new SystemLog();
         systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation(":logout?username" + user.getUsername());
+        //  systemLog.setOperation(":logout?username" + user.getUsername());
         systemLog.setLoginLogId(loginLogId);
         indexServiceImpl.insertSystemLog(systemLog);
 
