@@ -16,7 +16,15 @@ import org.springframework.stereotype.Component;
 public class ConfigBean {
     private String imgDir;
     private String REDIS_ITEM_PRE;
-    private String ITEM_CACHE_EXPIRE;
+    private Long ITEM_CACHE_EXPIRE;
+
+    public String getImgDir() {
+        return imgDir;
+    }
+
+    public void setImgDir(String imgDir) {
+        this.imgDir = imgDir;
+    }
 
     public String getREDIS_ITEM_PRE() {
         return REDIS_ITEM_PRE;
@@ -26,19 +34,11 @@ public class ConfigBean {
         this.REDIS_ITEM_PRE = REDIS_ITEM_PRE;
     }
 
-    public String getITEM_CACHE_EXPIRE() {
+    public Long getITEM_CACHE_EXPIRE() {
         return ITEM_CACHE_EXPIRE;
     }
 
-    public void setITEM_CACHE_EXPIRE(String ITEM_CACHE_EXPIRE) {
+    public void setITEM_CACHE_EXPIRE(Long ITEM_CACHE_EXPIRE) {
         this.ITEM_CACHE_EXPIRE = ITEM_CACHE_EXPIRE;
-    }
-
-    public String getImgDir() {
-        return imgDir;
-    }
-
-    public void setImgDir(String imgDir) {
-        this.imgDir = imgDir;
     }
 }

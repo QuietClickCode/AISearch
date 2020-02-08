@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.concurrent.TimeUnit;
+
 @Controller
 @Slf4j
 public class SearchController {
@@ -117,9 +119,14 @@ public class SearchController {
         log.info("搜索参数wd:{},pn:{}", queryString, pageNo);
         Page<CSDNArticleDTO> page = csdnRepository.query(queryString, pageNo, 10);
         log.info("上传目录:" + configBean.getImgDir());
-        log.info("redis缓存前缀:" + configBean.getITEM_CACHE_EXPIRE());
-        log.info("redis缓存时间:" + configBean.getREDIS_ITEM_PRE());
-        stringRedisTemplate.opsForSet();
+        log.info("redis缓存时间:" + configBean.getITEM_CACHE_EXPIRE());
+        log.info("redis缓存前缀:" + configBean.getREDIS_ITEM_PRE());
+        //stringRedisTemplate.opsForValue().set("test", "100",60*10, TimeUnit.SECONDS);//向redis里存入数据和设置缓存时间
+        stringRedisTemplate.opsForValue().set(configBean.getREDIS_ITEM_PRE(), page.toString(), configBean.getITEM_CACHE_EXPIRE().intValue(), TimeUnit.SECONDS);
+        //stringRedisTemplate.opsForValue().get("test")//根据key获取缓存中的val
+        //stringRedisTemplate.getExpire("test")//根据key获取过期时间
+        log.info("缓存value:" + stringRedisTemplate.opsForValue().get(configBean.getREDIS_ITEM_PRE()));
+        log.info("缓存时间:" + stringRedisTemplate.getExpire(configBean.getREDIS_ITEM_PRE()));
         ResponseResult responseResult = new ResponseResult();
         responseResult.setStatus(0);
         responseResult.setData(page);
