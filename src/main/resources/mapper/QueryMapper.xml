@@ -788,6 +788,13 @@
             </if>
         </where>
     </select>
+    <!--查询用户总人数-->
+    <select id="queryUserTotalCount" resultType="integer">
+        SELECT
+        count(*)
+        FROM
+        user;
+    </select>
 
 
     <!--查询系统-->

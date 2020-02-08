@@ -19,6 +19,7 @@ public interface QueryMapper {
     List<String> queryBrowser();
     List<String> queryDevice();
     Integer queryCount(QueryForm queryForm);
+    Integer queryUserTotalCount();
 
     Integer queryAiNoteCount(QueryForm queryForm);
 

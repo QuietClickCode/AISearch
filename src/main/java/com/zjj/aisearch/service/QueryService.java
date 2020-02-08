@@ -20,6 +20,7 @@ public interface QueryService {
     public List<String> queryBrowser();
     public List<String> queryDevice();
     public Integer queryCount(QueryForm queryForm);
+    public Integer queryUserTotalCount();
 
     Integer queryAiNoteCount(QueryForm queryForm);
 

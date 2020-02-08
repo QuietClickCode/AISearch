@@ -48,6 +48,11 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
+    public Integer queryUserTotalCount() {
+        return queryMapper.queryUserTotalCount();
+    }
+
+    @Override
     public Integer queryAiNoteCount(QueryForm queryForm) {
         return queryMapper.queryAiNoteCount(queryForm);
     }
