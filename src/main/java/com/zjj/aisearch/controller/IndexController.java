@@ -73,7 +73,7 @@ public class IndexController {
     @RequestMapping("/tologin")
     @ApiOperation(value = "登录")
     public Object tologin(@RequestBody UserInfo userInfo) {
-        log.error(configBean.getImgDir());
+        log.info("上传目录:" + configBean.getImgDir());
         String username = userInfo.getUser().getUsername();
         String password = userInfo.getUser().getPassword();
         Subject subject = SecurityUtils.getSubject();
