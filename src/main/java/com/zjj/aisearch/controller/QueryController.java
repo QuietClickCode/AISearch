@@ -28,6 +28,7 @@ public class QueryController {
     private QueryService queryServiceImpl;
 
     @PostMapping("querySystemLog")
+    @RequiresPermissions("user:systemloglist")
     @ApiOperation("根据条件查询系统操作日志数据")
     public List<SystemLogList> querySystemLog(@RequestBody QueryForm queryForm) {
         return queryServiceImpl.queryForm(queryForm);
