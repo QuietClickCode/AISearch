@@ -144,14 +144,27 @@ public class QueryController {
 
     @PostMapping("querySystem")
     public List<String> querySystem() {
-
+        String cache = stringRedisTemplate.opsForValue().get("SystemCache");
+        if (StringUtils.isNotBlank(cache)) {
+            List<String> cacheReuslt = JSONArray.parseArray(stringRedisTemplate.opsForValue().get("SystemCache"), String.class);
+            log.info("querySystem走缓存");
+        }
         List<String> strings = queryServiceImpl.querySystem();
+        //结果存缓存
+        stringRedisTemplate.opsForValue().set("SystemCache", JSONArray.toJSON(strings).toString(),configBean.getITEM_CACHE_EXPIRE().intValue(), TimeUnit.SECONDS);
         return strings;
     }
 
     @PostMapping("queryDevice")
     public List<String> queryDevice() {
+        String cache = stringRedisTemplate.opsForValue().get("DeviceCache");
+        if (StringUtils.isNotBlank(cache)) {
+            List<String> cacheReuslt = JSONArray.parseArray(stringRedisTemplate.opsForValue().get("DeviceCache"), String.class);
+            log.info("queryDevice走缓存");
+        }
         List<String> strings = queryServiceImpl.queryDevice();
+        //结果存缓存
+        stringRedisTemplate.opsForValue().set("DeviceCache", JSONArray.toJSON(strings).toString(),configBean.getITEM_CACHE_EXPIRE().intValue(), TimeUnit.SECONDS);
         return strings;
     }
 
