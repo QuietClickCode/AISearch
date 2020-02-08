@@ -3,13 +3,13 @@ package com.zjj.aisearch.config;
 import com.zjj.aisearch.model.User;
 import com.zjj.aisearch.service.IndexService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * @program: AISearch
  * @description:
@@ -22,8 +22,10 @@ public class UserRealm extends AuthorizingRealm {
 
     @Autowired
     private IndexService indexServiceImpl;
+
     /**
      * 授权
+     *
      * @param principalCollection
      * @return
      */
@@ -31,10 +33,11 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.info("授权");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        Integer userId = ((User) SecurityUtils.getSubject().getPrincipal()).getId();
+        // Integer userId = ((User) SecurityUtils.getSubject().getPrincipal()).getId();
+        User user = (User) getAvailablePrincipal(principalCollection);
+        Integer userId = user.getId();
         String permissionUrl = indexServiceImpl.selectPermission(userId);
         simpleAuthorizationInfo.addStringPermission(permissionUrl);
-
 
 
         return simpleAuthorizationInfo;
@@ -43,6 +46,7 @@ public class UserRealm extends AuthorizingRealm {
 
     /**
      * 认证
+     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -57,10 +61,10 @@ public class UserRealm extends AuthorizingRealm {
             throw new UnknownAccountException();
         }
 
-        if(!password.equals(isExistUser.getPassword())) {
+        if (!password.equals(isExistUser.getPassword())) {
             throw new IncorrectCredentialsException();
         }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(isExistUser,password,getName());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(isExistUser, password, getName());
         return info;
     }
 }
