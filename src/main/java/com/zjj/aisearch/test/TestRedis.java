@@ -31,8 +31,6 @@ public class TestRedis {
         System.out.println(stringRedisTemplate.opsForValue().get("aaa"));
         List<String> aaa = JSONArray.parseArray(stringRedisTemplate.opsForValue().get("aaa"), String.class);
         System.out.println(aaa);
-
-
     }
 
 

@@ -1,5 +1,7 @@
 package com.zjj.aisearch.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.zjj.aisearch.config.ConfigBean;
 import com.zjj.aisearch.model.*;
 import com.zjj.aisearch.service.QueryService;
 import io.swagger.annotations.ApiOperation;
@@ -7,12 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @program: AISearch
@@ -26,6 +31,11 @@ public class QueryController {
 
     @Autowired
     private QueryService queryServiceImpl;
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+    //配置文件
+    @Autowired
+    ConfigBean configBean;
 
     @PostMapping("querySystemLog")
     @RequiresPermissions("user:systemloglist")
@@ -134,6 +144,7 @@ public class QueryController {
 
     @PostMapping("querySystem")
     public List<String> querySystem() {
+
         List<String> strings = queryServiceImpl.querySystem();
         return strings;
     }
@@ -146,7 +157,15 @@ public class QueryController {
 
     @PostMapping("queryBrowser")
     public List<String> queryBrowser() {
+        String cache = stringRedisTemplate.opsForValue().get(configBean.getREDIS_ITEM_PRE());
+        if (StringUtils.isNotBlank(cache)) {
+            List<String> cacheReuslt = JSONArray.parseArray(stringRedisTemplate.opsForValue().get(configBean.getREDIS_ITEM_PRE()), String.class);
+            log.info("queryBrowser走缓存");
+            return cacheReuslt;
+        }
         List<String> strings = queryServiceImpl.queryBrowser();
+        //结果存缓存
+        stringRedisTemplate.opsForValue().set(configBean.getREDIS_ITEM_PRE(), JSONArray.toJSON(strings).toString(),configBean.getITEM_CACHE_EXPIRE().intValue(), TimeUnit.SECONDS);
         return strings;
     }
 
