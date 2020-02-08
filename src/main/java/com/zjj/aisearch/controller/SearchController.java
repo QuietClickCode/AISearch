@@ -45,6 +45,7 @@ public class SearchController {
     @Autowired
     ConfigBean configBean;
 
+
     /*@GetMapping("/")
     public String index(Model model) {
         QueryDTO queryDTO = QueryDTO.builder().minScore(7.5f).orderBy("release_date").build();

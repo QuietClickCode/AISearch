@@ -5,10 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * @program: AISearch
  * @description:
@@ -20,7 +16,7 @@ import java.util.Date;
 @Setter
 @Data
 @ToString
-public class CSDNArticle {
+public class CSDNArticle{
 
     private Integer id;
 
