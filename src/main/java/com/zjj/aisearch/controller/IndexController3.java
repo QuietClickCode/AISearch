@@ -15,7 +15,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 /**
  * @program: aisearch
- * @description: 入口
+ * @description: 博客园入口
  * @author: zjj
  * @create: 2019-09-07 16:53:15
  **/

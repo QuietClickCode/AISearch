@@ -18,7 +18,7 @@ import java.util.UUID;
 
 /**
  * @program: aisearch
- * @description: 入口
+ * @description: 小红书入口
  * @author: zjj
  * @create: 2019-09-07 16:53:15
  **/

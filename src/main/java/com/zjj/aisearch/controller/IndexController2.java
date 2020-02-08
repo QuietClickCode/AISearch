@@ -15,7 +15,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 /**
  * @program: aisearch
- * @description: 入口
+ * @description: 简书爬虫入口
  * @author: zjj
  * @create: 2019-09-07 16:53:15
  **/
@@ -33,6 +33,12 @@ public class IndexController2 implements PageProcessor {
         Spider.create(this).addUrl("https://www.jianshu.com").thread(3).run();
     }
 
+    @RequestMapping("stop")
+    @ResponseBody
+    public void stop() {
+
+        Spider.create(this).addUrl("https://www.jianshu.com").thread(3).stop();
+    }
 
 
     @Override
