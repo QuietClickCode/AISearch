@@ -26,6 +26,12 @@
     </properties>
 
     <dependencies>
+        <!-- 整合redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <!--tika-->
         <dependency>
             <groupId>org.apache.poi</groupId>
