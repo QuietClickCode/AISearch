@@ -132,7 +132,6 @@ public class SearchController {
         responseResult.setMsg(queryString);
         return responseResult;
     }
-
    /* @GetMapping("/detail/{id}")
     public String detail(
             @PathVariable("id") String id,
