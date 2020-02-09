@@ -81,3 +81,6 @@ slogan:万物皆可搜索
 　　　但是如果你的数据是复杂的对象类型，而取出的时候又不想做任何的数据转换，直接从Redis里面取出一个对象，那么使用RedisTemplate是更好的选择。
 
 stringRedisTemplate.opsForValue().set("test", "100",60*10,TimeUnit.SECONDS);//向redis里存入数据和设置缓存时间
+2020年2月9日12:20:12
+https:不安全解决办法
+https://www.cnblogs.com/zhucezmf/p/9896577.html
