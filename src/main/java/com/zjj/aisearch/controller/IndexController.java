@@ -202,6 +202,7 @@ public class IndexController {
             if (e instanceof DuplicateKeyException) {
                 e.printStackTrace();
                 responseResult.setMsg("用户名已存在");
+                responseResult.setStatus(-1);
                 return responseResult;
             } else {
                 e.printStackTrace();
