@@ -64,4 +64,11 @@ public class UpdateController {
         return updateServiceImpl.deleteMarkdown(id);
     }
 
+    @PostMapping("deleteAINote")
+    @ApiOperation("删除便签")
+    public Integer deleteAINote(@RequestBody Map<String, Object> map) {
+        Integer id = (Integer) map.get("id");
+        return updateServiceImpl.deleteAINote(id);
+    }
+
 }

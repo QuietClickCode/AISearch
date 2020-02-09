@@ -16,4 +16,6 @@ public interface UpdateMapper {
     Integer updateMarkdown(MarkDown markdown);
 
     Integer deleteMarkdown(Integer id);
+
+    Integer deleteAINote(Integer id);
 }

@@ -38,4 +38,9 @@ public class UpdateServiceImpl implements UpdateService {
     public Integer deleteMarkdown(Integer id) {
         return updateMapper.deleteMarkdown(id);
     }
+
+    @Override
+    public Integer deleteAINote(Integer id) {
+        return updateMapper.deleteAINote(id);
+    }
 }

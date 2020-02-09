@@ -18,4 +18,8 @@
     <delete id="deleteMarkdown" parameterType="integer">
         delete from ai_markdown where id = #{id};
     </delete>
+    <!--删除ainote-->
+    <delete id="deleteAINote" parameterType="integer">
+        delete from ai_note where id = #{id};
+    </delete>
 </mapper>
