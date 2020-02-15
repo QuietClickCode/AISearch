@@ -1,6 +1,7 @@
 package com.zjj.aisearch.service;
 
 import com.zjj.aisearch.model.EditorList;
+import com.zjj.aisearch.model.FullTextFile;
 import com.zjj.aisearch.model.QueryForm;
 import com.zjj.aisearch.model.SystemLogList;
 
@@ -49,4 +50,6 @@ public interface QueryService {
     Integer queryUserListCount(QueryForm queryForm);
 
     List<SystemLogList> queryUserList(QueryForm queryForm);
+
+    List<FullTextFile> queryFileList();
 }

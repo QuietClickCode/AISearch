@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zjj.aisearch.mapper.QueryMapper">
+    <!--filelist自定义映射-->
+    <resultMap id="fileList" type="FullTextFile">
+        <!--id指定主键列的封装规则,return指定普通列的封装规则
+        column:数据库列名
+        property:对应的javabean属性
+        -->
+        <id column="id" property="id"/>
+        <result column="file_type" property="fileType"/>
+        <result column="file_size" property="fileSize"/>
+        <result column="file_content" property="fileContent"/>
+        <result column="file_path" property="filePath"/>
+        <result column="createuser" property="createuser"/>
+        <result column="file_name" property="fileName"/>
+        <result column="createtime" property="createtime"/>
+    </resultMap>
     <!--系统操作日志详情-->
     <resultMap id="systemLogList" type="SystemLogList">
         <id property="id" column="id"></id>
@@ -684,6 +699,10 @@
         limit #{startpage} , 10
     </select>
 
+    <!--查询文件列表-->
+    <select id="queryFileList" resultMap="fileList">
+        select * from ai_file;
+    </select>
     <!--查询注册用户详情总条数-->
     <select id="queryUserListCount" parameterType="QueryForm" resultType="integer">
         select count(*) from `user` u

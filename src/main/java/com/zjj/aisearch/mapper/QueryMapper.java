@@ -1,6 +1,7 @@
 package com.zjj.aisearch.mapper;
 
 import com.zjj.aisearch.model.EditorList;
+import com.zjj.aisearch.model.FullTextFile;
 import com.zjj.aisearch.model.QueryForm;
 import com.zjj.aisearch.model.SystemLogList;
 
@@ -48,4 +49,6 @@ public interface QueryMapper {
     List<SystemLogList> queryUserList(QueryForm queryForm);
 
     Integer queryUserListCount(QueryForm queryForm);
+
+    List<FullTextFile> queryFileList();
 }

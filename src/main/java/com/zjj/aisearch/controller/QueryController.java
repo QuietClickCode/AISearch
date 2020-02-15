@@ -134,6 +134,11 @@ public class QueryController {
     public List<SystemLogList> queryUserList(@RequestBody QueryForm queryForm) {
         return queryServiceImpl.queryUserList(queryForm);
     }
+    @PostMapping("queryFileList")
+    @ApiOperation("根据条件查询用户记录数据")
+    public List<FullTextFile> queryFileList() {
+        return queryServiceImpl.queryFileList();
+    }
 
     @PostMapping("queryUserListCount")
     @ApiOperation("根据条件查询用户记录数据总条数")

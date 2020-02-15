@@ -2,6 +2,7 @@ package com.zjj.aisearch.service.impl;
 
 import com.zjj.aisearch.mapper.QueryMapper;
 import com.zjj.aisearch.model.EditorList;
+import com.zjj.aisearch.model.FullTextFile;
 import com.zjj.aisearch.model.QueryForm;
 import com.zjj.aisearch.model.SystemLogList;
 import com.zjj.aisearch.service.QueryService;
@@ -120,5 +121,10 @@ public class QueryServiceImpl implements QueryService {
     @Override
     public List<SystemLogList> queryUserList(QueryForm queryForm) {
         return queryMapper.queryUserList(queryForm);
+    }
+
+    @Override
+    public List<FullTextFile> queryFileList() {
+        return queryMapper.queryFileList();
     }
 }
