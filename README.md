@@ -42,3 +42,6 @@ tika支持各种类型的文件,doc,java,js,html,md,excel,pdf等
 
 2020年2月9日18:02:00
 发布1.1.0 后台管理完成,集成redis缓存和activemq消息中间件
+
+2020年2月15日20:07:01
+整合FastDFS实现图床和网盘功能
