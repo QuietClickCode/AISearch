@@ -136,6 +136,4 @@ public class UploadController {
         responseResult.setMsg("成功删除");
         return responseResult;
     }
-
-
 }
