@@ -26,6 +26,12 @@
     </properties>
 
     <dependencies>
+        <!--整合fastDFS-->
+        <dependency>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>1.26.5</version>
+        </dependency>
         <!-- 整合redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
