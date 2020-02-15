@@ -25,6 +25,9 @@
         insert into ai_file(file_name,file_type,file_size,file_content,file_path,createuser,createtime)
         values (#{fileName},#{fileType},#{fileSize},#{fileContent},#{filePath},#{createuser},#{createtime});
     </insert>
+    <delete id="deleteFile" parameterType="integer">
+        delete from ai_file WHERE id = #{id};
+    </delete>
 
     <!--<insert id="save" parameterType="Img">
         <selectKey resultType="int" keyProperty="id" order="AFTER">

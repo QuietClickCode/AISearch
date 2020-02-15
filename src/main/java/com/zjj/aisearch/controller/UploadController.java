@@ -24,12 +24,12 @@ import java.io.InputStream;
 import java.util.Date;
 
 /**
-* @Description: FastDFS做网盘和图床
-* @Param:  
-* @return:  
-* @Author: zjj
-* @Date: 2020/2/15 
-*/ 
+ * @Description: FastDFS做网盘和图床
+ * @Param:
+ * @return:
+ * @Author: zjj
+ * @Date: 2020/2/15
+ */
 @RestController
 public class UploadController {
 
@@ -120,17 +120,21 @@ public class UploadController {
      * @return
      */
     @RequestMapping("/deleteFile")
-    public String delFile(String filePath, HttpServletRequest request, HttpServletResponse response) {
-
+    public ResponseResult delFile(Integer id, String filePath, HttpServletRequest request, HttpServletResponse response) {
+        ResponseResult responseResult = new ResponseResult();
         try {
             dfsClient.delFile(filePath);
+            uploadFileServiceImpl.deleteFile(id);
         } catch (Exception e) {
             // 文件不存在报异常 ： com.github.tobato.fastdfs.exception.FdfsServerException: 错误码：2，错误信息：找不到节点或文件
-            // e.printStackTrace();
+            responseResult.setStatus(-1);
+            responseResult.setMsg("删除失败");
+            e.printStackTrace();
+            return responseResult;
         }
-        request.setAttribute("msg", "成功删除，'" + filePath);
-
-        return "index";
+        responseResult.setStatus(0);
+        responseResult.setMsg("成功删除");
+        return responseResult;
     }
 
 

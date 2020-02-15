@@ -21,4 +21,9 @@ public class UploadFileServiceImpl implements UploadFileService {
     public int save(FullTextDTO fullTextDTO) {
         return uploadFileMapper.save(fullTextDTO);
     }
+
+    @Override
+    public int deleteFile(Integer id) {
+        return uploadFileMapper.deleteFile(id);
+    }
 }
