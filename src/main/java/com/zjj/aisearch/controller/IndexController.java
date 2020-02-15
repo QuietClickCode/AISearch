@@ -155,7 +155,6 @@ public class IndexController {
         return responseResult;
     }
 
-
     /**
      * regist.html,ajax发送的登录请求
      * UserInfo 包含浏览器传过来的所有信息
