@@ -1,10 +1,7 @@
 package com.zjj.aisearch.mapper;
 
 
-import com.zjj.aisearch.model.Article;
-import com.zjj.aisearch.model.SearchRecord;
-import com.zjj.aisearch.model.User;
-import com.zjj.aisearch.model.ZhihuArticle;
+import com.zjj.aisearch.model.*;
 
 public interface IndexMapper  {
     User index();
@@ -12,4 +9,5 @@ public interface IndexMapper  {
     int insertArticle(Article article);
     int insertZhihuArticle(ZhihuArticle article);
 
+    int insertMovie(Movie movie);
 }

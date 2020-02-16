@@ -24,5 +24,9 @@
     <insert id="insertZhihuArticle" parameterType="com.zjj.aisearch.model.ZhihuArticle">
         insert into zhihu_article_copy(answer, question,question_info, createtime) values(#{answer},#{question},#{questionInfo},#{createTime})
     </insert>
+    <!--电影-->
+    <insert id="insertMovie" parameterType="com.zjj.aisearch.model.Movie">
+        insert into movie(id, title,cover, rate,casts,directors) values(#{id},#{title},#{cover},#{rate},#{casts},#{directors})
+    </insert>
 
 </mapper>
