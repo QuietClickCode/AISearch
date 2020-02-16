@@ -19,4 +19,6 @@ public interface GetService {
     List<MovieDTO> getMovieDTOList();
 
     List<DocumentDTO> getDocumentDTOList();
+
+    Integer getDocumentDTOByName(DocumentDTO documentDTO);
 }

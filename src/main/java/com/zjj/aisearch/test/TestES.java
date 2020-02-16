@@ -9,12 +9,14 @@ import com.zjj.aisearch.repository.IJianShuArticleRepository;
 import com.zjj.aisearch.repository.IMovieRepository;
 import com.zjj.aisearch.service.GetService;
 import com.zjj.aisearch.service.WriteService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
@@ -29,6 +31,8 @@ import java.util.List;
  **/
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Component
+@Slf4j
 public class TestES {
 
     @Autowired
@@ -65,6 +69,7 @@ public class TestES {
             documentESRepository.save(documentDTO);
         }
     }
+
     //导入文件到数据库中
     @Test
     public void test5() throws IOException, TikaException {
@@ -75,11 +80,27 @@ public class TestES {
         for (File f : files) {
             String filecontent = tika.parseToString(f);
             String name = f.getName();
-            documentDTO.setDocumentcontent(filecontent);
             documentDTO.setDocumentname(name);
-            writeService.saveDocument(documentDTO);
+            Integer count = getService.getDocumentDTOByName(documentDTO);
+            //intValue（）方法，意思是说，把Integer类型转化为Int类型。
+            System.out.println(count.intValue() + "000000");
+            System.out.println((count.intValue() == 0) + "1111111111");
+            log.info(name + "=============");
+            if (count.intValue() == 0) {
+                documentDTO.setDocumentcontent(filecontent);
+                writeService.saveDocument(documentDTO);
+                log.info(documentDTO.getDocumentname() + "-------------");
+            }
         }
+    }
 
+    //测试避免重复文件入库
+    @Test
+    public void test7() {
+        DocumentDTO documentDTO = new DocumentDTO();
+        documentDTO.setDocumentname("1576394941908_java.md");
+        Integer count = getService.getDocumentDTOByName(documentDTO);
+        System.out.println(count.intValue());
 
     }
 
@@ -97,6 +118,7 @@ public class TestES {
             System.out.println(l.toString());
         }
     }
+
     //查询文件
     @Test
     public void test6() {
@@ -105,7 +127,6 @@ public class TestES {
             System.out.println(l.toString());
         }
     }
-
 
 
 }

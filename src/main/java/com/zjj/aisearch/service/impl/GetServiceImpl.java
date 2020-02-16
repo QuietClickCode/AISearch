@@ -46,5 +46,10 @@ public class GetServiceImpl implements GetService {
         return documentMapper.selectAll();
     }
 
+    @Override
+    public Integer getDocumentDTOByName(DocumentDTO documentDTO) {
+        return documentMapper.selectCount(documentDTO);
+    }
+
 
 }
