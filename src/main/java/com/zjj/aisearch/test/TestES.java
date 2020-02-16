@@ -71,6 +71,7 @@ public class TestES {
     }
 
     //导入文件到数据库中
+    //方法有问题
     @Test
     public void test5() throws IOException, TikaException {
         File file = new File("I:\\document");
@@ -83,13 +84,9 @@ public class TestES {
             documentDTO.setDocumentname(name);
             Integer count = getService.getDocumentDTOByName(documentDTO);
             //intValue（）方法，意思是说，把Integer类型转化为Int类型。
-            System.out.println(count.intValue() + "000000");
-            System.out.println((count.intValue() == 0) + "1111111111");
-            log.info(name + "=============");
             if (count.intValue() == 0) {
                 documentDTO.setDocumentcontent(filecontent);
                 writeService.saveDocument(documentDTO);
-                log.info(documentDTO.getDocumentname() + "-------------");
             }
         }
     }
