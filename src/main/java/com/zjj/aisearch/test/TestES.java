@@ -1,14 +1,24 @@
 package com.zjj.aisearch.test;
 
+import com.zjj.aisearch.pojo.dto.DocumentDTO;
+import com.zjj.aisearch.pojo.dto.JianShuArticleDTO;
 import com.zjj.aisearch.pojo.dto.MovieDTO;
+import com.zjj.aisearch.pojo.entity.Page;
+import com.zjj.aisearch.repository.IDocumentRepository;
+import com.zjj.aisearch.repository.IJianShuArticleRepository;
 import com.zjj.aisearch.repository.IMovieRepository;
 import com.zjj.aisearch.service.GetService;
+import com.zjj.aisearch.service.WriteService;
+import org.apache.tika.Tika;
+import org.apache.tika.exception.TikaException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,7 +35,16 @@ public class TestES {
     private IMovieRepository movieESRepository;
 
     @Autowired
+    private IDocumentRepository documentESRepository;
+
+    @Autowired
+    private IJianShuArticleRepository jianShuArticleESRepository;
+
+    @Autowired
     private GetService getService;
+
+    @Autowired
+    private WriteService writeService;
 
     //导入到es
     //创建索引
@@ -37,11 +56,56 @@ public class TestES {
         }
     }
 
+    //导入到es
+    //创建document索引
+    @Test
+    public void test4() {
+        List<DocumentDTO> dccumentDTOList = getService.getDocumentDTOList();
+        for (DocumentDTO documentDTO : dccumentDTOList) {
+            documentESRepository.save(documentDTO);
+        }
+    }
+    //导入文件到数据库中
+    @Test
+    public void test5() throws IOException, TikaException {
+        File file = new File("I:\\document");
+        File[] files = file.listFiles();
+        Tika tika = new Tika();
+        DocumentDTO documentDTO = new DocumentDTO();
+        for (File f : files) {
+            String filecontent = tika.parseToString(f);
+            String name = f.getName();
+            documentDTO.setDocumentcontent(filecontent);
+            documentDTO.setDocumentname(name);
+            writeService.saveDocument(documentDTO);
+        }
+
+
+    }
+
     //删除索引
     @Test
     public void test1() {
         movieESRepository.deleteIndex("movie");
     }
+
+    //查询简书
+    @Test
+    public void test2() {
+        Page<JianShuArticleDTO> list = jianShuArticleESRepository.query("你好", 1, 10);
+        for (JianShuArticleDTO l : list.getList()) {
+            System.out.println(l.toString());
+        }
+    }
+    //查询文件
+    @Test
+    public void test6() {
+        Page<DocumentDTO> list = documentESRepository.query("乌合之众", 1, 10);
+        for (DocumentDTO l : list.getList()) {
+            System.out.println(l.toString());
+        }
+    }
+
 
 
 }
