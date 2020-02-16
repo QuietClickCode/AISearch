@@ -27,12 +27,20 @@ public class TestES {
     @Autowired
     private GetService getService;
 
+    //导入到es
+    //创建索引
     @Test
     public void test() {
         List<MovieDTO> movieDTOList = getService.getMovieDTOList();
         for (MovieDTO movieDTO : movieDTOList) {
             movieESRepository.save(movieDTO);
         }
+    }
+
+    //删除索引
+    @Test
+    public void test1() {
+        movieESRepository.deleteIndex("movie");
     }
 
 
