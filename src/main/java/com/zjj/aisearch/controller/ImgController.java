@@ -3,9 +3,11 @@ package com.zjj.aisearch.controller;
 import com.zjj.aisearch.config.ConfigBean;
 import com.zjj.aisearch.model.Img;
 import com.zjj.aisearch.model.ResponseResult;
+import com.zjj.aisearch.pojo.dto.DocumentDTO;
 import com.zjj.aisearch.pojo.dto.FullTextDTO;
 import com.zjj.aisearch.pojo.entity.Page;
 import com.zjj.aisearch.repository.FullTextRepository;
+import com.zjj.aisearch.repository.impl.DocumentESRepository;
 import com.zjj.aisearch.service.ImgService;
 import com.zjj.aisearch.service.UploadFileService;
 import com.zjj.aisearch.utils.DateTimeUtil;
@@ -44,6 +46,9 @@ public class ImgController {
     private UploadFileService uploadFileServiceImpl;
     @Autowired
     private FullTextRepository fullTextESRepository;
+
+    @Autowired
+    private DocumentESRepository documentESRepository;
 
     @Autowired
     private ConfigBean configBean;
@@ -149,8 +154,15 @@ public class ImgController {
     @ApiOperation("查询文档")
     @PostMapping("/queryDocument")
     public ResponseResult queryDocument(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        String keyword = (String) request.getSession().getAttribute("keyword");
+        /*String keyword = (String) request.getSession().getAttribute("keyword");
         Page<FullTextDTO> jestResult = fullTextESRepository.query(keyword, 1, 20);
+        System.out.println(jestResult);
+        System.out.println(jestResult.getList().toString());
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setData(jestResult.getList());
+        return responseResult;*/
+        String keyword = (String) request.getSession().getAttribute("keyword");
+        Page<DocumentDTO> jestResult = documentESRepository.query(keyword, 1, 20);
         System.out.println(jestResult);
         System.out.println(jestResult.getList().toString());
         ResponseResult responseResult = new ResponseResult();
