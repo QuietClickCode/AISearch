@@ -1,7 +1,9 @@
 package com.zjj.aisearch.service.impl;
 
 import com.zjj.aisearch.mapper.GetMapper;
+import com.zjj.aisearch.mapper.MovieMapper;
 import com.zjj.aisearch.model.Todo;
+import com.zjj.aisearch.pojo.dto.MovieDTO;
 import com.zjj.aisearch.service.GetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,19 @@ public class GetServiceImpl implements GetService {
     @Autowired
     private GetMapper getMapper;
 
+    @Autowired
+    private MovieMapper movieMapper;
+
     @Override
     public List<Todo> getTodoList(Map<String, String> map) {
+
         return getMapper.getTodoList(map);
     }
+
+    @Override
+    public List<MovieDTO> getMovieDTOList() {
+        return movieMapper.selectAll();
+    }
+
+
 }

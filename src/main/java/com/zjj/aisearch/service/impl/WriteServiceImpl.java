@@ -1,5 +1,6 @@
 package com.zjj.aisearch.service.impl;
 
+import com.zjj.aisearch.mapper.MovieMapper;
 import com.zjj.aisearch.mapper.WriteMapper;
 import com.zjj.aisearch.model.Editor;
 import com.zjj.aisearch.model.MarkDown;
@@ -32,4 +33,6 @@ public class WriteServiceImpl implements WriteService {
     public int saveEditor(Editor editor) {
         return writeMapper.saveEditor(editor);
     }
+
+
 }
