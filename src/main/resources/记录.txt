@@ -105,3 +105,11 @@ spring boot整合quartz
 error: dst refspec 1.1.1 matches more than one.
 解决办法
 https://blog.csdn.net/qq_32452623/article/details/76649109
+2020年2月18日02:10:16
+考虑重新设计文档表,考虑创建人,创建时间,文件大小,字数统计,类型,路径什么的搞进去
+哪些文件内容没转换成功的把他删除了,然后可以点击就能看,
+考虑分段导入es中
+命名规则书籍_段落
+书籍_章节
+书籍_页码
+书籍_句子
