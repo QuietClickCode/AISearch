@@ -100,3 +100,8 @@ spring boot整合fastDFS
 2020年2月16日22:32:23
 https://blog.csdn.net/chenmingxu438521/article/details/94485695
 spring boot整合quartz
+
+2020年2月18日01:57:21
+error: dst refspec 1.1.1 matches more than one.
+解决办法
+https://blog.csdn.net/qq_32452623/article/details/76649109
