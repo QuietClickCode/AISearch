@@ -77,6 +77,14 @@ public class TestES {
         documentESRepository.deleteIndex("document");
     }
 
+
+    //根据id删除文档
+    @Test
+    public void test9() {
+        documentESRepository.deleteDocument("document", "document", "AXBUKVfs5MwoOe6VlozH");
+
+    }
+
     //导入文件到数据库中
     //方法有问题
     @Test
