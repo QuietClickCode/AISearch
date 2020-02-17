@@ -4,7 +4,6 @@ import com.zjj.aisearch.config.ConfigBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.jms.annotation.EnableJms;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -17,7 +16,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @MapperScan(basePackages = "com.zjj.aisearch.mapper")
 @EnableConfigurationProperties(ConfigBean.class)
-@EnableJms //启动消息队列
+//@EnableJms //启动消息队列
 public class SpringbootApplication {
 
 

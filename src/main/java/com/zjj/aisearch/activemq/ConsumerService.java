@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Component;
 
 import javax.jms.Queue;
 
@@ -16,7 +15,7 @@ import javax.jms.Queue;
  * @date 2018/9/15 18:36
  *
  */
-@Component
+//@Component
 @Slf4j
 public class ConsumerService {
 

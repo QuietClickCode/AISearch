@@ -70,16 +70,29 @@ public class TestES {
         }
     }
 
+    //删除document索引
+
+    @Test
+    public void test8() {
+        documentESRepository.deleteIndex("document");
+    }
+
     //导入文件到数据库中
     //方法有问题
     @Test
     public void test5() throws IOException, TikaException {
+
         File file = new File("I:\\document");
         File[] files = file.listFiles();
         Tika tika = new Tika();
         DocumentDTO documentDTO = new DocumentDTO();
         for (File f : files) {
-            String filecontent = tika.parseToString(f);
+            String filecontent = "";
+            try {
+                filecontent = tika.parseToString(f);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             String name = f.getName();
             documentDTO.setDocumentname(name);
             Integer count = getService.getDocumentDTOByName(documentDTO);
