@@ -127,4 +127,5 @@ https://blog.csdn.net/qq_32452623/article/details/76649109
 日志查询系统
 整合elk
 查询结果历史可视化什么的
-
+第二个大脑
+数据脑
