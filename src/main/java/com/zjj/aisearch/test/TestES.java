@@ -101,6 +101,13 @@ public class TestES {
         System.out.println(documentDTOS);
     }
 
+    @Test
+    public void test12() {
+        DocumentDTO documentDTO = documentMapper.selectByPrimaryKey("51");
+        System.out.println(documentDTO.toString());
+        System.out.println(documentDTO.getDocumentcontent().toString().length());
+    }
+
     //删除文件系统空内容
     @Test
     public void test11() {
