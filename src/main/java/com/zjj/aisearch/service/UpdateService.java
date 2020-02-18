@@ -11,4 +11,5 @@ public interface UpdateService {
 
     Integer deleteMarkdown(Integer id);
     Integer deleteAINote(Integer id);
+
 }

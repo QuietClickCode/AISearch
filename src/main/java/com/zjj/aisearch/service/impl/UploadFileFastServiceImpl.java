@@ -11,6 +11,7 @@ import com.zjj.aisearch.utils.MultipartFileToFile;
 import com.zjj.aisearch.utils.UploadFileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
+import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +27,7 @@ import java.io.IOException;
  **/
 @Service
 @Slf4j
-public class UploadFileServiceImpl implements UploadFileService {
+public class UploadFileFastServiceImpl implements UploadFileService {
     @Autowired
     private DocumentMapper documentMapper;
 
@@ -59,9 +60,9 @@ public class UploadFileServiceImpl implements UploadFileService {
             //然后多线程上传下载可以用不同的工具类,其实这些操作应该放在service中进行的,然后有无多线程,有无缓冲,用四个不同的service类来实现,体现多态的优势
             /*1、首先文件保存的SAVE方法放在数据库保存后面执行
             2、建立一个事务，首先进行数据库的保存，但是不要commit；然后save文件，当成功save后就commit，否则就会滚*/
-            log.info("无缓冲start:" + System.currentTimeMillis());
-            String s = UploadFileUtil.uploadFile("I:/document", file);
-            log.info("无缓冲end:" + System.currentTimeMillis());
+            log.info("有缓冲start:" + System.currentTimeMillis());
+            String s = UploadFileUtil.uploadFileFast("I:/document", file);
+            log.info("有缓冲end:" + System.currentTimeMillis());
             File file1 = MultipartFileToFile.multipartFileToFile(file);
             String fileName = file1.getName();
             String filecontent = tika.parseToString(file1);

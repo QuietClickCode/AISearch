@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.zjj.aisearch.utils.UploadFileUtil.uploadFileCommon;
+
 /**
  * @program: AISearch
  * @description: 图片上传
@@ -143,7 +145,7 @@ public class ImgController {
 
     @ApiOperation("获取关键字keyword")
     @PostMapping("/getKeyword")
-    public ResponseResult getKeyword(HttpServletRequest request){
+    public ResponseResult getKeyword(HttpServletRequest request) {
         String keyword = (String) request.getSession().getAttribute("keyword");
         ResponseResult responseResult = new ResponseResult();
         responseResult.setMsg(keyword);
@@ -172,37 +174,6 @@ public class ImgController {
 
 
     private String uploadFile(String uploadPath, MultipartFile file) {
-        InputStream inputStream = null;
-        OutputStream os = null;
-        String path = null;
-        String fileName = new Date().getTime() + "_" + file.getOriginalFilename();
-        try {
-            byte[] bs = new byte[1024];
-            // 读取到的数据长度
-            int len;
-            // 输出的文件流保存到本地文件
-            File tempFile = new File(uploadPath);
-            if (!tempFile.exists()) {
-                tempFile.mkdirs();
-            }
-            inputStream = file.getInputStream();
-            path = tempFile.getPath() + File.separator + fileName;
-            os = new FileOutputStream(path);
-            // 开始读取
-            while ((len = inputStream.read(bs)) != -1) {
-                os.write(bs, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            // 完毕，关闭所有链接
-            try {
-                os.close();
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return fileName;
+        return uploadFileCommon(uploadPath, file, true);
     }
 }
