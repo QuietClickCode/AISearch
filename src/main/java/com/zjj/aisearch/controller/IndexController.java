@@ -103,35 +103,20 @@ public class IndexController {
                 .sign(Algorithm.HMAC256(user.getPassword()));
         log.error(token);
         //插入本次登录的浏览器信息:型号,版本,系统类型
-        BrowserInfo browserInfo = new BrowserInfo();
-
-
-        browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
-        browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
-        browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
+        BrowserInfo browserInfo = insertBrowserInfo(userInfo);
         indexServiceImpl.insertBrowserInfo(browserInfo);
         //返回自动递增的ID
         String browserInfoId = browserInfo.getBrowserInfoId();
 
         //插入位置信息:X,Y,公网IP,地点,设备类型
-        Location location = new Location();
-        location.setIp(userInfo.getLocation()[0]);
-        location.setLocation(userInfo.getLocation()[1]);
-        location.setLocalIp(userInfo.getLocalIp());
-        location.setX(userInfo.getLocation()[2]);
-        location.setY(userInfo.getLocation()[3]);
-        location.setKeyword(userInfo.getPcOrPhone());
+        Location location = insertLocationInfo(userInfo);
         indexServiceImpl.insertLocation(location);
         //返回自动递增的ID
         String locationId = location.getLocationId();
 
         //插入登录日志
         Integer userId = user.getId();
-        LoginLog loginLog = new LoginLog();
-        loginLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        loginLog.setBrowserInfoId(browserInfoId);
-        loginLog.setLocationId(locationId);
-        loginLog.setUserId(userId);
+        LoginLog loginLog = getLoginLog(browserInfoId, locationId, userId);
         indexServiceImpl.insertLoginLog(loginLog);
         //返回本次登录日志id
         Integer loginLogId = loginLog.getId();
@@ -145,14 +130,48 @@ public class IndexController {
         session.setAttribute("loginLogId", loginLogId);
 
         //插入系统日志
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("login?" + "username=" + username);
-        systemLog.setLoginLogId(loginLogId);
+        SystemLog systemLog = getSystemLog(username, loginLogId, "login?", "username=");
         indexServiceImpl.insertSystemLog(systemLog);
         responseResult.setUrl("index").setStatus(0);
         responseResult.setMsg(token);
         return responseResult;
+    }
+
+    private SystemLog getSystemLog(String username, Integer loginLogId, String s, String s2) {
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        systemLog.setOperation(s + s2 + username);
+        systemLog.setLoginLogId(loginLogId);
+        return systemLog;
+    }
+
+    private LoginLog getLoginLog(String browserInfoId, String locationId, Integer userId) {
+        LoginLog loginLog = new LoginLog();
+        loginLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        loginLog.setBrowserInfoId(browserInfoId);
+        loginLog.setLocationId(locationId);
+        loginLog.setUserId(userId);
+        return loginLog;
+    }
+
+    private BrowserInfo insertBrowserInfo(@RequestBody UserInfo userInfo) {
+        BrowserInfo browserInfo = new BrowserInfo();
+        browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
+        browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
+        browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
+        return browserInfo;
+    }
+
+    //抽取的公共方法插入位置信息
+    private Location insertLocationInfo(@RequestBody UserInfo userInfo) {
+        Location location = new Location();
+        location.setIp(userInfo.getLocation()[0]);
+        location.setLocation(userInfo.getLocation()[1]);
+        location.setLocalIp(userInfo.getLocalIp());
+        location.setX(userInfo.getLocation()[2]);
+        location.setY(userInfo.getLocation()[3]);
+        location.setKeyword(userInfo.getPcOrPhone());
+        return location;
     }
 
     /**
@@ -167,22 +186,13 @@ public class IndexController {
     @ApiOperation("注册")
     public Object toregist(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         //插入本次登录的浏览器信息:型号,版本,系统类型
-        BrowserInfo browserInfo = new BrowserInfo();
-        browserInfo.setSystem(userInfo.getBrowserInfo()[0]);
-        browserInfo.setBrowserType(userInfo.getBrowserInfo()[1]);
-        browserInfo.setBrowserVersion(userInfo.getBrowserInfo()[2]);
+        BrowserInfo browserInfo = insertBrowserInfo(userInfo);
         indexServiceImpl.insertBrowserInfo(browserInfo);
         //返回自动递增的ID
         String browserInfoId = browserInfo.getBrowserInfoId();
 
         //插入位置信息:X,Y,公网IP,地点,设备类型
-        Location location = new Location();
-        location.setIp(userInfo.getLocation()[0]);
-        location.setLocation(userInfo.getLocation()[1]);
-        location.setLocalIp(userInfo.getLocalIp());
-        location.setX(userInfo.getLocation()[2]);
-        location.setY(userInfo.getLocation()[3]);
-        location.setKeyword(userInfo.getPcOrPhone());
+        Location location = insertLocationInfo(userInfo);
         indexServiceImpl.insertLocation(location);
         //返回自动递增的ID
         String locationId = location.getLocationId();
@@ -215,10 +225,7 @@ public class IndexController {
         //没有登录,loginLogId就为空
         //插入系统日志
         Integer loginLogId = (Integer) request.getSession().getAttribute("loginLogId");
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("regist?" + "username=" + user.getUsername());
-        systemLog.setLoginLogId(loginLogId);
+        SystemLog systemLog = getSystemLog(user.getUsername(), loginLogId, "regist?", "username=");
         indexServiceImpl.insertSystemLog(systemLog);
         log.info("[{}]注册成功", user.getUsername());
         responseResult.setMsg("恭喜" + user.getUsername() + "注册成功" + ",您是第" + user.getId() + "位用户")
@@ -256,15 +263,21 @@ public class IndexController {
         systemLog.setLoginLogId(loginLogId);
         indexServiceImpl.insertSystemLog(systemLog);
 
-        LogoutLog logoutLog = new LogoutLog();
-        logoutLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        logoutLog.setLoginLogId(loginLogId);
+        LogoutLog logoutLog = getLogoutLog(loginLogId);
         indexServiceImpl.insertLogoutLog(logoutLog);
         responseResult.setUrl("login").setStatus(0).setMsg("退出成功");
         SecurityUtils.getSubject().logout();
         /*这儿退出交给shiro来管理,自己销毁session会报错*/
         /*httpServletRequest.getSession().invalidate();*/
         return responseResult;
+    }
+
+    //idea重构
+    private LogoutLog getLogoutLog(Integer loginLogId) {
+        LogoutLog logoutLog = new LogoutLog();
+        logoutLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        logoutLog.setLoginLogId(loginLogId);
+        return logoutLog;
     }
 
 
@@ -296,15 +309,9 @@ public class IndexController {
 
         Integer loginLogId = (Integer) httpServletRequest.getSession().getAttribute("loginLogId");
 
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("detail" + "?keyword=" + keyword);
-        systemLog.setLoginLogId(loginLogId);
+        SystemLog systemLog = getSystemLog(keyword, loginLogId, "detail", "?keyword=");
 
-        SearchRecord searchRecord = new SearchRecord();
-        searchRecord.setKeyword(keyword);
-        searchRecord.setSearchTime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        searchRecord.setLoginLogId(loginLogId);
+        SearchRecord searchRecord = getSearchRecord(keyword, loginLogId);
         indexServiceImpl.insertSearchRecord(searchRecord);
         indexServiceImpl.insertSystemLog(systemLog);
 
@@ -312,6 +319,14 @@ public class IndexController {
         responseResult.setData(items);
         responseResult.setMsg(keyword);
         return responseResult;
+    }
+
+    private SearchRecord getSearchRecord(String keyword, Integer loginLogId) {
+        SearchRecord searchRecord = new SearchRecord();
+        searchRecord.setKeyword(keyword);
+        searchRecord.setSearchTime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        searchRecord.setLoginLogId(loginLogId);
+        return searchRecord;
     }
 
     /**
@@ -329,10 +344,7 @@ public class IndexController {
         aiNote.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
         aiNote.setLoginLogId(loginLogId);
 
-        SystemLog systemLog = new SystemLog();
-        systemLog.setCreatetime(DateTimeUtil.dateToStr(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        systemLog.setOperation("note" + "?content=" + aiNote.getContent());
-        systemLog.setLoginLogId(loginLogId);
+        SystemLog systemLog = getSystemLog(aiNote.getContent(), loginLogId, "note", "?content=");
 
         indexServiceImpl.insertSystemLog(systemLog);
         indexServiceImpl.insertAiNote(aiNote);
