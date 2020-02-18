@@ -1,5 +1,6 @@
 package com.zjj.aisearch.test;
 
+import com.zjj.aisearch.mapper.DocumentMapper;
 import com.zjj.aisearch.pojo.dto.DocumentDTO;
 import com.zjj.aisearch.pojo.dto.JianShuArticleDTO;
 import com.zjj.aisearch.pojo.dto.MovieDTO;
@@ -21,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +51,9 @@ public class TestES {
 
     @Autowired
     private WriteService writeService;
+
+    @Autowired
+    private DocumentMapper documentMapper;
 
     //导入到es
     //创建索引
@@ -84,6 +89,44 @@ public class TestES {
         documentESRepository.deleteDocument("document", "document", "AXBUKVfs5MwoOe6VlozH");
 
     }
+
+    //数据库和搜索库删除空内容数据
+    @Test
+    public void test10() {
+        List<DocumentDTO> documentDTOS = documentMapper.selectByContent("");
+        for (DocumentDTO documentDTO : documentDTOS) {
+            documentESRepository.deleteDocument("document", "document", documentDTO.getId().toString());
+            documentMapper.delete(documentDTO);
+        }
+        System.out.println(documentDTOS);
+    }
+
+    //删除文件系统空内容
+    @Test
+    public void test11() {
+        List<DocumentDTO> documentDTOS = documentMapper.selectAll();
+        File files = new File("I:/document");
+        File[] files1 = files.listFiles();
+        ArrayList<String> haha = new ArrayList<>();
+        ArrayList<String> hehe = new ArrayList<>();
+        for (File file : files1) {
+            String name = file.getName();
+            haha.add(name);
+        }
+        for (DocumentDTO documentDTO : documentDTOS) {
+            String documentname = documentDTO.getDocumentname();
+            hehe.add(documentname);
+        }
+        for (String ha : haha) {
+            boolean contains = hehe.contains(ha.toString());
+            if (!contains) {
+                File file = new File("I:/document/" + ha);
+                boolean delete = file.delete();
+                System.out.println(delete);
+            }
+        }
+    }
+
 
     //导入文件到数据库中
     //方法有问题
