@@ -3,8 +3,9 @@ package com.zjj.aisearch.config;
 import com.zjj.aisearch.quartz.DateTimeJob;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-//@Configuration
+@Configuration
 public class QuartzConfig {
     @Bean
     public JobDetail printTimeJobDetail(){
@@ -17,7 +18,7 @@ public class QuartzConfig {
     }
     @Bean
     public Trigger printTimeJobTrigger() {
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/10 * * * * ?");
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/30 * * * * ?");
         return TriggerBuilder.newTrigger()
                 .forJob(printTimeJobDetail())//关联上述的JobDetail
                 .withIdentity("quartzTaskService")//给Trigger起个名字

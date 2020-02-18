@@ -19,5 +19,6 @@ public class DateTimeJob extends QuartzJobBean {
         //获取JobDetail中关联的数据
         String msg = (String) jobExecutionContext.getJobDetail().getJobDataMap().get("msg");
         System.out.println("current time :" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "---" + msg);
+        /*System.exit(1);*/
     }
 }
