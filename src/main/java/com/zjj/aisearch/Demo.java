@@ -18,7 +18,6 @@ public class Demo {
      * java基础
      * 次要:
      * mysql
-     *
      * vue,js
      *
      * thymeleaf:
