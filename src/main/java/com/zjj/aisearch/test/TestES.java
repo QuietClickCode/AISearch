@@ -20,8 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,6 +157,28 @@ public class TestES {
             if (count.intValue() == 0) {
                 documentDTO.setDocumentcontent(filecontent);
                 writeService.saveDocument(documentDTO);
+            }
+        }
+    }
+
+    //导入段落文字到数据库中
+    @Test
+    public void test13() throws IOException, TikaException {
+        File file = new File("F:\\AISearch\\src\\main\\resources\\haha.txt");
+        System.out.println(file.getName());
+        Reader reader = new FileReader(file);
+        BufferedReader readers = new BufferedReader(reader);
+        DocumentDTO documentDTO = new DocumentDTO();
+        int i = 169;
+        while (readers.readLine() != null) {
+            String s = readers.readLine();
+            if (!s.isEmpty()) {
+                documentDTO.setId(null);
+                documentDTO.setDocumentname("中国历代党争分行.txt");
+                documentDTO.setDocumentcontent(s);
+                writeService.saveDocument(documentDTO);
+                documentESRepository.save(documentDTO);
+                System.out.println(s);
             }
         }
     }
