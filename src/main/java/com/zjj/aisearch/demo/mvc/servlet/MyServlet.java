@@ -15,7 +15,7 @@ public class MyServlet extends HttpServlet {
 
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-       resp.getWriter().write("my doGet method");
+       resp.getWriter().write("my doGet methods");
 
    }
 

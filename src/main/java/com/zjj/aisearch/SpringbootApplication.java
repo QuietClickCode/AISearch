@@ -18,8 +18,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(basePackages = "com.zjj.aisearch.mapper")
 @EnableConfigurationProperties(ConfigBean.class)
 //扫描servlet
-@ServletComponentScan("com.zjj.mvc.demo.mvc.servlet")
 //@EnableJms //启动消息队列
+@ServletComponentScan
 public class SpringbootApplication {
 
 
