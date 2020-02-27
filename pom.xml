@@ -65,6 +65,9 @@
             <version>1.13</version>
         </dependency>
 
+
+
+
         <!--整合quartz-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -241,6 +244,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20170516</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zkh</groupId>
+            <artifactId>hadoop2.5.0-demo</artifactId>
+            <version>0.0.1</version>
         </dependency>
 
     </dependencies>

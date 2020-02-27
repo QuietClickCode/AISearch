@@ -164,7 +164,7 @@ public class ImgController {
         responseResult.setData(jestResult.getList());
         return responseResult;*/
         String keyword = (String) request.getSession().getAttribute("keyword");
-        Page<DocumentDTO> jestResult = documentESRepository.query(keyword, 1, 20);
+        Page<DocumentDTO> jestResult = documentESRepository.query(keyword, 1, 500);
         System.out.println(jestResult);
         System.out.println(jestResult.getList().toString());
         ResponseResult responseResult = new ResponseResult();
