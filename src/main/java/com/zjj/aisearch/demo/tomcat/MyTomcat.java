@@ -23,7 +23,7 @@ public class MyTomcat {
         this.port = port;
     }
 
-    public void start() throws IOException {
+    public void start() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         initServletMapping();
         ServerSocket serverSocket = new ServerSocket(port);
         System.out.println("MyTomcat is Starting...");
@@ -31,14 +31,28 @@ public class MyTomcat {
             Socket accept = serverSocket.accept();
             InputStream inputStream = accept.getInputStream();
             OutputStream outputStream = accept.getOutputStream();
-            MyRequest myRequest = new MyRequest();
-            MyResponse myResponse = new MyResponse();
+            MyRequest myRequest = new MyRequest(inputStream);
+            MyResponse myResponse = new MyResponse(outputStream);
             dispatch(myRequest, myResponse);
             accept.close();
         }
     }
 
-    private void initServletMapping() {
+    private void dispatch(MyRequest myRequest, MyResponse myResponse) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String s = urlServletMapping.get(myRequest.getUrl());
+        Class<MyServlet> myServletClass  = (Class<MyServlet>) Class.forName(s);
+        MyServlet myservlet = myServletClass.newInstance();
+        myservlet.service(myRequest, myResponse);
     }
 
+    private void initServletMapping() {
+        for(ServletMapping servletMapping:ServletMappingConfig.servletMappingList) {
+            urlServletMapping.put(servletMapping.getUrl(),servletMapping.getClazz());
+        }
+    }
+
+    public static void main(String[] args) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+        MyTomcat myTomcat = new MyTomcat(8080);
+        myTomcat.start();
+    }
 }
