@@ -128,6 +128,8 @@ public class TestScan {
                         Object o2 = clazz.newInstance();
                         f.set(o2,o);
                         clazz.getMethod("test").invoke(o2);
+                    } else {
+                        Object o2 = clazz.newInstance();
                     }
                 }
             }
