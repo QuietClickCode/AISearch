@@ -15,5 +15,6 @@ public class ServletMappingConfig {
     static {
         servletMappingList.add(new ServletMapping("index", "/index", "com.zjj.aisearch.demo.tomcat.IndexServlet"));
         servletMappingList.add(new ServletMapping("myblog", "/myblog", "com.zjj.aisearch.demo.tomcat.MyBlog"));
+        servletMappingList.add(new ServletMapping("testspring", "/testspring", "com.zjj.aisearch.demo.spring.SpringTestController"));
     }
 }

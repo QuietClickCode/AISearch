@@ -235,6 +235,12 @@
             <artifactId>c3p0</artifactId>
             <version>0.9.1.1</version>
         </dependency>
+        <!--自己写mybatis-->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>

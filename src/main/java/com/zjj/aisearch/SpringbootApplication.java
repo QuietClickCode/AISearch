@@ -21,11 +21,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 //@EnableJms //启动消息队列
 @ServletComponentScan
 public class SpringbootApplication {
-
-
     public static void main(String[] args) {
-
         SpringApplication.run(SpringbootApplication.class, args);
     }
-
 }
