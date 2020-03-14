@@ -5,6 +5,10 @@ import com.zjj.aisearch.demo.annotations.ZjjController;
 import com.zjj.aisearch.demo.annotations.ZjjRequestMapping;
 import com.zjj.aisearch.demo.annotations.ZjjService;
 import com.zjj.aisearch.demo.controller.MyTestController;
+import com.zjj.aisearch.demo.spring.SpringTestController;
+import com.zjj.aisearch.demo.spring.TestSpring;
+import com.zjj.aisearch.demo.utils.ClazzUtils;
+import org.apache.commons.collections.map.HashedMap;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -28,7 +32,7 @@ public class TestScan {
 
         //getClassAnnotation();
         //getMethodAnnotation(requestURL);
-        getPackage1();
+        getPackage2();
     }
 
     /**
@@ -126,7 +130,7 @@ public class TestScan {
                         Class aClass = Class.forName(packageName + f.getType().getSimpleName());
                         Object o = aClass.newInstance();
                         Object o2 = clazz.newInstance();
-                        f.set(o2,o);
+                        f.set(o2, o);
                         clazz.getMethod("test").invoke(o2);
                     } else {
                         Object o2 = clazz.newInstance();
@@ -169,5 +173,65 @@ public class TestScan {
             }
         }
         return "--------";
+    }
+
+    /**
+     * 扫描包下的所有类
+     */
+    public static void getPackage2() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+
+        //指定包下的所有类的全路径
+        List<String> clazzs = ClazzUtils.getClazzName("com.zjj.aisearch.demo.spring", false);
+        System.out.println(clazzs);
+        //实例化所有加ZjjController的类
+        //得到所有类的Class对象
+        //容器
+        Map<String, Object> map = new HashedMap();
+        for (String clazz : clazzs) {
+            Class clazzObject = Class.forName(clazz);
+            //扫描ZjjService和ZjjController,并实例化
+            if (clazzObject.isAnnotationPresent(ZjjService.class) || clazzObject.isAnnotationPresent(ZjjController.class)) {
+                Object instance = clazzObject.newInstance();
+                //扫描ZjjAutowire
+                Field[] fields = clazzObject.getFields();
+                //遍历所有字段
+                for (Field field : fields) {
+                    ZjjAutowired annotation = field.getAnnotation(ZjjAutowired.class);
+                    //如果包含ZjjAutowired
+                    if (annotation != null) {
+                        //获取该字段全名
+                        String typeName = field.getType().getTypeName();
+                        //实例化该字段
+                        Class fieldObject = Class.forName(typeName);
+                        Object fieldInstance = fieldObject.newInstance();
+                        //注入
+                        field.set(instance, fieldInstance);
+                        Field[] fields1 = fieldObject.getFields();
+                        for (Field field1 : fields1) {
+                            ZjjAutowired annotation1 = field1.getAnnotation(ZjjAutowired.class);
+                            //如果包含ZjjAutowired
+                            if (annotation1 != null) {
+                                //获取该字段全名
+                                String typeName1 = field1.getType().getTypeName();
+                                //实例化该字段
+                                Class fieldInstance1 = Class.forName(typeName1);
+                                Object fieldInstance2 = fieldInstance1.newInstance();
+                                //注入
+                                field1.set(fieldInstance, fieldInstance2);
+                                map.put(typeName1, fieldInstance);
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        TestSpring testSpring = (TestSpring) map.get("com.zjj.aisearch.demo.spring.TestSpring");
+        System.out.println(testSpring);
+        testSpring.test();
+        SpringTestController springTestController = (SpringTestController) map.get("com.zjj.aisearch.demo.spring.SpringTestController");
+        System.out.println(springTestController);
+
     }
 }
