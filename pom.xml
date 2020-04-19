@@ -251,11 +251,11 @@
             <artifactId>json</artifactId>
             <version>20170516</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.zkh</groupId>
             <artifactId>hadoop2.5.0-demo</artifactId>
             <version>0.0.1</version>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
     <build>

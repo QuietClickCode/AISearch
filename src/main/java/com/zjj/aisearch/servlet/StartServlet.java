@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 
-@WebServlet(name = "startServlet", urlPatterns = "/*")  //标记为servlet，以便启动器扫描。
+//@WebServlet(name = "startServlet", urlPatterns = "/*")  //标记为servlet，以便启动器扫描。
 @Slf4j
 public class StartServlet extends HttpServlet {
 

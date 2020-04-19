@@ -5,16 +5,19 @@ import java.util.List;
 
 public class BeanDefinitionGenerator {
 
-    public static List<BeanDefinition> generate(String className){
+    public static List<BeanDefinition> generate(String className) {
         try {
             System.out.println(className);
             Class clazz = Class.forName(className);
 
+
             String[] ids = generateIds(clazz);
-            if(ids==null)return null;
+            if (ids == null) {
+                return null;
+            }
             List<BeanDefinition> list = new ArrayList<BeanDefinition>();
-            for (String id:ids){
-                list.add(new BeanDefinition(id,clazz));
+            for (String id : ids) {
+                list.add(new BeanDefinition(id, clazz));
             }
             return list;
         } catch (ClassNotFoundException e) {
@@ -27,7 +30,7 @@ public class BeanDefinitionGenerator {
     /**
      * 生成id数组
      * 1.带有@Controller 注解但是注解value没给值,@Controller一般没有
-     * 接口定义,用类的全名作为id返回ids长度为1 
+     * 接口定义,用类的全名作为id返回ids长度为1
      * 2.@Component 没有value  获取所有的实现的接口,接口名为id,返货ids数组
      * 长度是实现的接口个数
      * 3.@Component 有value 返回id=value
@@ -46,7 +49,7 @@ public class BeanDefinitionGenerator {
                 Class<?>[] interfaces = clazz.getInterfaces();
                 ids = new String[interfaces.length];
                 //如果这个类实现了接口，就用接口的类型作为id
-                for (int i = 0; i < interfaces.length; i++){
+                for (int i = 0; i < interfaces.length; i++) {
                     ids[i] = interfaces[i].getName();
                 }
                 return ids;
