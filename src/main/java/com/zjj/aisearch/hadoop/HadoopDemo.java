@@ -1,6 +1,6 @@
 package com.zjj.aisearch.hadoop;
 
-import com.zkh.utils.HdfsUtil;
+// import com.zkh.utils.HdfsUtil;
 
 /**
  * @program: AISearch
@@ -10,6 +10,6 @@ import com.zkh.utils.HdfsUtil;
  **/
 public class HadoopDemo {
     public static void main(String[] args) throws Exception {
-        HdfsUtil.readFile("/aaa/test.txt");
+       // HdfsUtil.readFile("/aaa/test.txt");
     }
 }
