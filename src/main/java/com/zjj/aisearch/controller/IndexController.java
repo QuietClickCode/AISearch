@@ -165,12 +165,12 @@ public class IndexController {
     //抽取的公共方法插入位置信息
     private Location insertLocationInfo(@RequestBody UserInfo userInfo) {
         Location location = new Location();
-        location.setIp(userInfo.getLocation()[0]);
+        /*location.setIp(userInfo.getLocation()[0]);
         location.setLocation(userInfo.getLocation()[1]);
         location.setLocalIp(userInfo.getLocalIp());
         location.setX(userInfo.getLocation()[2]);
         location.setY(userInfo.getLocation()[3]);
-        location.setKeyword(userInfo.getPcOrPhone());
+        location.setKeyword(userInfo.getPcOrPhone());*/
         return location;
     }
 
