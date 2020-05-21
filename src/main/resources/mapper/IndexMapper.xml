@@ -65,12 +65,20 @@
 
     <!--查询文章多条件-->
     <select id="queryArticle" resultType="Article">
-        select * from ${platform}
+        select * from
+        <choose>
+            <when test="platform != '' and platform != null">
+                ${platform}
+            </when>
+            <otherwise>
+                jianshu_article
+            </otherwise>
+        </choose>
         <where>
-            <if test="id != ''">
+            <if test="id != '' and id != null">
                 and id = #{id}
             </if>
-            <if test="title != ''">
+            <if test="title != '' and title != null">
                 and title like "%"#{title}"%"
             </if>
         </where>
