@@ -1,7 +1,11 @@
 package com.zjj.aisearch.controller;
 
+import com.zjj.aisearch.mapper.DocumentMapper;
+import com.zjj.aisearch.mapper.UploadFileMapper;
 import com.zjj.aisearch.model.ResponseResult;
+import com.zjj.aisearch.pojo.dto.DocumentDTO;
 import com.zjj.aisearch.pojo.dto.FullTextDTO;
+import com.zjj.aisearch.repository.impl.DocumentESRepository;
 import com.zjj.aisearch.service.UploadFileService;
 import com.zjj.aisearch.utils.DateTimeUtil;
 import com.zjj.aisearch.utils.FastDFSClientUtil;
@@ -32,7 +36,14 @@ import java.util.Date;
  */
 @RestController
 public class UploadController {
+    @Autowired
+    private DocumentMapper documentMapper;
 
+    @Autowired
+    private UploadFileMapper uploadFileMapper;
+
+    @Autowired
+    private DocumentESRepository documentESRepository;
     @Autowired
     private FastDFSClientUtil dfsClient;
     @Autowired
@@ -79,6 +90,12 @@ public class UploadController {
             fullTextDTO.setFileType(fileName.substring(fileName.lastIndexOf(".") + 1));
             //保存到数据库
             uploadFileServiceImpl.save(fullTextDTO);
+            //保存到索引库
+            DocumentDTO documentDTO = new DocumentDTO();
+            documentDTO.setDocumentcontent(fileName);
+            documentDTO.setDocumentname(filecontent);
+            documentMapper.insert(documentDTO);
+            documentESRepository.save(documentDTO);
             responseResult.setStatus(0);
             responseResult.setMsg("上传成功,这是第" + fullTextDTO.getId() + "个文件");
             responseResult.setUrl(fileUrl);
