@@ -26,4 +26,5 @@ public class DocumentDTO {
     private String documentname;
 
     private String documentcontent;
+    private String url;
 }

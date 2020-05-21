@@ -96,6 +96,7 @@ public class UploadController {
             DocumentDTO documentDTO = new DocumentDTO();
             documentDTO.setDocumentcontent(filecontent);
             documentDTO.setDocumentname(fileName);
+            documentDTO.setUrl(fileUrl);
             documentMapper.insert(documentDTO);
             documentESRepository.save(documentDTO);
             responseResult.setStatus(0);
