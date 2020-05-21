@@ -32,6 +32,23 @@
             <artifactId>fastdfs-client</artifactId>
             <version>1.26.5</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/cz.mallat.uasparser/uasparser -->
+        <dependency>
+            <groupId>cz.mallat.uasparser</groupId>
+            <artifactId>uasparser</artifactId>
+            <version>0.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.jregex</groupId>
+            <artifactId>jregex</artifactId>
+            <version>1.2_01</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>1.2.4</version>
+        </dependency>
         <!-- 整合redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
