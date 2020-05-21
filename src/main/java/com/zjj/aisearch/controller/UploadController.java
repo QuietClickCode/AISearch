@@ -36,10 +36,12 @@ import java.util.Date;
  */
 @RestController
 public class UploadController {
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private DocumentMapper documentMapper;
 
     @Autowired
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private UploadFileMapper uploadFileMapper;
 
     @Autowired
@@ -92,8 +94,8 @@ public class UploadController {
             uploadFileServiceImpl.save(fullTextDTO);
             //保存到索引库
             DocumentDTO documentDTO = new DocumentDTO();
-            documentDTO.setDocumentcontent(fileName);
-            documentDTO.setDocumentname(filecontent);
+            documentDTO.setDocumentcontent(filecontent);
+            documentDTO.setDocumentname(fileName);
             documentMapper.insert(documentDTO);
             documentESRepository.save(documentDTO);
             responseResult.setStatus(0);
