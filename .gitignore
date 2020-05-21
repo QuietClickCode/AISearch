@@ -1,3 +1,8 @@
 .idea/
 *.iml
 target/
+/hehe.txt
+/jrebel-classpath-216.jar
+/jrebel-classpath-7744.jar
+/AISearch.iml
+/src/main/resources/rebel-remote.xml
